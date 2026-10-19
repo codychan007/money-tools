@@ -69,7 +69,7 @@ function update() {
       const gap = delayGapAt(S, P, fr, n, 60);
       const dc = delayComparison(T, S, fr, n, 60);
       txt = `用 ${pctLabel(fr)} 假設回報，今日開始大約 <span class="hl">${ym(n)}</span> 達標。<br>
-        如果遲 5 年先開始（每月一樣投入 ${money(P)}），到同一日你會<span class="hl">少咗約 ${money(gap.gap)}</span>，要等多 5 年先達到。`;
+        如果遲 5 年先開始（每月一樣投入 ${money(P)}，而呢 5 年現有儲蓄冇投資），到同一日你會<span class="hl">少咗約 ${money(gap.gap)}</span>，要等多 5 年先達到。`;
       txt += dc.monthsLeft > 0
         ? `<br>想同一時間達標，遲 5 年先開始嘅話每月要投入 <span class="hl">${money(dc.late)}</span>（多 ${money(dc.extra)}）。`
         : `<br>你嘅目標 5 年內就達到，遲 5 年即係成個目標都要推遲。`;
@@ -93,7 +93,7 @@ function update() {
     const dc = delayComparison(T, S, fr, months, 60);
     $('delay-text').innerHTML = dc.monthsLeft > 0
       ? `用 ${pctLabel(fr)} 假設回報，今日開始每月要投入 <span class="hl">${money(dc.now)}</span>。<br>
-         如果遲 5 年先開始，只剩 ${ym(dc.monthsLeft)}，每月就要 <span class="hl">${money(dc.late)}</span>——每月多 ${money(dc.extra)}。`
+         如果遲 5 年先開始（呢 5 年現有儲蓄冇投資），只剩 ${ym(dc.monthsLeft)}，每月就要 <span class="hl">${money(dc.late)}</span>——每月多 ${money(dc.extra)}。`
       : `你嘅目標年期係 ${Y} 年，遲 5 年先開始就連時間都唔夠。試下將年期設長過 5 年再比較。`;
 
     drawChart(rs, Y, T,

@@ -105,7 +105,7 @@
       "sourceUrl": "https://apidocs.hkma.gov.hk/documentation/market-data-and-statistics/monthly-statistical-bulletin/er-ir/hkd-ir-periodaverage",
       "freq": "每月公布",
       "maxAgeDays": 75,
-      "note": "金管局按主要持牌銀行報價計出嘅月平均，適用於 10 萬港元以下存款；個別銀行優惠息率可能較高。"
+      "note": "呢個係金管局按主要銀行「牌價」計出嘅月平均（10 萬港元以下存款）。好多銀行嘅新資金或網上定存優惠息率會高好多，存錢前請直接向銀行查詢。"
     },
     {
       "id": "prime",
