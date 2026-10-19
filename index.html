@@ -3,20 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>香港地一站式理財資訊通 – By Cody Chan</title>
-  <meta name="description" content="打工仔嘅免費理財工具：目標計算機、理財健康檢查、月薪分配，仲有市場解讀同保障資訊。">
+  <title>香港地一站式理財資訊通 By Cody Chan｜香港打工仔免費理財計算工具</title>
+  <meta name="description" content="香港打工仔嘅免費理財工具箱：月薪扣強積金後實際到手幾多、儲 50 萬要幾耐、理財健康檢查，仲有醫療費用數據、雙週市場速遞同信用卡回贈整理。">
   <meta name="theme-color" content="#0F5C3F">
-  <meta property="og:title" content="香港地一站式理財資訊通 – By Cody Chan">
-  <meta property="og:description" content="2 分鐘計清你嘅荷包：目標要幾耐、儲蓄夠唔夠、月薪點分。">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 <main>
   <div class="wrap stack">
     <section class="hero">
-      <div class="kicker">香港打工仔嘅理財工具箱</div>
-      <h1>月薪 $18,000，扣埋強積金同交租，其實每月仲可以儲幾多？</h1>
-      <p>唔講大道理，直接計。全部免費，資料只喺你部手機計，唔會上傳。</p>
+      <div class="kicker">香港地一站式理財資訊通</div>
+      <h1>香港打工仔嘅免費理財工具箱</h1>
+      <p><b>月薪 $18,000，扣埋強積金同交租，其實每月仲可以儲幾多？</b>唔講大道理，直接計。全部免費，資料只喺你部手機計，唔會上傳。</p>
     </section>
 
     <div class="grid cols-3">
@@ -35,7 +33,7 @@
     </div>
 
     <section class="card">
-      <h2>🗞️ 最新市場解讀</h2>
+      <h2>🗞️ 最新雙週市場速遞</h2>
       <div id="latest-update" class="muted">第一篇市場解讀準備緊，遲啲再嚟睇 👀</div>
     </section>
 
@@ -48,20 +46,22 @@
         <div class="emoji">🎁</div><h3>優惠回贈</h3>
         <p>按餐飲、網購、交通、旅遊、超市揀，過期自動收埋。</p><span class="go">睇吓 →</span>
       </a>
+      <a class="card tool-card" href="/market/">
+        <div class="emoji">📊</div><h3>市場快訊</h3>
+        <p>恒指、美股、HIBOR、匯率，每日自動更新。</p><span class="go">睇吓 →</span>
+      </a>
+      <a class="card tool-card" href="/about/">
+        <div class="emoji">👋</div><h3>關於我</h3>
+        <p>邊個整呢個網站？資料點樣揀、點樣核實？</p><span class="go">睇吓 →</span>
+      </a>
     </div>
 
     <div data-cta></div>
   </div>
 </main>
 <script type="module">
-  import { mountLayout, loadJSON, esc } from '/assets/js/layout.js';
+  import { mountLayout } from '/assets/js/layout.js';
   mountLayout();
-  try {
-    const u = await loadJSON('/data/updates.json');
-    const p = u.posts.filter(x => x.status === 'published').sort((a, b) => b.date.localeCompare(a.date))[0];
-    if (p) document.getElementById('latest-update').innerHTML =
-      `<a class="tool-card" href="/updates/?id=${encodeURIComponent(p.id)}"><span class="badge">${esc(p.date)}</span><h3>${esc(p.title)}</h3><p>${esc(p.summary)}</p><span class="go">閱讀全文 →</span></a>`;
-  } catch {}
 </script>
 </body>
 </html>

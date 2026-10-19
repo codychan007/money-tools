@@ -4,7 +4,9 @@ import { mountLayout, loadJSON, esc, todayHK } from './layout.js';
 
 mountLayout();
 const box = document.getElementById('groups');
-const d = await loadJSON('/data/market.json');
+// 優先直接讀 GitHub 上最新嘅數據（每日自動更新唔使重新部署網站），讀唔到先用網站自帶嗰份
+const RAW = 'https://raw.githubusercontent.com/codychan007/money-tools/main/data/market.json';
+const d = await loadJSON(RAW).catch(() => loadJSON('/data/market.json'));
 const byId = Object.fromEntries(d.items.map(i => [i.id, i]));
 
 function ageDays(updatedAt) {

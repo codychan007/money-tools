@@ -1,11 +1,11 @@
-# 每次有人改動 data/deals.json 或 data/insurance.json，自動檢查格式；有錯會喺 GitHub 顯示紅色 ❌。
+# 每次改動資料或網頁，自動檢查資料格式同試行生成網站；有錯會喺 GitHub 顯示紅色 ❌。
 name: Check data files
 
 on:
   push:
-    paths: ["data/deals.json", "data/insurance.json"]
+    paths: ["data/deals.json", "data/insurance.json", "data/updates.json", "content/**", "scripts/build.py", "**/*.html"]
   pull_request:
-    paths: ["data/deals.json", "data/insurance.json"]
+    paths: ["data/deals.json", "data/insurance.json", "data/updates.json", "content/**", "scripts/build.py", "**/*.html"]
   workflow_dispatch: {}
 
 jobs:
@@ -18,3 +18,4 @@ jobs:
           python-version: "3.12"
       - run: python scripts/validate_deals.py
       - run: python scripts/validate_insurance.py
+      - run: python scripts/build.py

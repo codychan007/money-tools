@@ -62,7 +62,7 @@ main { padding: 20px 0 40px; }
   position: sticky; top: 0; z-index: 50;
   background: var(--green-800); color: #fff;
 }
-.site-header .bar { display: flex; align-items: center; justify-content: space-between; min-height: 56px; }
+.site-header .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; min-height: 56px; }
 .brand { color: #fff; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 .brand-mark {
   width: 30px; height: 30px; border-radius: 9px; background: var(--accent); color: var(--green-900);
@@ -73,7 +73,7 @@ main { padding: 20px 0 40px; }
   background: transparent; border: 0; color: #fff; width: var(--tap); height: var(--tap);
   font-size: 22px; cursor: pointer; margin-right: -12px;
 }
-.nav { display: none; padding: 4px 0 12px; }
+.nav { display: none; padding: 4px 0 12px; flex-basis: 100%; }
 .nav.open { display: block; }
 .nav a {
   display: block; color: #fff; text-decoration: none; padding: 12px 4px; border-top: 1px solid rgba(255,255,255,.12);
@@ -81,8 +81,8 @@ main { padding: 20px 0 40px; }
 .nav a[aria-current="page"] { color: var(--accent); font-weight: 700; }
 @media (min-width: 900px) {
   .menu-btn { display: none; }
-  .site-header .bar { gap: 16px; }
-  .nav { display: flex !important; padding: 0; gap: 2px; }
+  .site-header .bar { gap: 16px; flex-wrap: nowrap; }
+  .nav { display: flex !important; padding: 0; gap: 2px; flex-basis: auto; }
   .nav a { border: 0; padding: 8px 10px; font-size: 15px; border-radius: 8px; }
   .nav a:hover { background: rgba(255,255,255,.1); }
 }
@@ -235,6 +235,18 @@ ol.tips li { margin-bottom: 10px; }
 .article h2 { margin-top: 1.4em; }
 .article ul, .article ol { padding-left: 1.3em; }
 .article li { margin-bottom: 6px; }
+
+/* ---------- 常見問題 ---------- */
+details.faq { border-top: 1px solid var(--line); }
+details.faq:first-of-type { border-top: 0; }
+details.faq summary {
+  cursor: pointer; font-weight: 700; min-height: var(--tap); display: flex; align-items: center;
+  padding: 10px 0; list-style: none; gap: 8px;
+}
+details.faq summary::-webkit-details-marker { display: none; }
+details.faq summary::before { content: "＋"; color: var(--green-800); flex-shrink: 0; }
+details.faq[open] summary::before { content: "－"; }
+details.faq p { margin: 0 0 12px; color: var(--ink-2); }
 
 /* ---------- PDF 市場解讀 ---------- */
 .pdf-page { width: 100%; background: #fff; border-radius: 10px; box-shadow: var(--shadow); overflow: hidden; }

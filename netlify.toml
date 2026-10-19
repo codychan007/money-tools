@@ -1,14 +1,9 @@
-# Netlify 設定：純靜態網站，唔使 build
+# Netlify 設定
+#  - 每次部署先執行 scripts/build.py，將完整靜態網站生成到 dist/
+#  - 如果今次改動只係 data/market.json（市場快訊每日自動更新），就唔重新部署：
+#    市場快訊頁會直接由 GitHub 讀最新數據，咁可以慳返 Netlify 免費計劃嘅部署額度。
+#  - HTTP headers 喺 _headers 檔案設定
 [build]
-  publish = "."
-
-[[headers]]
-  for = "/data/*"
-  [headers.values]
-    Cache-Control = "public, max-age=300"
-
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
+  command = "python3 scripts/build.py"
+  publish = "dist"
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)data/market.json'"

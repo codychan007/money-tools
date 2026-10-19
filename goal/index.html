@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>理財目標計算機｜理財資訊通</title>
-  <meta name="description" content="想儲 50 萬要幾耐？每月要儲幾多？用唔同回報率一次過計清楚，仲睇埋遲 5 年開始差幾遠。">
+  <title>理財目標計算機：儲 50 萬要幾耐？每月要儲幾多？｜香港地一站式理財資訊通</title>
+  <meta name="description" content="想儲 50 萬要幾耐？每月要儲幾多？用 2%–8% 唔同回報率一次過比較，仲睇埋遲 5 年開始差幾遠。附計算方法、例子表同常見問題。">
   <meta name="theme-color" content="#0F5C3F">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -66,6 +66,19 @@
       <button class="btn block" id="share-btn">生成分享圖</button>
       <div class="share-preview" id="share-preview"></div>
     </section>
+
+    <section class="card article">
+      <h2>點樣計？</h2>
+      <p>工具將年回報率換算成等效每月複息（每月回報 = (1 + 年回報)<sup>1/12</sup> − 1），假設每月尾投入一筆固定金額，逐月計到總額達到目標為止。「每月要儲幾多？」模式就倒轉計：喺指定年期內達標，每月要投入幾多。</p>
+      <h3>例子：已有 $30,000，每月投入 $5,000，目標 $500,000</h3>
+      <div class="table-scroll"><table class="data">
+        <tr><th>假設年回報</th><th>需時</th><th>你投入嘅本金</th></tr>
+        {{GOAL_TABLE}}
+      </table></div>
+      <p class="muted" style="font-size:13px;margin:8px 0 0">回報率只係假設，唔係保證；未計通脹、稅項及任何收費。</p>
+    </section>
+
+    <!--FAQ-->
 
     <div data-disclaimer="tool"></div>
     <div data-cta></div>

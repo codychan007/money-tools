@@ -1,79 +1,13 @@
 // ============================================================
-// 共用版面：頁首、頁尾、免責聲明、預約按鈕、格式化工具
-// 加新頁面：喺 NAV 加一行即可。
+// 共用版面同格式化工具
+// 頁首、頁尾、免責聲明、預約按鈕已經由 scripts/build.py 直接寫入 HTML
+// （改導覽列：改 build.py 入面嘅 NAV）。呢度只負責手機選單開關。
 // ============================================================
-import { SITE, igUrl } from './config.js';
-
-export const NAV = [
-  { href: '/', label: '首頁' },
-  { href: '/goal/', label: '目標計算機' },
-  { href: '/health/', label: '健康檢查' },
-  { href: '/salary/', label: '月薪分配' },
-  { href: '/insurance/', label: '保障資訊' },
-  { href: '/updates/', label: '市場解讀' },
-  { href: '/market/', label: '市場快訊' },
-  { href: '/deals/', label: '優惠回贈' },
-  { href: '/book/', label: '預約傾談' },
-];
-
-const TOOL_DISCLAIMER = `
-  <strong>重要提示：</strong>本工具嘅計算結果僅供參考，不構成任何投資、保險或財務建議。
-  所用回報率純屬假設，並非保證回報；投資涉及風險，資產價值可升可跌。
-  你輸入嘅資料只會喺你部手機／電腦內計算，<strong>唔會儲存、唔會上傳</strong>。`;
-
-function header() {
-  const path = location.pathname.replace(/index\.html$/, '');
-  const links = NAV.map(n =>
-    `<a href="${n.href}"${path === n.href ? ' aria-current="page"' : ''}>${n.label}</a>`).join('');
-  return `
-  <header class="site-header">
-    <div class="wrap wide">
-      <div class="bar">
-        <a class="brand" href="/">
-          <span class="brand-mark">理</span>
-          <span>${SITE.shortName}<br><small>${SITE.byline}</small></span>
-        </a>
-        <button class="menu-btn" aria-label="開啟選單" aria-expanded="false" aria-controls="site-nav">☰</button>
-        <nav class="nav" id="site-nav">${links}</nav>
-      </div>
-    </div>
-  </header>`;
-}
-
-function footer() {
-  return `
-  <footer class="site-footer">
-    <div class="wrap wide">
-      <h4>${SITE.name} – ${SITE.byline}</h4>
-      <div>IG：<a href="${igUrl}" target="_blank" rel="noopener">@${SITE.ig}</a></div>
-      <div class="links">
-        ${NAV.slice(1).map(n => `<a href="${n.href}">${n.label}</a>`).join('')}
-        <a href="/disclaimer/">免責聲明及私隱政策</a>
-      </div>
-      <div class="legal">
-        <p><strong>免責聲明：</strong>本網站所有工具、文章及資料只作一般教育及參考用途，不構成任何投資、保險、稅務或法律建議，亦非任何產品之要約或招攬。
-        工具所用回報率均為假設，並非保證；投資涉及風險，過往表現不代表將來。作任何財務決定前，請按個人情況尋求合適專業意見。
-        市場數據及優惠資料整理自所列來源，可能有延遲或已有變動，請以官方最新公布為準。</p>
-        <p>© ${new Date().getFullYear()} ${SITE.name}</p>
-      </div>
-    </div>
-  </footer>`;
-}
-
-function cta() {
-  return `<div class="cta-soft">
-    <p>計完都係有啲唔肯定？</p>
-    <a href="/book/">想有人幫你睇清楚？預約免費傾談 →</a>
-  </div>`;
-}
 
 export function mountLayout() {
-  document.body.insertAdjacentHTML('afterbegin', header());
-  document.body.insertAdjacentHTML('beforeend', footer());
-  document.querySelectorAll('[data-disclaimer="tool"]').forEach(el => { el.classList.add('disclaimer'); el.innerHTML = TOOL_DISCLAIMER; });
-  document.querySelectorAll('[data-cta]').forEach(el => { el.innerHTML = cta(); });
   const btn = document.querySelector('.menu-btn');
   const nav = document.getElementById('site-nav');
+  if (!btn || !nav) return;
   btn.addEventListener('click', () => {
     const open = nav.classList.toggle('open');
     btn.setAttribute('aria-expanded', String(open));
