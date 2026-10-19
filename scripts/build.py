@@ -12,7 +12,7 @@
   - 市場解讀：每篇 PDF 生成獨立頁 /updates/<id>/，列表頁同首頁直接列出文章
   - 生成 sitemap.xml、robots.txt
 
-只用 Python 標準庫，Netlify / Cloudflare Pages 都可以直接執行。
+只用 Python 標準庫，Cloudflare Pages 可以直接執行。
 """
 import datetime as dt
 import html
@@ -24,7 +24,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
-SITE_URL = (os.environ.get("SITE_URL") or os.environ.get("URL") or "https://codychan813.netlify.app").rstrip("/")
+SITE_URL = (os.environ.get("SITE_URL") or "https://codychan813.pages.dev").rstrip("/")
 HKT = dt.timezone(dt.timedelta(hours=8))
 TODAY = dt.datetime.now(HKT).date().isoformat()
 
