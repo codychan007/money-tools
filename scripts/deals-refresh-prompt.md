@@ -13,7 +13,7 @@
 3. 搵新優惠：可以用比較網站（例如 MoneyHero、MoneySmart、HKCashRebate）做線索，但**每一項最後都必須喺發卡機構或平台嘅官方網頁／條款 PDF 核實**，`url` 一定要填官方連結。
 4. 每個類別盡量保留 1–3 項回贈最高、條件合理嘅優惠；全部合共約 8–15 項。消費平台（例如 yuu、MoneyBack、易賞錢等積分計劃）如有明確、可核實嘅高回贈推廣亦可加入，`type` 填「儲分平台」。
 5. 每項填寫：`title`、`type`、`categories`、`rate`（標題回贈率）、`highlight`、`conditions`（最低簽賬、上限、登記要求、主要除外交易，每點一句）、`start`、`expiry`（推廣完結日，官方冇列明就填 `null`）、`url`、`verifiedOn`（今日日期）。
-6. 更新頂層 `updatedOn`（今日）同 `reviewBy`（今日 + 16 日）。
+6. 更新頂層 `updatedOn`（今日）同 `reviewBy`（今日 + 18 日）。
 7. 執行 `python scripts/validate_deals.py`，必須見到 ✅ 先可以儲存／提交。
 8. Commit 訊息：`chore: refresh deals YYYY-MM-DD`，並推送到主分支。
 
