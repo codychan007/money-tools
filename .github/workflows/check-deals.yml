@@ -1,0 +1,19 @@
+# 每次有人改動 data/deals.json，自動檢查格式；有錯會喺 GitHub 顯示紅色 ❌。
+name: Check deals data
+
+on:
+  push:
+    paths: ["data/deals.json"]
+  pull_request:
+    paths: ["data/deals.json"]
+  workflow_dispatch: {}
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/validate_deals.py

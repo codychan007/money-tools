@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>公式驗算</title>
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main><div class="wrap stack">
+  <h1>公式驗算</h1>
+  <p class="muted">「預期」一欄由獨立嘅逐月模擬（Python）計出，用嚟對照網站公式。改完 finance.js 之後打開呢頁，全部 ✅ 先好上線。</p>
+  <div class="card"><div class="table-scroll"><table class="data wrap-cells" id="t"></table></div></div>
+  <p id="sum" class="big-result"></p>
+</div></main>
+<script type="module">
+  import * as F from '/assets/js/finance.js';
+  const MPF = { employeeRate: .05, employerRate: .05, minRelevantIncome: 7100, maxRelevantIncome: 30000 };
+  const near = (a, b, tol = 0.01) => Math.abs(a - b) <= tol * Math.max(1, Math.abs(b)) / 100;   // 0.01% 誤差
+  const cases = [
+    ['目標：$500,000，已有 $30,000，每月 $5,000，4% → 月數', () => F.monthsToGoal(500000, 30000, 5000, .04), 81, 'eq'],
+    ['目標：同上，8% → 月數', () => F.monthsToGoal(500000, 30000, 5000, .08), 72, 'eq'],
+    ['目標：$1,000,000，已有 $0，每月 $3,000，0% → 月數', () => F.monthsToGoal(1000000, 0, 3000, 0), 334, 'eq'],
+    ['目標：$200,000，已有 $50,000，每月 $2,000，8% → 月數', () => F.monthsToGoal(200000, 50000, 2000, .08), 55, 'eq'],
+    ['目標：已有 ≥ 目標 → 0 個月', () => F.monthsToGoal(100000, 120000, 1000, .04), 0, 'eq'],
+    ['反向：$500,000，已有 $30,000，6%，8 年 → 每月', () => F.monthlyNeeded(500000, 30000, .06, 96), 3706.39, 'near'],
+    ['反向：$1,000,000，已有 $100,000，4%，20 年 → 每月', () => F.monthlyNeeded(1000000, 100000, .04, 240), 2146.23, 'near'],
+    ['遲 5 年：$500,000，已有 $30,000，6%，8 年 → 遲咗每月要', () => F.delayComparison(500000, 30000, .06, 96).late, 11830.71, 'near'],
+    ['遲 5 年差距：$30,000＋$5,000/月，4%，第 81 個月少咗', () => F.delayGapAt(30000, 5000, .04, 81).gap, 361365.43, 'near'],
+    ['強積金：月薪 $6,000 → 僱員供款', () => F.mpfEmployee(6000, MPF), 0, 'eq'],
+    ['強積金：月薪 $6,000 → 僱主供款', () => F.mpfEmployer(6000, MPF), 300, 'eq'],
+    ['強積金：月薪 $7,100 → 僱員供款', () => F.mpfEmployee(7100, MPF), 355, 'eq'],
+    ['強積金：月薪 $18,000 → 僱員供款', () => F.mpfEmployee(18000, MPF), 900, 'eq'],
+    ['強積金：月薪 $40,000 → 僱員供款（上限）', () => F.mpfEmployee(40000, MPF), 1500, 'eq'],
+    ['到手：月薪 $18,000', () => F.takeHome(18000, MPF), 17100, 'eq'],
+    ['50/30/20：$17,100 → 儲蓄', () => F.allocate(17100, 50, 30, 20).save, 3420, 'eq'],
+    ['70/20/10：$28,500 → 必要開支', () => F.allocate(28500, 70, 20, 10).needs, 19950, 'eq'],
+    ['健康：收入 2 萬、支出 1.2 萬、現金 3 萬、還款 0、儲 3 千、全部選項 1 → 總分',
+      () => F.healthScores({ income: 20000, expenses: 12000, cash: 30000, debt: 0, revolving: 'no', saving: 3000, medical: 1, lifeCI: 1, invest: 1, budget: 1 }).total, 63, 'eq'],
+    ['健康：收入 3 萬、支出 1.5 萬、現金 12 萬、還款 3 千、間中碌卡、儲 7 千、全部選項 2 → 總分',
+      () => F.healthScores({ income: 30000, expenses: 15000, cash: 120000, debt: 3000, revolving: 'sometimes', saving: 7000, medical: 2, lifeCI: 2, invest: 2, budget: 2 }).total, 96, 'eq'],
+    ['醫療通脹：$100,000，9%，20 年', () => 100000 * Math.pow(1.09, 20), 560441.08, 'near'],
+    ['醫療通脹：$50,000，5%，10 年', () => 50000 * Math.pow(1.05, 10), 81444.73, 'near'],
+  ];
+  let ok = 0;
+  document.getElementById('t').innerHTML = '<tr><th>項目</th><th>網站計到</th><th>預期</th><th></th></tr>' + cases.map(([name, fn, exp, mode]) => {
+    const got = fn();
+    const pass = mode === 'eq' ? Math.abs(got - exp) < 1e-9 : near(got, exp);
+    if (pass) ok++;
+    return `<tr><td>${name}</td><td class="num">${(+got.toFixed(2)).toLocaleString()}</td><td class="num">${exp.toLocaleString()}</td><td>${pass ? '✅' : '❌'}</td></tr>`;
+  }).join('');
+  document.getElementById('sum').textContent = `${ok} / ${cases.length} 通過`;
+  window.__verify = { ok, total: cases.length };
+</script>
+</body>
+</html>

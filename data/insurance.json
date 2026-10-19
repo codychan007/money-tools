@@ -1,0 +1,104 @@
+{
+  "_說明": "保障資訊頁嘅所有數字。每項都要有 source（來源名稱）、sourceUrl（連結）、asOf（資料截至）、reviewBy（下次檢視日期，格式 YYYY-MM-DD）。過咗 reviewBy，網站會自動顯示「資料或已過時」提示。verified = false 代表上線前要你親自核對原文。",
+
+  "medicalInflation": {
+    "title": "醫療通脹：每年大約升幾多？",
+    "defaultRate": 9,
+    "note": "「醫療成本趨勢」係顧問公司預計僱主醫療計劃每人成本嘅升幅，唔等同個人保費升幅，亦唔等同一般通脹（CPI）。唔同機構嘅研究方法同樣本唔同，數字唔可以直接比較。",
+    "items": [
+      { "label": "Aon：香港醫療成本趨勢（2027 年預測）", "value": "9%", "source": "Aon《2027 Global Medical Trend Rates Report》新聞稿（2026-10-12）", "sourceUrl": "https://www.zawya.com/en/press-release/asia-press-releases/apac-medical-cost-growth-projected-to-slow-to-9.7-in-2027-aon-report-1588842", "asOf": "2026-10", "reviewBy": "2027-10-31", "verified": false },
+      { "label": "Aon：香港醫療成本趨勢（2026 年預測）", "value": "9.0%", "source": "Aon《2026 Global Medical Trend Rates Report》（2025-10）", "sourceUrl": "https://www.aon.com/apac/in-the-press/asia-newsroom/2025/apac-employee-medical-plan-costs-to-stabilise-in-2026-after-two-years-of-sharp-increase-aon", "asOf": "2025-10", "reviewBy": "2027-10-31", "verified": false },
+      { "label": "WTW：香港醫療保險成本升幅（2026 年預測）", "value": "9.9%", "source": "WTW《Global Medical Trends Survey》新聞稿（2025-11）", "sourceUrl": "https://www.wtwco.com/en-hk/news/2025/11/double-digit-medical-cost-increases-projected-to-persisit-into-2026-and-beyond-in-asia-pacific", "asOf": "2025-11", "reviewBy": "2026-12-31", "verified": false }
+    ]
+  },
+
+  "publicFees": {
+    "title": "公立醫院收費（2026 年 1 月 1 日起）",
+    "intro": "公營醫療收費改革首階段已於 2026 年 1 月 1 日實施。以下係「合資格人士」收費。",
+    "rows": [
+      ["急症室（每次）", "$400", "分流第 I 類（危殆）及第 II 類（危急）可獲豁免"],
+      ["急症病床（每日）", "$300", "取消原有入院費"],
+      ["療養／復康、護養、精神科病床（每日）", "$200", ""],
+      ["日間程序及治療（每日）", "$250", "取消入院費"],
+      ["專科門診（每次）", "$250", "藥物每項 $20，每項最多 4 星期"],
+      ["普通科／家庭醫學門診（每次）", "$150", "藥物每項 $5，每項最多 4 星期"],
+      ["非緊急影像：超聲波、乳房 X 光", "$250", ""],
+      ["非緊急影像：電腦掃描（CT）、磁力共振（MRI）", "$500", ""],
+      ["全年醫療費用上限", "$10,000", "毋須經濟審查；超出部分可申請豁免"]
+    ],
+    "source": "政府簡報（2025-03-25）、HK01 整理、《行政長官 2026 年施政報告》第 303 段",
+    "sourceUrl": "https://gia.info.gov.hk/general/202503/25/P2025032500394_490027_1_1742898124325.pdf",
+    "extraSources": [
+      { "name": "HK01：公立醫院收費懶人包", "url": "https://www.hk01.com/article/60223141" },
+      { "name": "2026 施政報告全文（醫療部分）", "url": "https://www.info.gov.hk/gia/general/202609/16/P2026091600271.htm" }
+    ],
+    "asOf": "2026-01-01 起生效",
+    "reviewBy": "2027-01-31",
+    "verified": false
+  },
+
+  "privateCosts": {
+    "title": "私家醫院：同一個手術，價錢可以差好遠",
+    "intro": "私家醫院會公布常見手術嘅「過往收費統計」。第 50 百分位（P50）即係一半病人嘅總賬單低於呢個數；第 90 百分位（P90）即係九成病人低於呢個數。",
+    "highlights": [
+      { "label": "住院痔瘡切除術：唔同私家醫院嘅 P50 總收費", "value": "$33,881 – $85,387", "sub": "最高同最低相差 152%", "source": "消費者委員會私營醫療服務研究（2025-03-06），經 HK01 報道", "sourceUrl": "https://www.hk01.com/社會新聞/60216956/消委會調查私營醫療收費-切痔瘡費用差異152-近半投訴涉收費", "asOf": "2025-03", "reviewBy": "2027-03-31", "verified": false }
+    ],
+    "_表格說明": "下面 table 留空俾你填。請由各醫院網站『過往收費統計』抄錄，並註明資料期。未填嘅行唔會顯示。",
+    "table": [
+      { "procedure": "【待填：手術名稱】", "hospital": "【待填：醫院】", "p50": "", "p90": "", "period": "【資料期】", "sourceUrl": "" }
+    ]
+  },
+
+  "cancer": {
+    "title": "癌症：唔再係「老人病」",
+    "items": [
+      { "label": "2023 年全港癌症新症", "value": "37,953 宗", "sub": "即係平均每日約 104 宗" },
+      { "label": "2023 年因癌症離世", "value": "14,867 人", "sub": "佔全港死亡人數 26.2%" },
+      { "label": "最常見癌症：肺癌", "value": "6,111 宗", "sub": "連續第 5 年排第一" },
+      { "label": "25–49 歲「早發性癌症」", "value": "約 4,500 宗", "sub": "佔所有新症約 12%" }
+    ],
+    "source": "香港癌症資料統計中心《2023 年香港癌症統計概覽》（數字經星島頭條報道轉述）",
+    "sourceUrl": "https://www3.ha.org.hk/cancereg/pdf/overview/Overview%20of%20HK%20Cancer%20Stat%202023_tc.asp",
+    "extraSources": [ { "name": "星島頭條報道", "url": "https://www.stheadline.com/health-care/3513221/" } ],
+    "asOf": "2023 年數據（2025 年公布）",
+    "reviewBy": "2026-12-31",
+    "verified": false
+  },
+
+  "policy": {
+    "title": "政府醫療政策：最近有咩新嘢？",
+    "items": [
+      { "date": "2026-09-16", "title": "2026 施政報告：公營醫療", "points": [
+        "全年醫療費用上限 $10,000，毋須經濟審查；全額醫療費用減免受惠人數由每年少於 1.4 萬人增至逾 25 萬人",
+        "醫管局藥物名冊新增 16 種藥物；撒瑪利亞基金新增 53 項藥物及自費醫療裝置",
+        "醫管局目標五年內將指定專科穩定新症輪候時間減半，2027-28 年度先減 10%",
+        "年底前推出社區藥房計劃，首階段涵蓋東區、油尖旺、元朗、沙田"
+      ], "source": "《行政長官 2026 年施政報告》全文（九）第 298–303 段", "sourceUrl": "https://www.info.gov.hk/gia/general/202609/16/P2026091600271.htm" },
+      { "date": "2026-09-16", "title": "私營醫療收費透明度", "points": [
+        "政府計劃於 2026 年底前向立法會提交規例，要求私營醫療機構提高收費透明度，並擬備價目資訊、服務費用預算及收費統計嘅實務守則草擬本"
+      ], "source": "《行政長官 2026 年施政報告》第 304 段", "sourceUrl": "https://www.info.gov.hk/gia/general/202609/16/P2026091600271.htm" },
+      { "date": "2026-01-01", "title": "公營醫療收費改革首階段實施", "points": [
+        "急症室收費 $400（危殆及危急個案豁免）、專科門診 $250、普通科門診 $150；設全年 $10,000 收費上限"
+      ], "source": "政府簡報", "sourceUrl": "https://gia.info.gov.hk/general/202503/25/P2025032500394_490027_1_1742898124325.pdf" }
+    ],
+    "asOf": "2026-10-19",
+    "reviewBy": "2026-11-30"
+  },
+
+  "basics": {
+    "title": "四種基本保障，各自解決咩問題？",
+    "items": [
+      { "icon": "🏥", "name": "醫療", "solves": "住院、手術、檢查嘅賬單", "note": "一般按實際開支賠償（有上限）。" },
+      { "icon": "🎗️", "name": "危疾", "solves": "確診嚴重疾病後嘅收入損失、康復開支", "note": "一般係確診後一筆過賠償，用途自己決定。" },
+      { "icon": "🦺", "name": "意外", "solves": "意外受傷嘅醫療費、傷殘", "note": "只保意外，唔保疾病。" },
+      { "icon": "🏠", "name": "人壽", "solves": "萬一離世，屋企人嘅生活費、債務", "note": "有人靠你收入生活先特別重要。" }
+    ],
+    "tips": [
+      "公司醫療好有用，但轉工、失業或者退休時就會冇咗，亦可能有賠償上限。",
+      "自願醫保（VHIS）係政府訂立標準嘅個人醫療保險框架；合資格保費可申請扣稅，上限每名受保人每年 $8,000（稅務局，2025/26 課稅年度）。",
+      "睇保障唔係「越多越好」，而係先睇清自己有咩、缺咩、預算幾多。"
+    ],
+    "source": "一般保險知識整理；自願醫保資料請以醫務衞生局及稅務局最新公布為準",
+    "sourceUrl": "https://www.vhis.gov.hk/"
+  }
+}

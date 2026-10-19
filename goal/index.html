@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>理財目標計算機｜理財資訊通</title>
+  <meta name="description" content="想儲 50 萬要幾耐？每月要儲幾多？用唔同回報率一次過計清楚，仲睇埋遲 5 年開始差幾遠。">
+  <meta name="theme-color" content="#0F5C3F">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+  <div class="wrap stack">
+    <section class="hero">
+      <div class="kicker">🎯 理財目標計算機</div>
+      <h1>想儲到個目標，要幾耐？</h1>
+      <p>旅行基金、首期、第一個 100 萬——輸入數字，即刻睇唔同回報率下要幾耐，同埋遲 5 年先開始會差幾遠。</p>
+    </section>
+
+    <div class="seg" role="tablist">
+      <button role="tab" aria-selected="true" data-mode="time">幾耐先儲到？</button>
+      <button role="tab" aria-selected="false" data-mode="amount">每月要儲幾多？</button>
+    </div>
+
+    <section class="card">
+      <label class="field"><span>目標金額</span>
+        <div class="input-money"><input type="text" id="target" value="500,000"></div></label>
+      <label class="field"><span>而家已有儲蓄</span>
+        <div class="input-money"><input type="text" id="savings" value="30,000"></div></label>
+      <label class="field" id="f-monthly"><span>每月可以投入</span>
+        <div class="input-money"><input type="text" id="monthly" value="5,000"></div></label>
+      <label class="field hidden" id="f-years"><span>想幾多年內達標？</span>
+        <input type="number" id="years" value="8" min="1" max="50" inputmode="numeric"></label>
+      <div class="field">
+        <span>假設年回報率（可自行修改）</span>
+        <div class="rates">
+          <label><input type="number" class="rate" value="2" step="0.5" inputmode="decimal" aria-label="回報率 1"></label>
+          <label><input type="number" class="rate" value="4" step="0.5" inputmode="decimal" aria-label="回報率 2"></label>
+          <label><input type="number" class="rate" value="6" step="0.5" inputmode="decimal" aria-label="回報率 3"></label>
+          <label><input type="number" class="rate" value="8" step="0.5" inputmode="decimal" aria-label="回報率 4"></label>
+        </div>
+        <small class="muted">回報率只係假設，唔係保證。實際回報可以更高、更低，甚至蝕錢。</small>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 id="res-title">結果</h2>
+      <div class="table-scroll"><table class="data" id="res-table"></table></div>
+      <p class="muted" style="font-size:13px;margin-top:8px">計法：年回報換算成每月複息，每月尾投入；未計通脹、稅項及任何收費。</p>
+    </section>
+
+    <section class="card tint">
+      <h2>⏰ 如果遲 5 年先開始？</h2>
+      <div class="field"><span style="font-size:14px">用邊個回報率比較：</span><div class="chips" id="focus-chips"></div></div>
+      <div id="delay-text" class="result-line"></div>
+    </section>
+
+    <section class="card">
+      <h2>增長曲線</h2>
+      <div class="chart-box"><canvas id="chart" aria-label="唔同回報率嘅增長曲線"></canvas></div>
+    </section>
+
+    <section class="card">
+      <h2>📲 分享到 IG Story</h2>
+      <label class="toggle"><input type="checkbox" id="show-amounts"> 喺圖入面顯示目標金額同現有儲蓄</label>
+      <button class="btn block" id="share-btn">生成分享圖</button>
+      <div class="share-preview" id="share-preview"></div>
+    </section>
+
+    <div data-disclaimer="tool"></div>
+    <div data-cta></div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script type="module" src="/assets/js/goal.js"></script>
+</body>
+</html>

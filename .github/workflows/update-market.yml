@@ -1,0 +1,36 @@
+# 每日自動更新市場快訊兩次，commit 後 Netlify / Vercel 會自動重新部署：
+#   - 香港時間 17:15（港股收市後）
+#   - 香港時間 06:00（美股收市後）
+# 啟用前：喺 GitHub repo 嘅 Settings → Actions → General，將 Workflow permissions 設為 "Read and write permissions"。
+name: Update market data
+
+on:
+  schedule:
+    - cron: "15 9 * * 1-5"    # UTC 09:15 = 香港 17:15（星期一至五）
+    - cron: "0 22 * * 1-5"    # UTC 22:00 = 香港翌日 06:00（星期二至六）
+  workflow_dispatch: {}        # 亦可以喺 Actions 頁面手動按 "Run workflow"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/update_market.py
+      - name: Commit if changed
+        run: |
+          git config user.name "market-bot"
+          git config user.email "market-bot@users.noreply.github.com"
+          git add data/market.json
+          git diff --cached --quiet || git commit -m "chore: update market data"
+          git pull --rebase
+          git push

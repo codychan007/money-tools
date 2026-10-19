@@ -1,0 +1,139 @@
+{
+  "_說明": "優惠回贈。每兩星期由自動程序（或人手）按官方條款更新。每項必須有 url（官方條款或官方網頁）同 verifiedOn（核實日期）。categories 只可用：dining 餐飲、online 網購、transport 交通、travel 旅遊、supermarket 超市。expiry 過咗會自動隱藏；null 代表官方未列明完結日期。改完請執行 python scripts/validate_deals.py 檢查。",
+  "updatedOn": "2026-10-19",
+  "reviewBy": "2026-11-04",
+  "categories": {
+    "dining": "🍜 餐飲",
+    "online": "🛒 網購",
+    "transport": "🚇 交通",
+    "travel": "✈️ 旅遊",
+    "supermarket": "🥬 超市"
+  },
+  "items": [
+    {
+      "title": "信銀國際 Motion 信用卡",
+      "type": "信用卡",
+      "categories": ["dining", "online"],
+      "rate": "6%",
+      "highlight": "食肆及網上簽賬 6% 現金回贈",
+      "conditions": [
+        "每曆月合資格零售簽賬滿 HK$3,800",
+        "額外回贈每月上限 HK$200（約首 HK$3,571 食肆／網上簽賬賺足 6%）",
+        "經 WeChat Pay、AlipayHK、PayMe、轉數快，以及超市網上平台、酒店餐飲等交易不計"
+      ],
+      "start": "2026-07-01",
+      "expiry": "2026-12-31",
+      "url": "https://www.cncbinternational.com/_document/personal/motion_credit_card/tc/motion_cardcvp_tnc_tc.pdf",
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "title": "AEON CARD WAKUWAKU",
+      "type": "信用卡",
+      "categories": ["online", "travel"],
+      "rate": "6%",
+      "highlight": "網上簽賬及日本日圓簽賬 6% 回贈（WAKU COIN）",
+      "conditions": [
+        "額外獎賞每個月結單周期最多 HK$200",
+        "本地餐飲 1%，其他簽賬 0.4%",
+        "保險、電子錢包簽賬不計；回贈要喺「AEON HK」App 換領"
+      ],
+      "start": "2026-09-01",
+      "expiry": "2027-02-28",
+      "url": "https://www.aeon.com.hk/tc/pdf/credit-card/AEONCARDWAKUWAKU_RBBD_TC.pdf",
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "title": "Citi 八達通信用卡",
+      "type": "信用卡",
+      "categories": ["transport"],
+      "rate": "15%",
+      "highlight": "港鐵、巴士、小巴、渡輪、電車、的士車費 15% 回贈",
+      "conditions": [
+        "每月累積合資格簽賬滿 HK$4,000",
+        "車費回贈每月上限 HK$300"
+      ],
+      "start": "2026-09-01",
+      "expiry": "2027-06-30",
+      "url": "https://www1.citibank.com.hk/chinese/credit-cards/octopus-cards",
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "title": "滙豐信用卡：八達通自動增值",
+      "type": "信用卡",
+      "categories": ["transport"],
+      "rate": "最高 $200",
+      "highlight": "申請八達通自動增值，每張八達通送 HK$25／HK$50 簽賬回贈",
+      "conditions": [
+        "自動增值額 HK$250 送 HK$25；HK$500 送 HK$50；最多 4 個回贈",
+        "須用 Reward+ App 登記，並於 2027-02-28 或之前完成首次自動增值",
+        "批核後 18 個月內取消或減少自動增值，回贈可能被扣回"
+      ],
+      "start": "2026-02-01",
+      "expiry": "2027-01-31",
+      "url": "https://retailbank.hsbc.com.hk/promo/octopus-aavs/zh-hk/home/",
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "title": "工銀亞洲銀聯信用卡",
+      "type": "信用卡",
+      "categories": ["travel"],
+      "rate": "高達 7%",
+      "highlight": "海外實體店外幣簽賬高達 7% 現金回贈",
+      "conditions": [
+        "每月海外合資格簽賬滿 HK$10,000 先有額外 5%",
+        "額外回贈每月上限 HK$500，推廣期上限 HK$1,500；總額 HK$100,000 先到先得",
+        "內地及香港簽賬、網上簽賬、Apple Pay 及雲閃付不計"
+      ],
+      "start": "2026-10-01",
+      "expiry": "2026-12-31",
+      "url": "https://www.icbcasia.com/hk/tc/promotion/unionpay-overseas-cash-rebate.html",
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "title": "建行（亞洲）信用卡「飛」常賞您",
+      "type": "信用卡",
+      "categories": ["travel"],
+      "rate": "4%–6%",
+      "highlight": "海外／外幣簽賬 4%（HK$4,000 起）或 6%（HK$8,000 起）",
+      "conditions": [
+        "須於建行（亞洲）App 登記，首 4,000 名",
+        "只計單筆 HK$300 或以上；推廣期回贈上限 HK$500",
+        "電子錢包、八達通增值、保險等不計"
+      ],
+      "start": "2026-09-01",
+      "expiry": "2026-10-31",
+      "url": "https://www.asia.ccb.com/hongkong_tc/personal/credit_cards/promotions/overseas_spending/index.html",
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "title": "中銀 Chill World Mastercard",
+      "type": "信用卡",
+      "categories": ["travel", "online"],
+      "rate": "5%",
+      "highlight": "外幣海外簽賬及網上簽賬 5% 現金回贈（白金卡 4%）",
+      "conditions": [
+        "額外回贈每月上限 HK$150（與 Chill 商戶回贈合併計）",
+        "以港幣支付嘅外幣簽賬、電子錢包（BoC Pay+、AlipayHK、WeChat Pay HK）不計"
+      ],
+      "start": null,
+      "expiry": "2026-12-31",
+      "url": "https://www.bochk.com/dam/boccreditcard/chillcard/chill_offer_tnc_tc.pdf",
+      "verifiedOn": "2026-10-19"
+    },
+    {
+      "title": "Mox Credit",
+      "type": "信用卡",
+      "categories": ["supermarket"],
+      "rate": "3%",
+      "highlight": "超市及雜貨店消費 3% 無上限 CashBack",
+      "conditions": [
+        "按 Mastercard 商戶類別界定為超市／雜貨店",
+        "其他日常消費：Mox+ 客戶 2%，非 Mox+ 客戶 1%"
+      ],
+      "start": null,
+      "expiry": null,
+      "url": "https://mox.com/zh/promotions/cashback-with-mox-credit/",
+      "verifiedOn": "2026-10-19"
+    }
+  ]
+}

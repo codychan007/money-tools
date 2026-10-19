@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>優惠回贈｜理財資訊通</title>
+  <meta name="theme-color" content="#0F5C3F">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+  <div class="wrap stack">
+    <section class="hero">
+      <div class="kicker">🎁 優惠回贈</div>
+      <h1>食飯、網購、搭車，邊張卡著數啲？</h1>
+      <p>每兩星期整理一次高回贈信用卡優惠，全部附官方條款連結。過咗期嘅會自動收埋。</p>
+    </section>
+    <div id="status"></div>
+    <div class="chips" id="cats"></div>
+    <div id="list" class="stack"></div>
+    <div class="callout" style="font-size:14px">
+      <b>用卡前諗清楚：</b>高回贈通常有最低簽賬要求同上限，為咗賺回贈而使多咗就唔化算。外幣簽賬一般另收外幣交易手續費，計實際回贈時記得扣除。卡數要每月全數還清，否則利息遠高過回贈。
+    </div>
+    <div class="disclaimer">優惠資料只供參考，整理自發卡機構公開條款，並以其最新條款為準；發卡機構可隨時修改或終止優惠。本網站並非任何發卡機構，亦不收取推介費【如有收取請改寫此句並交合規審閱】。本頁不構成申請任何信用卡之建議。借定唔借？還得到先好借！</div>
+  </div>
+</main>
+<script type="module">
+  import { mountLayout, loadJSON, esc, todayHK } from '/assets/js/layout.js';
+  mountLayout();
+  const d = await loadJSON('/data/deals.json');
+  const today = todayHK();
+  const live = d.items.filter(i => !i.expiry || i.expiry >= today);   // 過期自動隱藏
+  const stale = d.reviewBy && today > d.reviewBy;
+  document.getElementById('status').innerHTML = `
+    <p class="muted" style="font-size:13px;margin:0">最後整理：${esc(d.updatedOn)}｜下次更新：約 ${esc(d.reviewBy)}</p>
+    ${stale ? '<div class="sample-banner" style="margin-top:8px">⚠️ 呢頁資料已超過兩星期未更新，部分優惠可能已經改變，請以官方條款為準。</div>' : ''}`;
+
+  let cat = 'all';
+  const cats = document.getElementById('cats');
+  cats.innerHTML = [['all', '全部'], ...Object.entries(d.categories)].map(([k, v]) =>
+    `<button class="chip" data-c="${k}" aria-pressed="${k === cat}">${esc(v)}</button>`).join('');
+  cats.addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; cat = b.dataset.c; render(); });
+
+  const daysLeft = exp => Math.round((Date.parse(exp) - Date.parse(today)) / 86400000);
+  function render() {
+    cats.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c.dataset.c === cat)));
+    const rows = live.filter(i => cat === 'all' || i.categories.includes(cat))
+      .sort((a, b) => (a.expiry || '9999').localeCompare(b.expiry || '9999'));
+    document.getElementById('list').innerHTML = rows.length ? rows.map(i => {
+      const left = i.expiry ? daysLeft(i.expiry) : null;
+      return `
+      <article class="card deal">
+        <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+          <div><h3>${esc(i.title)}</h3>
+            <p style="margin:0;font-weight:700;color:var(--green-800)">${esc(i.highlight)}</p></div>
+          <div class="num" style="font-size:1.5rem;font-weight:800;color:var(--green-800);white-space:nowrap">${esc(i.rate)}</div>
+        </div>
+        <ul style="margin:8px 0 0;padding-left:1.2em;font-size:14px;color:var(--ink-2)">${i.conditions.map(c => `<li>${esc(c)}</li>`).join('')}</ul>
+        <div class="meta">
+          ${i.categories.map(c => `<span class="badge">${esc(d.categories[c] || c)}</span>`).join('')}
+          <span class="badge">${esc(i.type)}</span>
+          <span class="badge ${left !== null && left <= 14 ? 'stale' : 'draft'}">${i.expiry ? `到期：${esc(i.expiry)}${left <= 14 ? `（尚餘 ${left} 日）` : ''}` : '官方未列明完結日期'}</span>
+        </div>
+        <div class="source">核實日期：${esc(i.verifiedOn)}｜<a href="${esc(i.url)}" target="_blank" rel="noopener">睇官方條款 →</a></div>
+      </article>`;
+    }).join('') : '<p class="muted center">呢個類別暫時冇合適優惠，下次更新會再搵。</p>';
+  }
+  render();
+</script>
+</body>
+</html>

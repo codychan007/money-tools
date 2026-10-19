@@ -1,0 +1,22 @@
+{
+  "_說明": "法定數字。數字一改，月薪計算器會自動跟住改。每次改完記得更新 asOf 同 verifiedOn。",
+  "mpf": {
+    "employeeRate": 0.05,
+    "employerRate": 0.05,
+    "minRelevantIncome": 7100,
+    "maxRelevantIncome": 30000,
+    "source": "積金局（MPFA）：僱員強制性供款",
+    "sourceUrl": "https://www.mpfa.org.hk/mpf-system/mandatory-contributions/employees",
+    "asOf": "最高有關入息 $30,000 自 2014-06-01 起生效；最低有關入息 $7,100 自 2014-11-01 起生效",
+    "verifiedOn": "2026-10-19",
+    "note": "積金局正進行 2022–2026 年度的入息上下限法定檢討。據媒體報道，建議把下限調高至 $10,500、上限調高至 $40,000，但截至 2026-10-19 仍未落實。一旦落實，請更新以上兩個數字。",
+    "reviewBy": "2027-01-31"
+  },
+  "vhis": {
+    "taxDeductionPerInsured": 8000,
+    "source": "稅務局：自願醫保計劃保單保費扣除",
+    "sourceUrl": "https://www.ird.gov.hk/chi/faq/vhis_qp.htm",
+    "verifiedOn": "2026-10-19",
+    "reviewBy": "2027-04-30"
+  }
+}

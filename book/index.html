@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>預約免費傾談｜理財資訊通</title>
+  <meta name="theme-color" content="#0F5C3F">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+  <div class="wrap stack">
+    <section class="hero">
+      <div class="kicker">☕ 預約傾談</div>
+      <h1>計完都係有啲亂？搵個人幫你睇清楚</h1>
+      <p>免費、唔使準備，傾下你嘅目標同疑問。冇壓力，唔啱可以隨時唔再跟進。</p>
+    </section>
+
+    <section class="card">
+      <h2>個人資料收集聲明</h2>
+      <div class="disclaimer" style="max-height:240px;overflow:auto">
+        <p><strong>【草稿：上線前必須交所屬公司合規部門審閱及修訂】</strong></p>
+        <p>1. 當你透過 WhatsApp、電話或 Google 日曆預約時，我哋可能會收集你嘅姓名、電話號碼、電郵地址及你自願提供嘅資料。</p>
+        <p>2. 收集目的：安排及跟進預約、回覆你嘅查詢。【如有其他用途（例如直接促銷），必須另行列明並取得你嘅同意】</p>
+        <p>3. 資料承轉：除為上述目的或法例要求外，不會轉移予第三者。【如需轉交所屬公司，請列明】</p>
+        <p>4. 你有權要求查閱及改正你嘅個人資料。查詢請聯絡：<span class="ph">【資料查閱聯絡人及方式】</span>。</p>
+        <p>5. 本網站本身不會儲存你喺計算工具輸入嘅任何財務資料。</p>
+        <p>6. Google 日曆預約頁由 Google 提供，亦受 Google 私隱政策約束。</p>
+      </div>
+      <label class="toggle" style="margin-top:12px"><input type="checkbox" id="agree"> 我已閱讀並同意以上個人資料收集聲明</label>
+    </section>
+
+    <section class="card stack" id="channels">
+      <a class="btn block disabled" id="cal" target="_blank" rel="noopener">📅 揀時間預約（Google 日曆）</a>
+      <a class="btn accent block disabled" id="wa" target="_blank" rel="noopener">💬 WhatsApp 我</a>
+      <a class="btn secondary block disabled" id="tel">📞 打電話：<span id="phone"></span></a>
+      <p class="muted center mt0" style="font-size:13px" id="hint">剔咗上面嘅同意先可以揀聯絡方式。</p>
+    </section>
+
+    <div class="disclaimer">傾談只作一般理財溝通，唔會因此構成任何購買責任。任何產品建議均須按個人情況，並依照相關規例進行需要分析。</div>
+  </div>
+</main>
+<script type="module">
+  import { mountLayout } from '/assets/js/layout.js';
+  import { SITE, waUrl, telUrl } from '/assets/js/config.js';
+  mountLayout();
+  const $ = id => document.getElementById(id);
+  $('phone').textContent = SITE.phone;
+  const links = { cal: SITE.calendarUrl, wa: waUrl, tel: telUrl };
+  $('agree').addEventListener('change', e => {
+    const ok = e.target.checked;
+    for (const [id, href] of Object.entries(links)) {
+      $(id).classList.toggle('disabled', !ok);
+      if (ok) $(id).href = href; else $(id).removeAttribute('href');
+    }
+    $('hint').classList.toggle('hidden', ok);
+  });
+</script>
+</body>
+</html>

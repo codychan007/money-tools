@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>月薪分配計算器｜理財資訊通</title>
+  <meta name="description" content="月薪扣埋強積金，實際到手幾多？再按 50/30/20 分配必要開支、生活享受同儲蓄。">
+  <meta name="theme-color" content="#0F5C3F">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+  <div class="wrap stack">
+    <section class="hero">
+      <div class="kicker">💰 月薪分配計算器</div>
+      <h1>月薪 $18,000，扣埋強積金，其實每月仲可以儲幾多？</h1>
+      <p>輸入月薪，自動計強積金同實際到手，再幫你分好「必要」、「享受」、「儲蓄」三份。</p>
+    </section>
+
+    <section class="card">
+      <label class="field"><span>每月薪金（未扣強積金）</span>
+        <div class="input-money"><input type="text" id="salary" value="18,000"></div>
+        <small class="muted">即係強積金計算用嘅「有關入息」，包括底薪、佣金、花紅等。</small></label>
+    </section>
+
+    <section class="card">
+      <h2>扣完強積金，實際到手</h2>
+      <div class="big-result num" id="take-home"></div>
+      <div class="stat-row" style="margin-top:12px">
+        <div class="stat"><b class="num" id="ee"></b><span>你嘅強積金供款（5%）</span></div>
+        <div class="stat"><b class="num" id="er"></b><span>老闆幫你供（5%）</span></div>
+      </div>
+      <p class="muted" id="mpf-note" style="font-size:14px;margin:12px 0 0"></p>
+      <div id="mpf-source"></div>
+    </section>
+
+    <section class="card">
+      <h2>點分配？</h2>
+      <div class="chips" id="presets" style="margin-bottom:14px">
+        <button class="chip" data-p="50,30,20" aria-pressed="true">50/30/20</button>
+        <button class="chip" data-p="60,20,20" aria-pressed="false">60/20/20</button>
+        <button class="chip" data-p="70,20,10" aria-pressed="false">70/20/10</button>
+        <button class="chip" data-p="50,20,30" aria-pressed="false">50/20/30 進取儲錢</button>
+      </div>
+      <label class="field"><span>🏠 必要開支 <b id="needs-pct" class="num"></b>%</span>
+        <input type="range" id="needs" min="0" max="100" step="5" value="50"></label>
+      <label class="field"><span>🎉 生活享受 <b id="wants-pct" class="num"></b>%</span>
+        <input type="range" id="wants" min="0" max="100" step="5" value="30"></label>
+      <p style="margin:0">💎 儲蓄投資：<b id="save-pct" class="num"></b>%（自動計：100% 減上面兩項）</p>
+
+      <div class="chart-box" style="height:220px;margin-top:12px"><canvas id="donut" aria-label="月薪分配圓環圖"></canvas></div>
+      <div class="table-scroll"><table class="data" id="alloc"></table></div>
+      <div class="callout" style="margin-top:12px;font-size:14px" id="alloc-tip"></div>
+    </section>
+
+    <section class="callout green" style="font-size:14px">
+      <b>記得預留交稅錢：</b>薪俸稅係每年一次過交，唔喺月薪度扣。打工仔好易一年後先發現要交一大筆，建議喺「必要開支」入面預留每月一份。
+    </section>
+
+    <div data-disclaimer="tool"></div>
+    <div data-cta></div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script type="module" src="/assets/js/salary.js"></script>
+</body>
+</html>
