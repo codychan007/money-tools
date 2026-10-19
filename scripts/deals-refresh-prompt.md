@@ -15,7 +15,7 @@
 5. 每項填寫：`title`、`type`、`categories`、`rate`（標題回贈率）、`highlight`、`conditions`（最低簽賬、上限、登記要求、主要除外交易，每點一句）、`start`、`expiry`（推廣完結日，官方冇列明就填 `null`）、`url`、`verifiedOn`（今日日期）。
 6. 更新頂層 `updatedOn`（今日）同 `reviewBy`（今日 + 18 日）。
 7. 執行 `python scripts/validate_deals.py`，必須見到 ✅ 先可以儲存／提交。
-8. Commit 訊息：`chore: refresh deals YYYY-MM-DD`，並推送到主分支。
+8. Commit 訊息：`chore: refresh deals YYYY-MM-DD`。推送前先 `git pull --rebase origin main`（每月 1 號會同醫療政策任務同時運行），然後 `git push origin HEAD:main`；如果被拒絕，再 pull --rebase 重試最多 3 次，唔好 force push。
 
 ## 必須遵守
 

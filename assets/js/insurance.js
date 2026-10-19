@@ -57,14 +57,21 @@ $('cancer').innerHTML = `<h2>🎗️ ${esc(ca.title)}${verifyBadge(ca.verified)}
 
 // 政策
 const po = D.policy;
-$('policy').innerHTML = `<h2>🏛️ ${esc(po.title)}</h2>${po.items.map(it => `
+const byDate = list => [...(list || [])].sort((a, b) => b.date.localeCompare(a.date));
+const policyItem = it => `
   <div style="border-left:3px solid var(--green-100);padding-left:12px;margin:14px 0">
     <span class="badge">${esc(it.date)}</span>
     <h3 style="margin:6px 0">${esc(it.title)}</h3>
     <ul style="margin:0;padding-left:1.2em">${it.points.map(p => `<li>${esc(p)}</li>`).join('')}</ul>
     <div class="source">來源：<a href="${esc(it.sourceUrl)}" target="_blank" rel="noopener">${esc(it.source)}</a></div>
-  </div>`).join('')}
-  <div class="source">本部分最後整理：${esc(po.asOf)}${isStale(po.reviewBy) ? ' <span class="badge stale">資料或已過時</span>' : ''}</div>`;
+  </div>`;
+const archive = byDate(po.archive);
+$('policy').innerHTML = `<h2>🏛️ ${esc(po.title)}</h2>
+  ${po.items.length ? byDate(po.items).map(policyItem).join('') : '<p class="muted">最近三個月未有新嘅重要醫療政策。</p>'}
+  ${archive.length ? `<details style="margin-top:8px"><summary style="cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center">📂 過往政策更新（${archive.length}）</summary>
+    <p class="muted" style="font-size:13px;margin:4px 0 0">以下係較早嘅政策消息，部分內容可能已有變化，請以最新公布為準。</p>
+    ${archive.map(policyItem).join('')}</details>` : ''}
+  <div class="source">本部分最後整理：${esc(po.asOf)}（每月 1 號更新）${isStale(po.reviewBy) ? ' <span class="badge stale">資料或已過時</span>' : ''}</div>`;
 
 // 基本概念
 const b = D.basics;
