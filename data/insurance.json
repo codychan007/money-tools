@@ -10,8 +10,8 @@
         "value": "9%",
         "source": "Aon《2027 Global Medical Trend Rates Report》新聞稿（2026-10-12）",
         "sourceUrl": "https://www.zawya.com/en/press-release/asia-press-releases/apac-medical-cost-growth-projected-to-slow-to-9.7-in-2027-aon-report-1588842",
-        "asOf": "2026-10",
-        "reviewBy": "2027-10-31",
+        "asOf": "2026-10（2026-10-19 重新核對）",
+        "reviewBy": "2027-01-31",
         "verified": false
       },
       {
@@ -19,8 +19,8 @@
         "value": "9.0%",
         "source": "Aon《2026 Global Medical Trend Rates Report》（2025-10）",
         "sourceUrl": "https://www.aon.com/apac/in-the-press/asia-newsroom/2025/apac-employee-medical-plan-costs-to-stabilise-in-2026-after-two-years-of-sharp-increase-aon",
-        "asOf": "2025-10",
-        "reviewBy": "2027-10-31",
+        "asOf": "2025-10（2026-10-19 重新核對，Aon 2027 報告亦列 2026 年為 9%）",
+        "reviewBy": "2027-01-31",
         "verified": false
       },
       {
@@ -28,7 +28,7 @@
         "value": "9.9%",
         "source": "WTW《Global Medical Trends Survey》新聞稿（2025-11）",
         "sourceUrl": "https://www.wtwco.com/en-hk/news/2025/11/double-digit-medical-cost-increases-projected-to-persisit-into-2026-and-beyond-in-asia-pacific",
-        "asOf": "2025-11",
+        "asOf": "2025-11（2026-10-19 重新核對，暫未見 WTW 2027 年版本）",
         "reviewBy": "2027-01-31",
         "verified": false
       }
@@ -96,7 +96,7 @@
         "url": "https://www.info.gov.hk/gia/general/202609/16/P2026091600271.htm"
       }
     ],
-    "asOf": "2026-01-01 起生效",
+    "asOf": "2026-01-01 起生效（2026-10-19 重新核對，收費未見改動）",
     "reviewBy": "2027-01-31",
     "verified": false
   },
@@ -110,8 +110,8 @@
         "sub": "最高同最低相差 152%",
         "source": "消費者委員會私營醫療服務研究（2025-03-06），經 HK01 報道",
         "sourceUrl": "https://www.hk01.com/社會新聞/60216956/消委會調查私營醫療收費-切痔瘡費用差異152-近半投訴涉收費",
-        "asOf": "2025-03",
-        "reviewBy": "2027-03-31",
+        "asOf": "2025-03（2026-10-19 重新核對，未見較新數字）",
+        "reviewBy": "2027-01-31",
         "verified": false
       }
     ],
