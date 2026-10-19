@@ -1,7 +1,7 @@
 {
   "_說明": "優惠回贈。每兩星期由自動程序（或人手）按官方條款更新。每項必須有 url（官方條款或官方網頁）同 verifiedOn（核實日期）。categories 只可用：dining 餐飲、online 網購、transport 交通、travel 旅遊、supermarket 超市。expiry 過咗會自動隱藏；null 代表官方未列明完結日期。改完請執行 python scripts/validate_deals.py 檢查。",
   "updatedOn": "2026-10-19",
-  "reviewBy": "2026-11-04",
+  "reviewBy": "2026-11-06",
   "categories": {
     "dining": "🍜 餐飲",
     "online": "🛒 網購",
