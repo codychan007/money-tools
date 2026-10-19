@@ -1,9 +1,14 @@
-# Netlify 設定
-#  - 每次部署先執行 scripts/build.py，將完整靜態網站生成到 dist/
-#  - 如果今次改動只係 data/market.json（市場快訊每日自動更新），就唔重新部署：
-#    市場快訊頁會直接由 GitHub 讀最新數據，咁可以慳返 Netlify 免費計劃嘅部署額度。
-#  - HTTP headers 喺 _headers 檔案設定
+# Netlify 設定（舊網址）
+#  - 網站已經搬咗去 Cloudflare Pages：https://codychan813.pages.dev
+#  - codychan813.netlify.app 全部網址 301 轉去新網址，舊連結同搜尋排名會帶過去
+#  - 只有改咗呢個檔案先會喺 Netlify 重新部署，其他改動唔會再用 Netlify 額度
 [build]
-  command = "python3 scripts/build.py"
-  publish = "dist"
-  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- . ':(exclude)data/market.json'"
+  command = ""
+  publish = "."
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- netlify.toml"
+
+[[redirects]]
+  from = "/*"
+  to = "https://codychan813.pages.dev/:splat"
+  status = 301
+  force = true
