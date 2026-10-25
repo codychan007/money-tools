@@ -1,25 +1,43 @@
 {
-  "_說明": "優惠回贈。每兩星期由自動程序（或人手）按官方條款更新。每項必須有 url（官方條款或官方網頁）同 verifiedOn（核實日期）。categories 只可用：dining 餐飲、online 網購、transport 交通、travel 旅遊、supermarket 超市。expiry 過咗會自動隱藏；null 代表官方未列明完結日期。改完請執行 python scripts/validate_deals.py 檢查。",
+  "_說明": "優惠回贈。每兩星期由自動程序（或人手）按官方條款更新。每項必須有 url（官方條款或官方網頁）同 verifiedOn（核實日期）。categories 只可用：dining 餐飲、online 網購、transport 交通、travel 旅遊、supermarket 超市。expiry 過咗會自動隱藏；null 代表官方未列明完結日期。改完請執行 python scripts/validate_deals.py 檢查。 英文版：每項要有 title_en、type_en、highlight_en、conditions_en（同 conditions 一樣多項）；rate 有中文字就要加 rate_en。",
   "updatedOn": "2026-10-19",
   "reviewBy": "2026-11-06",
   "categories": {
-    "dining": "🍜 餐飲",
-    "online": "🛒 網購",
-    "transport": "🚇 交通",
-    "travel": "✈️ 旅遊",
-    "supermarket": "🥬 超市"
+    "dining": "餐飲",
+    "online": "網購",
+    "transport": "交通",
+    "travel": "旅遊",
+    "supermarket": "超市"
+  },
+  "categories_en": {
+    "dining": "Dining",
+    "online": "Online",
+    "transport": "Transport",
+    "travel": "Travel",
+    "supermarket": "Supermarket"
   },
   "items": [
     {
       "title": "信銀國際 Motion 信用卡",
+      "title_en": "China CITIC Bank International Motion Credit Card",
       "type": "信用卡",
-      "categories": ["dining", "online"],
+      "type_en": "Credit card",
+      "categories": [
+        "dining",
+        "online"
+      ],
       "rate": "6%",
       "highlight": "食肆及網上簽賬 6% 現金回贈",
+      "highlight_en": "6% cash rebate on dining and online spending",
       "conditions": [
         "每曆月合資格零售簽賬滿 HK$3,800",
         "額外回贈每月上限 HK$200（約首 HK$3,571 食肆／網上簽賬賺足 6%）",
         "經 WeChat Pay、AlipayHK、PayMe、轉數快，以及超市網上平台、酒店餐飲等交易不計"
+      ],
+      "conditions_en": [
+        "Eligible retail spending of HK$3,800 or more per calendar month",
+        "Extra rebate capped at HK$200 a month (roughly the first HK$3,571 of dining / online spending earns the full 6%)",
+        "Excludes WeChat Pay, AlipayHK, PayMe and FPS transactions, as well as online supermarket platforms and hotel dining"
       ],
       "start": "2026-07-01",
       "expiry": "2026-12-31",
@@ -28,14 +46,25 @@
     },
     {
       "title": "AEON CARD WAKUWAKU",
+      "title_en": "AEON CARD WAKUWAKU",
       "type": "信用卡",
-      "categories": ["online", "travel"],
+      "type_en": "Credit card",
+      "categories": [
+        "online",
+        "travel"
+      ],
       "rate": "6%",
       "highlight": "網上簽賬及日本日圓簽賬 6% 回贈（WAKU COIN）",
+      "highlight_en": "6% rebate (WAKU COIN) on online spending and Japanese yen spending",
       "conditions": [
         "額外獎賞每個月結單周期最多 HK$200",
         "本地餐飲 1%，其他簽賬 0.4%",
         "保險、電子錢包簽賬不計；回贈要喺「AEON HK」App 換領"
+      ],
+      "conditions_en": [
+        "Extra rewards capped at HK$200 per statement cycle",
+        "1% on local dining, 0.4% on other spending",
+        "Insurance and e-wallet spending excluded; rebates are redeemed in the AEON HK app"
       ],
       "start": "2026-09-01",
       "expiry": "2027-02-28",
@@ -44,13 +73,22 @@
     },
     {
       "title": "Citi 八達通信用卡",
+      "title_en": "Citi Octopus Credit Card",
       "type": "信用卡",
-      "categories": ["transport"],
+      "type_en": "Credit card",
+      "categories": [
+        "transport"
+      ],
       "rate": "15%",
       "highlight": "港鐵、巴士、小巴、渡輪、電車、的士車費 15% 回贈",
+      "highlight_en": "15% rebate on MTR, bus, minibus, ferry, tram and taxi fares",
       "conditions": [
         "每月累積合資格簽賬滿 HK$4,000",
         "車費回贈每月上限 HK$300"
+      ],
+      "conditions_en": [
+        "Eligible spending of HK$4,000 or more in the month",
+        "Fare rebate capped at HK$300 a month"
       ],
       "start": "2026-09-01",
       "expiry": "2027-06-30",
@@ -59,14 +97,25 @@
     },
     {
       "title": "滙豐信用卡：八達通自動增值",
+      "title_en": "HSBC credit cards: Octopus Automatic Add Value",
       "type": "信用卡",
-      "categories": ["transport"],
+      "type_en": "Credit card",
+      "categories": [
+        "transport"
+      ],
       "rate": "最高 $200",
+      "rate_en": "Up to $200",
       "highlight": "申請八達通自動增值，每張八達通送 HK$25／HK$50 簽賬回贈",
+      "highlight_en": "Set up Octopus Automatic Add Value and get a HK$25 / HK$50 spending rebate per Octopus card",
       "conditions": [
         "自動增值額 HK$250 送 HK$25；HK$500 送 HK$50；最多 4 個回贈",
         "須用 Reward+ App 登記，並於 2027-02-28 或之前完成首次自動增值",
         "批核後 18 個月內取消或減少自動增值，回贈可能被扣回"
+      ],
+      "conditions_en": [
+        "HK$250 add-value amount earns HK$25; HK$500 earns HK$50; up to 4 rebates",
+        "Register in the Reward+ app and complete the first automatic add-value on or before 2027-02-28",
+        "Rebates may be clawed back if automatic add value is cancelled or reduced within 18 months of approval"
       ],
       "start": "2026-02-01",
       "expiry": "2027-01-31",
@@ -75,14 +124,25 @@
     },
     {
       "title": "工銀亞洲銀聯信用卡",
+      "title_en": "ICBC (Asia) UnionPay Credit Card",
       "type": "信用卡",
-      "categories": ["travel"],
+      "type_en": "Credit card",
+      "categories": [
+        "travel"
+      ],
       "rate": "高達 7%",
+      "rate_en": "Up to 7%",
       "highlight": "海外實體店外幣簽賬高達 7% 現金回贈",
+      "highlight_en": "Up to 7% cash rebate on foreign currency spending at overseas physical stores",
       "conditions": [
         "每月海外合資格簽賬滿 HK$10,000 先有額外 5%",
         "額外回贈每月上限 HK$500，推廣期上限 HK$1,500；總額 HK$100,000 先到先得",
         "內地及香港簽賬、網上簽賬、Apple Pay 及雲閃付不計"
+      ],
+      "conditions_en": [
+        "The extra 5% applies only with eligible overseas spending of HK$10,000 or more in the month",
+        "Extra rebate capped at HK$500 a month and HK$1,500 for the promotion period; HK$100,000 in total, first come first served",
+        "Mainland and Hong Kong spending, online spending, Apple Pay and UnionPay QuickPass excluded"
       ],
       "start": "2026-10-01",
       "expiry": "2026-12-31",
@@ -91,14 +151,24 @@
     },
     {
       "title": "建行（亞洲）信用卡「飛」常賞您",
+      "title_en": "CCB (Asia) credit cards: overseas spending promotion",
       "type": "信用卡",
-      "categories": ["travel"],
+      "type_en": "Credit card",
+      "categories": [
+        "travel"
+      ],
       "rate": "4%–6%",
       "highlight": "海外／外幣簽賬 4%（HK$4,000 起）或 6%（HK$8,000 起）",
+      "highlight_en": "4% on overseas / foreign currency spending (from HK$4,000) or 6% (from HK$8,000)",
       "conditions": [
         "須於建行（亞洲）App 登記，首 4,000 名",
         "只計單筆 HK$300 或以上；推廣期回贈上限 HK$500",
         "電子錢包、八達通增值、保險等不計"
+      ],
+      "conditions_en": [
+        "Register in the CCB (Asia) app; first 4,000 registrants",
+        "Only single transactions of HK$300 or more count; rebate capped at HK$500 for the promotion period",
+        "E-wallets, Octopus add-value, insurance and similar excluded"
       ],
       "start": "2026-09-01",
       "expiry": "2026-10-31",
@@ -107,13 +177,23 @@
     },
     {
       "title": "中銀 Chill World Mastercard",
+      "title_en": "BOC Chill World Mastercard",
       "type": "信用卡",
-      "categories": ["travel", "online"],
+      "type_en": "Credit card",
+      "categories": [
+        "travel",
+        "online"
+      ],
       "rate": "5%",
       "highlight": "外幣海外簽賬及網上簽賬 5% 現金回贈（白金卡 4%）",
+      "highlight_en": "5% cash rebate on overseas foreign currency spending and online spending (4% for the Platinum card)",
       "conditions": [
         "額外回贈每月上限 HK$150（與 Chill 商戶回贈合併計）",
         "以港幣支付嘅外幣簽賬、電子錢包（BoC Pay+、AlipayHK、WeChat Pay HK）不計"
+      ],
+      "conditions_en": [
+        "Extra rebate capped at HK$150 a month (combined with Chill merchant rebates)",
+        "Foreign currency spending charged in HKD and e-wallets (BoC Pay+, AlipayHK, WeChat Pay HK) excluded"
       ],
       "start": null,
       "expiry": "2026-12-31",
@@ -122,13 +202,22 @@
     },
     {
       "title": "Mox Credit",
+      "title_en": "Mox Credit",
       "type": "信用卡",
-      "categories": ["supermarket"],
+      "type_en": "Credit card",
+      "categories": [
+        "supermarket"
+      ],
       "rate": "3%",
       "highlight": "超市及雜貨店消費 3% 無上限 CashBack",
+      "highlight_en": "Uncapped 3% CashBack at supermarkets and grocery stores",
       "conditions": [
         "按 Mastercard 商戶類別界定為超市／雜貨店",
         "其他日常消費：Mox+ 客戶 2%，非 Mox+ 客戶 1%"
+      ],
+      "conditions_en": [
+        "Supermarket / grocery store as defined by Mastercard merchant category",
+        "Other everyday spending: 2% for Mox+ customers, 1% for others"
       ],
       "start": null,
       "expiry": null,

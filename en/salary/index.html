@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Salary split calculator: what do you take home after MPF? | HK Money Compass</title>
+  <meta name="description" content="Enter your monthly salary to see your MPF contribution and take-home pay, then split it 50/30/20 into needs, wants and savings. With MPF limits explained, a worked example and FAQs.">
+  <meta name="theme-color" content="#F3ECDD">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+  <div class="wrap stack">
+    <section class="hero">
+      <div class="kicker"><span data-seal="薪"></span>Check-up step 2 · Salary split calculator</div>
+      <h1>On $18,000 a month, after MPF, how much can you actually save?</h1>
+      <p>Enter your salary to calculate MPF and take-home pay, then split it into needs, wants and savings.</p>
+    </section>
+
+    <div data-journey="salary"></div>
+
+    <section class="card">
+      <label class="field"><span>Monthly salary (before MPF)</span>
+        <div class="input-money"><input type="text" id="salary" value="18,000"></div>
+        <small class="muted">Your "relevant income" for MPF, including basic pay, commission and bonuses.</small></label>
+    </section>
+
+    <section class="card">
+      <h2>Take-home after MPF</h2>
+      <div class="big-result num" id="take-home"></div>
+      <div class="stat-row" style="margin-top:12px">
+        <div class="stat"><b class="num" id="ee"></b><span>Your MPF contribution (5%)</span></div>
+        <div class="stat"><b class="num" id="er"></b><span>Your employer's contribution (5%)</span></div>
+      </div>
+      <p class="muted" id="mpf-note" style="font-size:14px;margin:12px 0 0"></p>
+      <div id="mpf-source"></div>
+    </section>
+
+    <section class="card">
+      <h2>How to split it?</h2>
+      <div class="chips" id="presets" style="margin-bottom:14px">
+        <button class="chip" data-p="50,30,20" aria-pressed="true">50/30/20</button>
+        <button class="chip" data-p="60,20,20" aria-pressed="false">60/20/20</button>
+        <button class="chip" data-p="70,20,10" aria-pressed="false">70/20/10</button>
+        <button class="chip" data-p="50,20,30" aria-pressed="false">50/20/30 save more</button>
+      </div>
+      <label class="field"><span>Needs <b id="needs-pct" class="num"></b>%</span>
+        <input type="range" id="needs" min="0" max="100" step="5" value="50"></label>
+      <label class="field"><span>Wants <b id="wants-pct" class="num"></b>%</span>
+        <input type="range" id="wants" min="0" max="100" step="5" value="30"></label>
+      <p style="margin:0">Savings: <b id="save-pct" class="num"></b>% (100% minus the two above)</p>
+
+      <div class="chart-box" style="height:220px;margin-top:12px"><canvas id="donut" aria-label="Salary split chart"></canvas></div>
+      <div class="table-scroll"><table class="data" id="alloc"></table></div>
+      <div class="callout" style="margin-top:12px;font-size:14px" id="alloc-tip"></div>
+    </section>
+
+    <div id="next-step"></div>
+
+    <section class="callout green" style="font-size:14px">
+      <b>Set money aside for tax:</b> salaries tax is paid once a year, not deducted from your monthly pay. Many employees only discover a big bill a year later, so it is worth reserving a monthly amount within "needs".
+    </section>
+
+    <section class="card article">
+      <h2>How are MPF and take-home pay calculated?</h2>
+      <p>Monthly-paid employees contribute {{MPF_RATE}} of their relevant income to MPF, and the employer contributes another {{MPF_RATE}}. Relevant income means basic pay plus commission, bonuses and so on, within these limits:</p>
+      <ul>
+        <li>Earning under ${{MPF_MIN}} a month: you don't contribute, but your employer still pays {{MPF_RATE}}</li>
+        <li>Earning ${{MPF_MIN}} to ${{MPF_MAX}}: contribution = monthly income × {{MPF_RATE}}</li>
+        <li>Earning over ${{MPF_MAX}}: contributions are based on ${{MPF_MAX}}, so each side pays at most ${{MPF_CAP}} a month</li>
+      </ul>
+      <h3>Example: a ${{EX_SAL}} monthly salary</h3>
+      <div class="table-scroll"><table class="data">
+        <tr><th>Item</th><th>Monthly</th></tr>
+        <tr><td>Your MPF contribution ({{MPF_RATE}})</td><td>{{EX_EE}}</td></tr>
+        <tr><td>Take-home pay</td><td><b>{{EX_TAKE}}</b></td></tr>
+        <tr><td>Needs (50%)</td><td>{{EX_NEEDS}}</td></tr>
+        <tr><td>Wants (30%)</td><td>{{EX_WANTS}}</td></tr>
+        <tr class="focus"><td>Savings (20%)</td><td>{{EX_SAVE}} ({{EX_SAVE_YEAR}} a year)</td></tr>
+      </table></div>
+      <div class="source">MPF rules source: <a href="https://www.mpfa.org.hk/en/mpf-system/mandatory-contributions/employees" target="_blank" rel="noopener">MPFA: Mandatory contributions for employees</a></div>
+    </section>
+
+    <!--FAQ-->
+
+    <div data-disclaimer="tool"></div>
+    <div data-cta></div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script type="module" src="/assets/js/salary.js"></script>
+</body>
+</html>

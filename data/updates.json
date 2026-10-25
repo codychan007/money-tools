@@ -1,13 +1,16 @@
 {
-  "_說明": "市場解讀清單。每兩星期：① 把 PDF 放入 content/updates/（檔名用英文或數字，例如 2026-11-02.pdf）；② 喺下面 posts 最頂加一項。status：published（公開）或 draft（草稿）。highlights 係 3–5 句重點，會直接寫入網頁俾搜尋引擎同讀者睇（建議填寫，唔填都得）。部署時會自動生成 /updates/<id>/ 頁面。",
+  "_說明": "市場解讀清單。每兩星期：① 把 PDF 放入 content/updates/（檔名用英文或數字，例如 2026-11-02.pdf）；② 喺下面 posts 最頂加一項。status：published（公開）或 draft（草稿）。highlights 係 3–5 句重點，會直接寫入網頁俾搜尋引擎同讀者睇（建議填寫，唔填都得）。部署時會自動生成 /updates/<id>/ 頁面。 英文版：每期加 title_en、summary_en、highlights_en（同 highlights 一樣多句）、period_en；PDF 用中文都得。",
   "posts": [
     {
       "id": "2026-10-19",
       "date": "2026-10-19",
       "dataAsOf": "2026-10-18",
       "period": "2026-10-05 至 2026-10-16",
+      "period_en": "5–16 October 2026",
       "title": "雙週市場速遞：AI 晶片股急跌、油價重上 110 美元、各地央行未敢放鬆",
+      "title_en": "Fortnightly market notes: AI chip stocks slide, oil back at US$110, central banks hold off on easing",
       "summary": "納指錄 6 月以來最差一週，資金由科技股流向傳統板塊；布蘭特期油重上 110 美元；美國 9 月 CPI 升至 3.7%，三大央行月底議息。",
+      "summary_en": "The Nasdaq had its worst week since June as money rotated from tech into traditional sectors; Brent crude climbed back to US$110; US September CPI rose to 3.7%, with three major central banks meeting at the end of the month.",
       "file": "/content/updates/2026-10-19.pdf",
       "status": "published",
       "highlights": [
@@ -16,6 +19,13 @@
         "美國 9 月 CPI 按年升 3.7%，高過預期；聯儲局 9 月已加息至 3.75%–4.00%",
         "恒指兩週大致喺 24,000 點附近上落，恒生科技指數較弱",
         "10 月 28 至 30 日美國、歐洲、日本三大央行相繼議息，值得留意"
+      ],
+      "highlights_en": [
+        "The Nasdaq fell 4.5% in a week, its worst week since June; chip stocks fell for 8 days in a row",
+        "Brent crude futures climbed back to US$110 a barrel as the Middle East and Russia–Ukraine situations heightened supply worries",
+        "US September CPI rose 3.7% year on year, above expectations; the Fed raised rates to 3.75%–4.00% in September",
+        "The Hang Seng Index hovered around 24,000 over the two weeks, with the Hang Seng Tech Index weaker",
+        "The US, European and Japanese central banks meet in turn from 28 to 30 October, worth watching"
       ]
     }
   ]

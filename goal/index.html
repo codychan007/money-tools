@@ -5,17 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>理財目標計算機：儲 50 萬要幾耐？每月要儲幾多？｜香港地一站式理財資訊通</title>
   <meta name="description" content="想儲 50 萬要幾耐？每月要儲幾多？用 2%–8% 唔同回報率一次過比較，仲睇埋遲 5 年開始差幾遠。附計算方法、例子表同常見問題。">
-  <meta name="theme-color" content="#0F5C3F">
+  <meta name="theme-color" content="#F3ECDD">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 <main>
   <div class="wrap stack">
     <section class="hero">
-      <div class="kicker">🎯 理財目標計算機</div>
+      <div class="kicker"><span data-seal="標"></span>理財體檢第 3 步・理財目標計算機</div>
       <h1>想儲到個目標，要幾耐？</h1>
       <p>旅行基金、首期、第一個 100 萬——輸入數字，即刻睇唔同回報率下要幾耐，同埋遲 5 年先開始會差幾遠。</p>
     </section>
+
+    <div data-journey="goal"></div>
+    <div id="prefill-note" class="prefill-note hidden"></div>
 
     <div class="seg" role="tablist">
       <button role="tab" aria-selected="true" data-mode="time">幾耐先儲到？</button>
@@ -50,7 +53,7 @@
     </section>
 
     <section class="card tint">
-      <h2>⏰ 如果遲 5 年先開始？</h2>
+      <h2>如果遲 5 年先開始？</h2>
       <div class="field"><span style="font-size:14px">用邊個回報率比較：</span><div class="chips" id="focus-chips"></div></div>
       <div id="delay-text" class="result-line"></div>
     </section>
@@ -60,8 +63,10 @@
       <div class="chart-box"><canvas id="chart" aria-label="唔同回報率嘅增長曲線"></canvas></div>
     </section>
 
+    <div id="next-step"></div>
+
     <section class="card">
-      <h2>📲 分享到 IG Story</h2>
+      <h2>分享到 IG Story</h2>
       <label class="toggle"><input type="checkbox" id="show-amounts"> 喺圖入面顯示目標金額同現有儲蓄</label>
       <button class="btn block" id="share-btn">生成分享圖</button>
       <div class="share-preview" id="share-preview"></div>

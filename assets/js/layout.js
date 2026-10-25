@@ -1,10 +1,13 @@
 // ============================================================
 // 共用版面同格式化工具
 // 頁首、頁尾、免責聲明、預約按鈕已經由 scripts/build.py 直接寫入 HTML
-// （改導覽列：改 build.py 入面嘅 NAV）。呢度只負責手機選單開關。
+// （改導覽列：改 build.py 入面嘅 NAV）。呢度只負責手機選單開關同理財體檢進度。
 // ============================================================
+import { t } from './i18n.js';
+import { paintJourney } from './journey.js';
 
 export function mountLayout() {
+  paintJourney();
   const btn = document.querySelector('.menu-btn');
   const nav = document.getElementById('site-nav');
   if (!btn || !nav) return;
@@ -24,10 +27,12 @@ export const pct = (x, d = 0) => (isFinite(x) ? (x * 100).toFixed(d) + '%' : '�
 
 /** 「X 年 Y 個月」 */
 export function ym(months) {
-  if (!isFinite(months)) return '達唔到';
-  if (months === 0) return '已經達標 🎉';
+  if (!isFinite(months)) return t('達唔到', 'Not reachable');
+  if (months === 0) return t('已經達標', 'Already there');
   const y = Math.floor(months / 12), m = months % 12;
-  return (y ? `${y} 年` : '') + (y && m ? ' ' : '') + (m ? `${m} 個月` : '');
+  return t(
+    (y ? `${y} 年` : '') + (y && m ? ' ' : '') + (m ? `${m} 個月` : ''),
+    [y ? `${y} year${y > 1 ? 's' : ''}` : '', m ? `${m} month${m > 1 ? 's' : ''}` : ''].filter(Boolean).join(' '));
 }
 
 /** 讀取輸入框數字（容許逗號） */
@@ -47,7 +52,7 @@ export function moneyInput(el) {
 
 export async function loadJSON(path) {
   const res = await fetch(path, { cache: 'no-cache' });
-  if (!res.ok) throw new Error(`讀取 ${path} 失敗`);
+  if (!res.ok) throw new Error(t(`讀取 ${path} 失敗`, `Could not load ${path}`));
   return res.json();
 }
 
@@ -67,8 +72,8 @@ export function sourceLine(item) {
     ? `<a href="${item.sourceUrl}" target="_blank" rel="noopener">${item.source}</a>`
     : (item.source || '');
   const stale = isStale(item.reviewBy)
-    ? ' <span class="badge stale">資料或已過時，請以官方最新公布為準</span>' : '';
-  return `<div class="source">來源：${src}${item.asOf ? `｜資料截至：${item.asOf}` : ''}${stale}</div>`;
+    ? ` <span class="badge stale">${t('資料或已過時，請以官方最新公布為準', 'May be out of date; the latest official figures prevail')}</span>` : '';
+  return `<div class="source">${t('來源：', 'Source: ')}${src}${item.asOf ? `${t('｜資料截至：', ' | Data as of: ')}${item.asOf}` : ''}${stale}</div>`;
 }
 
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));

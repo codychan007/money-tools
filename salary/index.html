@@ -5,17 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>月薪分配計算器：扣強積金後實際到手幾多？｜香港地一站式理財資訊通</title>
   <meta name="description" content="輸入月薪即計強積金供款同實際到手，再按 50/30/20 分配必要開支、生活享受同儲蓄。附強積金上下限解釋、計算例子同常見問題。">
-  <meta name="theme-color" content="#0F5C3F">
+  <meta name="theme-color" content="#F3ECDD">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 <main>
   <div class="wrap stack">
     <section class="hero">
-      <div class="kicker">💰 月薪分配計算器</div>
+      <div class="kicker"><span data-seal="薪"></span>理財體檢第 2 步・月薪分配計算器</div>
       <h1>月薪 $18,000，扣埋強積金，其實每月仲可以儲幾多？</h1>
       <p>輸入月薪，自動計強積金同實際到手，再幫你分好「必要」、「享受」、「儲蓄」三份。</p>
     </section>
+
+    <div data-journey="salary"></div>
 
     <section class="card">
       <label class="field"><span>每月薪金（未扣強積金）</span>
@@ -42,16 +44,18 @@
         <button class="chip" data-p="70,20,10" aria-pressed="false">70/20/10</button>
         <button class="chip" data-p="50,20,30" aria-pressed="false">50/20/30 進取儲錢</button>
       </div>
-      <label class="field"><span>🏠 必要開支 <b id="needs-pct" class="num"></b>%</span>
+      <label class="field"><span>必要開支 <b id="needs-pct" class="num"></b>%</span>
         <input type="range" id="needs" min="0" max="100" step="5" value="50"></label>
-      <label class="field"><span>🎉 生活享受 <b id="wants-pct" class="num"></b>%</span>
+      <label class="field"><span>生活享受 <b id="wants-pct" class="num"></b>%</span>
         <input type="range" id="wants" min="0" max="100" step="5" value="30"></label>
-      <p style="margin:0">💎 儲蓄投資：<b id="save-pct" class="num"></b>%（自動計：100% 減上面兩項）</p>
+      <p style="margin:0">儲蓄投資：<b id="save-pct" class="num"></b>%（自動計：100% 減上面兩項）</p>
 
       <div class="chart-box" style="height:220px;margin-top:12px"><canvas id="donut" aria-label="月薪分配圓環圖"></canvas></div>
       <div class="table-scroll"><table class="data" id="alloc"></table></div>
       <div class="callout" style="margin-top:12px;font-size:14px" id="alloc-tip"></div>
     </section>
+
+    <div id="next-step"></div>
 
     <section class="callout green" style="font-size:14px">
       <b>記得預留交稅錢：</b>薪俸稅係每年一次過交，唔喺月薪度扣。打工仔好易一年後先發現要交一大筆，建議喺「必要開支」入面預留每月一份。
@@ -70,9 +74,9 @@
         <tr><th>項目</th><th>每月</th></tr>
         <tr><td>你嘅強積金供款（{{MPF_RATE}}）</td><td>{{EX_EE}}</td></tr>
         <tr><td>實際到手</td><td><b>{{EX_TAKE}}</b></td></tr>
-        <tr><td>🏠 必要開支（50%）</td><td>{{EX_NEEDS}}</td></tr>
-        <tr><td>🎉 生活享受（30%）</td><td>{{EX_WANTS}}</td></tr>
-        <tr class="focus"><td>💎 儲蓄投資（20%）</td><td>{{EX_SAVE}}（一年 {{EX_SAVE_YEAR}}）</td></tr>
+        <tr><td>必要開支（50%）</td><td>{{EX_NEEDS}}</td></tr>
+        <tr><td>生活享受（30%）</td><td>{{EX_WANTS}}</td></tr>
+        <tr class="focus"><td>儲蓄投資（20%）</td><td>{{EX_SAVE}}（一年 {{EX_SAVE_YEAR}}）</td></tr>
       </table></div>
       <div class="source">強積金規則來源：<a href="https://www.mpfa.org.hk/mpf-system/mandatory-contributions/employees" target="_blank" rel="noopener">積金局：僱員強制性供款</a></div>
     </section>

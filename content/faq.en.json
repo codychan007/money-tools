@@ -1,0 +1,22 @@
+{
+  "_說明": "英文版常見問題，同 faq.json 一一對應。改中文版時記得同步改呢度。{{MPF_MIN}} 等會自動換成最新法定數字。",
+  "salary": [
+    { "q": "If I earn under ${{MPF_MIN}} a month, do I need to contribute to MPF?", "a": "No. If a monthly-paid employee's relevant income is under ${{MPF_MIN}}, the employee doesn't contribute, but the employer must still contribute {{MPF_RATE}} of relevant income." },
+    { "q": "How does MPF work if I earn over ${{MPF_MAX}} a month?", "a": "Mandatory contributions are calculated on ${{MPF_MAX}}, so the employee and employer each contribute at most ${{MPF_CAP}} a month. Income above that needs no mandatory contribution." },
+    { "q": "When can I withdraw the MPF my employer pays?", "a": "Both employer and employee mandatory contributions go into your MPF account and can generally be withdrawn at age 65, except in statutory cases such as early retirement at 60, permanent departure from Hong Kong, total incapacity or terminal illness. MPFA announcements prevail." },
+    { "q": "Are voluntary MPF contributions tax-deductible?", "a": "Only if paid into a Tax Deductible Voluntary Contributions (TVC) account. TVC and qualifying deferred annuity premiums share a combined deduction cap of $60,000 a year (MPFA, 2026-27 year of assessment). Ordinary voluntary contributions are not deductible, and TVC can generally only be withdrawn at 65." },
+    { "q": "Do I have to follow 50/30/20?", "a": "No. It is only a starting point: 50% needs, 30% wants, 20% savings. With high rents in Hong Kong, many people's needs take more than half, so try 60/20/20 or 70/20/10. What matters most is saving a fixed amount every month." }
+  ],
+  "goal": [
+    { "q": "What rate of return should I use?", "a": "The default 2%, 4%, 6% and 8% are only for comparing scenarios. They don't mean any investment will earn that, and they are not guaranteed. Planning with a lower rate is more prudent." },
+    { "q": "Does the calculation include inflation and fees?", "a": "No. It assumes deposits at the end of each month with monthly compounding, and does not include inflation, tax or any fees, so actual results may differ." },
+    { "q": "Why does starting 5 years later make such a big difference?", "a": "Because compounding needs time. With $30,000 saved, $5,000 a month and an assumed 4% yearly return, you reach $500,000 in about 6 years 9 months. Start 5 years later (with your current savings not invested in those 5 years) and on the same date you would have about $361,365 less." },
+    { "q": "Is the information I enter stored?", "a": "It is never uploaded. All calculations run in your browser. So the check-up can carry on from the last step, some results are saved on your own device only, and you can erase them any time on the summary page." }
+  ],
+  "health": [
+    { "q": "How is the money health score calculated?", "a": "Each of the five areas scores 0 to 100, and the overall score is their average. The rules follow common rules of thumb (for example a 20% savings rate and a 6-month emergency fund). They are not an official or industry standard." },
+    { "q": "How big should my emergency fund be?", "a": "A common guideline is 3 to 6 months of essential spending (including monthly repayments), kept somewhere you can reach at any time. The tool gives full marks at 6 months." },
+    { "q": "Does a low score mean I should buy insurance or invest right away?", "a": "No. The score only shows where you can improve, and the suggestions are general. Many improvements are about habits, such as building an emergency fund first, clearing card debt or tracking your spending." },
+    { "q": "Are my answers stored?", "a": "They are never uploaded. All calculations run in your browser. So the check-up can carry on from the last step, your score and some answers are saved on your own device only, and you can erase them any time on the summary page." }
+  ]
+}

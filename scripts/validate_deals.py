@@ -13,6 +13,8 @@ PATH = Path(__file__).resolve().parent.parent / "data" / "deals.json"
 CATS = {"dining", "online", "transport", "travel", "supermarket"}
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 REQUIRED = ["title", "type", "categories", "rate", "highlight", "conditions", "expiry", "url", "verifiedOn"]
+REQUIRED_EN = ["title_en", "type_en", "highlight_en", "conditions_en"]   # 英文版網站用
+CJK = re.compile(r"[\u3400-\u9fff]")
 
 
 def main():
@@ -26,6 +28,8 @@ def main():
     for k in ["updatedOn", "reviewBy"]:
         if not DATE.match(str(d.get(k, ""))):
             errors.append(f"{k} 要係 YYYY-MM-DD")
+    if set((d.get("categories_en") or {}).keys()) != CATS:
+        errors.append(f"categories_en 要有晒 {sorted(CATS)} 嘅英文名")
     today = dt.date.today().isoformat()
     live = 0
     for n, it in enumerate(d.get("items", []), 1):
@@ -33,6 +37,15 @@ def main():
         for k in REQUIRED:
             if k not in it:
                 errors.append(f"{name}：缺少 {k}")
+        for k in REQUIRED_EN:
+            if not it.get(k):
+                errors.append(f"{name}：缺少英文 {k}")
+            elif CJK.search(str(it[k])):
+                errors.append(f"{name}：{k} 入面有中文字，要寫英文")
+        if it.get("conditions_en") and len(it["conditions_en"]) != len(it.get("conditions", [])):
+            errors.append(f"{name}：conditions_en 要同 conditions 一樣多項")
+        if CJK.search(str(it.get("rate", ""))) and not it.get("rate_en"):
+            errors.append(f"{name}：rate 有中文字，要加 rate_en")
         if not set(it.get("categories", [])) <= CATS or not it.get("categories"):
             errors.append(f"{name}：categories 只可用 {sorted(CATS)}")
         if it.get("expiry") is not None and not DATE.match(str(it["expiry"])):

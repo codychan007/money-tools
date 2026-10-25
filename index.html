@@ -4,64 +4,77 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>香港地一站式理財資訊通 By Cody Chan｜香港打工仔理財計算工具</title>
-  <meta name="description" content="香港打工仔嘅理財工具箱：月薪扣強積金後實際到手幾多、儲 50 萬要幾耐、理財健康檢查，仲有醫療費用數據、雙週市場速遞同信用卡回贈整理。">
-  <meta name="theme-color" content="#0F5C3F">
+  <meta name="description" content="香港打工仔嘅理財工具箱：3 步理財體檢，睇清備用金夠唔夠、月薪扣強積金後每月應該儲幾多、儲 50 萬要幾耐，仲有醫療費用數據、雙週市場速遞同信用卡回贈整理。">
+  <meta name="theme-color" content="#F3ECDD">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 <main>
   <div class="wrap stack">
-    <section class="hero">
+    <section class="hero landing-hero">
       <div class="kicker">香港地一站式理財資訊通</div>
-      <h1>香港打工仔嘅理財工具箱</h1>
-      <p><b>月薪 $18,000，扣埋強積金同交租，其實每月仲可以儲幾多？</b>唔講大道理，直接計。全部免費，資料只喺你部手機計，唔會上傳。</p>
+      <h1>香港打工仔嘅<br>理財工具箱</h1>
+      <p class="lead">月薪 $18,000，扣埋強積金同交租，其實每月仲可以儲幾多？唔講大道理，直接計。</p>
+      <div class="by"><span data-seal="理"></span>By Cody Chan・香港保險理財顧問</div>
+      <div class="hero-actions">
+        <a class="btn shu lg" id="start-btn" href="/health/">開始 3 步理財體檢 →</a>
+        <a class="btn secondary lg" href="/book/">預約 1 對 1 理財傾談</a>
+      </div>
+      <p class="muted" id="start-note" style="font-size:14px;margin:12px 0 0">大約 5 分鐘・資料只喺你部機計，唔會上傳</p>
     </section>
 
-    <div class="grid cols-3">
-      <a class="card tool-card" href="/salary/">
-        <div class="emoji">💰</div><h3>月薪分配計算器</h3>
-        <p>扣完強積金實際到手幾多？按 50/30/20 分好佢。</p><span class="go">即刻計 →</span>
-      </a>
-      <a class="card tool-card" href="/goal/">
-        <div class="emoji">🎯</div><h3>理財目標計算機</h3>
-        <p>想儲 50 萬要幾耐？遲 5 年先開始會差幾遠？</p><span class="go">即刻計 →</span>
-      </a>
-      <a class="card tool-card" href="/health/">
-        <div class="emoji">🩺</div><h3>理財健康檢查</h3>
-        <p>10 條問題，睇清你個荷包有幾健康。</p><span class="go">開始檢查 →</span>
-      </a>
-    </div>
-
-    <section class="card">
-      <h2>🗞️ 最新雙週市場速遞</h2>
-      <div id="latest-update" class="muted">第一篇市場解讀準備緊，遲啲再嚟睇 👀</div>
+    <section>
+      <h2 class="section-title"><span class="brush">3 條問題，你答得出幾多條？</span></h2>
+      <p class="section-sub">好多人以為自己心中有數，計完先嚇一跳。逐條撳入去，3 步就有答案。</p>
+      <div class="teasers">
+        <a class="teaser" href="/health/"><span data-seal="健"></span>
+          <div><b>你嘅備用金，夠你冇人工撐幾多個月？</b><span>第 1 步・理財健康檢查：10 條問題，2 分鐘</span></div><span class="arrow">→</span></a>
+        <a class="teaser" href="/salary/"><span data-seal="薪"></span>
+          <div><b>扣埋強積金，你每月「應該」儲幾多？</b><span>第 2 步・月薪分配：輸入月薪即計</span></div><span class="arrow">→</span></a>
+        <a class="teaser" href="/goal/"><span data-seal="標"></span>
+          <div><b>遲 5 年先開始儲錢，會差幾遠？</b><span>第 3 步・目標計算：個數可能會嚇你一跳</span></div><span class="arrow">→</span></a>
+      </div>
     </section>
 
-    <div class="grid cols-2">
-      <a class="card tool-card" href="/insurance/">
-        <div class="emoji">🛡️</div><h3>保障資訊</h3>
-        <p>醫療通脹、公立醫院新收費、癌症數字——用真實數字了解風險。</p><span class="go">睇吓 →</span>
-      </a>
-      <a class="card tool-card" href="/deals/">
-        <div class="emoji">🎁</div><h3>優惠回贈</h3>
-        <p>按餐飲、網購、交通、旅遊、超市揀，過期自動收埋。</p><span class="go">睇吓 →</span>
-      </a>
-      <a class="card tool-card" href="/market/">
-        <div class="emoji">📊</div><h3>市場快訊</h3>
-        <p>恒指、美股、HIBOR、匯率，每日自動更新。</p><span class="go">睇吓 →</span>
-      </a>
-      <a class="card tool-card" href="/about/">
-        <div class="emoji">👋</div><h3>關於我</h3>
-        <p>邊個整呢個網站？資料點樣揀、點樣核實？</p><span class="go">睇吓 →</span>
-      </a>
-    </div>
+    <div data-journey=""></div>
+
+    <section class="card about-strip" id="about">
+      <div>
+        <div class="kicker" style="color:var(--shu);font-weight:700;font-size:14px;letter-spacing:.06em">關於我</div>
+        <h2>我係 Cody Chan，香港保險理財顧問。</h2>
+        <p>我留意到好多啱啱出嚟做嘢嘅打工仔，已經睇厭講大道理嘅理財片，但對自己每月可以儲幾多、有冇足夠保障，其實仲未有清晰概念。</p>
+        <p>所以我整咗呢個網站：用簡單嘅計算工具同有出處嘅真實數字，幫你自己計清楚、睇清楚。計完想再傾，先搵我。</p>
+        <p class="mt0"><a href="/about/">我點揀資料、點樣核實 →</a>　IG：<a href="https://www.instagram.com/codychan813/" target="_blank" rel="noopener">@codychan813</a></p>
+      </div>
+      <div>
+        <h3>呢度嘅原則</h3>
+        <ul class="principles">
+          <li><b>每個數字都有出處同日期：</b>優先引用政府、金管局、積金局、醫管局等官方資料。</li>
+          <li><b>定期更新：</b>市場每日更新，信用卡優惠每月 1 號同 15 號重新核實，醫療政策每月更新。</li>
+          <li><b>唔推介產品：</b>只提供一般資訊同計算工具，唔收信用卡推介費。</li>
+          <li><b>你嘅資料留喺你部機：</b>計算喺瀏覽器內進行，唔會上傳。</li>
+        </ul>
+        <p class="muted" style="font-size:13px;margin:12px 0 0">利益申報：我係保險理財顧問。如果你預約同我傾談，我哋可能會按你嘅情況討論相關服務，但你冇任何購買責任。</p>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title"><span class="brush">計完之後，仲可以睇</span></h2>
+      <p class="section-sub">用真實數字了解風險、市場同著數，全部附來源。</p>
+      <div class="grid cols-2">
+        <a class="card tool-card" href="/insurance/"><span data-seal="保"></span>
+          <h3>保障資訊</h3><p>醫療通脹、公立醫院新收費、癌症數字，同埋一個計將來醫療費嘅計算機。</p><span class="go">睇吓 →</span></a>
+        <a class="card tool-card" href="/market/"><span data-seal="市"></span>
+          <h3>市場快訊</h3><p>恒指、美股、HIBOR、匯率，每日自動更新。</p><span class="go">睇吓 →</span></a>
+        <a class="card tool-card" href="/deals/"><span data-seal="惠"></span>
+          <h3>優惠回贈</h3><p>按餐飲、網購、交通、旅遊、超市揀，過期自動收埋。</p><span class="go">睇吓 →</span></a>
+        <div id="latest-update" class="card muted">第一篇市場解讀準備緊，遲啲再嚟睇。</div>
+      </div>
+    </section>
 
     <div data-cta></div>
   </div>
 </main>
-<script type="module">
-  import { mountLayout } from '/assets/js/layout.js';
-  mountLayout();
-</script>
+<script type="module" src="/assets/js/home.js"></script>
 </body>
 </html>
