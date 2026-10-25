@@ -6,10 +6,14 @@
     "minRelevantIncome": 7100,
     "maxRelevantIncome": 30000,
     "source": "積金局（MPFA）：僱員強制性供款",
+    "source_en": "MPFA: Mandatory contributions for employees",
     "sourceUrl": "https://www.mpfa.org.hk/mpf-system/mandatory-contributions/employees",
+    "sourceUrl_en": "https://www.mpfa.org.hk/en/mpf-system/mandatory-contributions/employees",
     "asOf": "最高有關入息 $30,000 自 2014-06-01 起生效；最低有關入息 $7,100 自 2014-11-01 起生效",
+    "asOf_en": "Maximum relevant income $30,000 since 2014-06-01; minimum relevant income $7,100 since 2014-11-01",
     "verifiedOn": "2026-10-19",
     "note": "積金局正進行 2022–2026 年度的入息上下限法定檢討。據媒體報道，建議把下限調高至 $10,500、上限調高至 $40,000，但截至 2026-10-19 仍未落實。一旦落實，請更新以上兩個數字。",
+    "note_en": "The MPFA is carrying out its statutory review of the income limits for 2022–2026. Media reports say the proposal is to raise the minimum to $10,500 and the maximum to $40,000, but as of 2026-10-19 this had not been implemented. Once it is, these figures will be updated.",
     "reviewBy": "2027-01-31"
   },
   "vhis": {

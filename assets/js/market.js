@@ -1,6 +1,7 @@
 // 市場快訊：先顯示 data/market.json（每日自動更新），
 // 再喺訪客瀏覽器直接向金管局／Frankfurter 讀取最新利率及匯率（讀到就覆蓋）。
 import { mountLayout, loadJSON, esc, todayHK } from './layout.js';
+import { EN, t } from './i18n.js';
 
 mountLayout();
 const box = document.getElementById('groups');
@@ -8,6 +9,26 @@ const box = document.getElementById('groups');
 const RAW = 'https://raw.githubusercontent.com/codychan007/money-tools/main/data/market.json';
 const d = await loadJSON(RAW).catch(() => loadJSON('/data/market.json'));
 const byId = Object.fromEntries(d.items.map(i => [i.id, i]));
+
+// 英文版名稱（market.json 由程式每日更新，只寫中文，所以英文喺呢度按 id 對照）
+const EN_TEXT = {
+  hsi: ['Stocks', 'Hang Seng Index'], spx: ['Stocks', 'S&P 500'], ndx: ['Stocks', 'Nasdaq Composite'], dji: ['Stocks', 'Dow Jones Industrial Average'],
+  hibor_on: ['Interest rates', 'HIBOR overnight'], hibor_1m: ['Interest rates', 'HIBOR 1-month'], base_rate: ['Interest rates', 'HKMA Base Rate'],
+  td_3m: ['Interest rates', 'HKD 3-month time deposit (major bank average)'], prime: ['Interest rates', 'Prime rate (HSBC)'],
+  usdhkd: ['Exchange rate', 'USD to HKD'],
+};
+const FREQ_EN = { '每個交易日': 'Every trading day', '每個工作日': 'Every business day', '每月公布': 'Published monthly' };
+const SOURCE_EN = { '金管局': 'HKMA', 'Frankfurter（歐洲央行參考匯率）': 'Frankfurter (ECB reference rates)' };
+const NOTE_EN = {
+  td_3m: "This is the HKMA's monthly average of major banks' board rates (deposits under HK$100,000). Many banks offer much higher rates for new funds or online deposits, so check with the bank directly before depositing.",
+};
+if (EN) d.items.forEach(i => {
+  const en = EN_TEXT[i.id];
+  if (en) { i.group = en[0]; i.name = en[1]; }
+  i.freq = FREQ_EN[i.freq] || i.freq;
+  i.source = SOURCE_EN[i.source] || i.source;
+  if (i.note) i.note = NOTE_EN[i.id] || i.note;
+});
 
 function ageDays(updatedAt) {
   if (!updatedAt) return Infinity;
@@ -25,9 +46,9 @@ function render() {
         return `
         <div class="mkt" style="padding:10px 0;border-bottom:1px solid var(--line)">
           <div><b>${esc(i.name)}</b>
-            ${i.live ? '<span class="badge">剛剛讀取</span>' : ''}
-            ${stale ? '<span class="badge stale">可能未更新</span>' : ''}
-            <div class="source" style="margin:2px 0 0">${i.value != null ? `數據日期：${esc(i.updatedAt)}` : '暫時未能讀取，系統會自動再試'}｜${esc(i.freq || '')}｜${src}</div>
+            ${i.live ? `<span class="badge">${t('剛剛讀取', 'Just updated')}</span>` : ''}
+            ${stale ? `<span class="badge stale">${t('可能未更新', 'May be out of date')}</span>` : ''}
+            <div class="source" style="margin:2px 0 0">${i.value != null ? `${t('數據日期：', 'Data date: ')}${esc(i.updatedAt)}` : t('暫時未能讀取，系統會自動再試', 'Not available right now; it will retry automatically')}${t('｜', ' | ')}${esc(i.freq || '')}${t('｜', ' | ')}${src}</div>
             ${i.note ? `<div class="source" style="margin:2px 0 0">${esc(i.note)}</div>` : ''}
           </div>
           <div style="text-align:right;flex-shrink:0"><div class="v num">${i.value != null ? esc(i.value) : '—'}</div>
@@ -35,7 +56,7 @@ function render() {
         </div>`;
       }).join('')}
     </section>`).join('');
-  document.getElementById('last-run').textContent = d.lastRun ? `系統最後檢查時間：${d.lastRun}（香港時間）` : '';
+  document.getElementById('last-run').textContent = d.lastRun ? t(`系統最後檢查時間：${d.lastRun}（香港時間）`, `Last checked: ${d.lastRun} (Hong Kong time)`) : '';
 }
 render();
 

@@ -5,17 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>理財健康檢查：10 條問題睇清你嘅財務狀況｜香港地一站式理財資訊通</title>
   <meta name="description" content="10 條問題、2 分鐘，睇清你喺現金流、緊急備用金、負債、基本保障同增值習慣五方面嘅理財健康分數，附評分準則同改善建議。">
-  <meta name="theme-color" content="#0F5C3F">
+  <meta name="theme-color" content="#F3ECDD">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 <main>
   <div class="wrap stack">
     <section class="hero">
-      <div class="kicker">🩺 理財健康檢查</div>
+      <div class="kicker"><span data-seal="健"></span>理財體檢第 1 步・理財健康檢查</div>
       <h1>2 分鐘，幫你個荷包做個身體檢查</h1>
       <p>10 條簡單問題，唔使好準，大約數就得。答完即刻睇到分數同 3 個最值得先做嘅改善位。</p>
     </section>
+
+    <div data-journey="health"></div>
 
     <section class="card" id="quiz">
       <div class="progress" aria-hidden="true"><i id="prog"></i></div>
@@ -41,12 +43,13 @@
         <div id="bars"></div>
       </div>
       <div class="card tint">
-        <h2>👉 分數最低嘅 3 個範疇，可以點做？</h2>
+        <h2>分數最低嘅 3 個範疇，可以點做？</h2>
         <ol class="tips" id="tips"></ol>
         <p class="muted" style="font-size:13px;margin:8px 0 0">以上係一般性建議，冇考慮你嘅全部個人情況，亦唔涉及任何產品。</p>
       </div>
+      <div id="next-step"></div>
       <div class="card">
-        <h2>📲 分享到 IG Story</h2>
+        <h2>分享到 IG Story</h2>
         <p class="muted" style="font-size:14px">分享圖只會顯示分數，唔會顯示你嘅收入或者存款。</p>
         <button class="btn block" id="share-btn">生成分享圖</button>
         <div class="share-preview" id="share-preview"></div>

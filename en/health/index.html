@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Money health check: 10 questions on your finances | HK Money Compass</title>
+  <meta name="description" content="10 questions, 2 minutes: see your money health score across cash flow, emergency fund, debt, basic protection and money habits, with the scoring rules and practical next steps.">
+  <meta name="theme-color" content="#F3ECDD">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+  <div class="wrap stack">
+    <section class="hero">
+      <div class="kicker"><span data-seal="健"></span>Check-up step 1 · Money health check</div>
+      <h1>Two minutes to give your finances a check-up</h1>
+      <p>10 simple questions. Rough numbers are fine. You'll see your score straight away, plus the three things most worth improving first.</p>
+    </section>
+
+    <div data-journey="health"></div>
+
+    <section class="card" id="quiz">
+      <div class="progress" aria-hidden="true"><i id="prog"></i></div>
+      <p class="muted" id="q-count" style="font-size:13px;margin:8px 0 4px"></p>
+      <h2 id="q-title"></h2>
+      <p class="muted" id="q-hint" style="font-size:14px"></p>
+      <div id="q-body"></div>
+      <div class="q-nav">
+        <button class="btn secondary" id="prev">Back</button>
+        <button class="btn" id="next">Next</button>
+      </div>
+    </section>
+
+    <section id="result" class="stack hidden">
+      <div class="card center">
+        <p class="muted mt0">Your money health score</p>
+        <div class="big-result" id="total"></div>
+        <p id="grade" style="font-weight:700;margin:4px 0 0"></p>
+      </div>
+      <div class="card">
+        <h2>Score by area</h2>
+        <div class="chart-box"><canvas id="radar" aria-label="Radar chart of scores by area"></canvas></div>
+        <div id="bars"></div>
+      </div>
+      <div class="card tint">
+        <h2>Your 3 lowest areas: what can you do?</h2>
+        <ol class="tips" id="tips"></ol>
+        <p class="muted" style="font-size:13px;margin:8px 0 0">This is general guidance. It does not consider your full personal situation and does not involve any product.</p>
+      </div>
+      <div id="next-step"></div>
+      <div class="card">
+        <h2>Share to your IG Story</h2>
+        <p class="muted" style="font-size:14px">The share image shows your score only, never your income or savings.</p>
+        <button class="btn block" id="share-btn">Create share image</button>
+        <div class="share-preview" id="share-preview"></div>
+        <button class="btn secondary block" id="restart" style="margin-top:10px">Start again</button>
+      </div>
+      <div class="callout green" style="font-size:14px">The scoring rules follow common rules of thumb (for example a 6-month emergency fund and a 20% savings rate). They are not an official or industry standard.</div>
+    </section>
+
+    <section class="card article">
+      <h2>How are the five areas scored?</h2>
+      <p>Each area scores 0 to 100, and the overall score is the average of the five. The rules follow common rules of thumb and are not an official or industry standard:</p>
+      <ul>
+        <li><b>Cash flow:</b> full marks for saving 20% or more of your income each month</li>
+        <li><b>Emergency fund:</b> full marks for cash covering 6 months of spending (including repayments)</li>
+        <li><b>Debt:</b> full marks if repayments are 10% of income or less, 0 at 50% or more; carrying a credit card balance loses further points</li>
+        <li><b>Protection:</b> having your own medical cover, and critical illness or life cover reviewed in the last two years</li>
+        <li><b>Money habits:</b> saving or investing regularly beyond MPF, and tracking spending or keeping a budget</li>
+      </ul>
+    </section>
+
+    <!--FAQ-->
+
+    <div data-disclaimer="tool"></div>
+    <div data-cta></div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script type="module" src="/assets/js/health.js"></script>
+</body>
+</html>

@@ -11,6 +11,7 @@ from pathlib import Path
 PATH = Path(__file__).resolve().parent.parent / "data" / "insurance.json"
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MAX_ARCHIVE = 12
+CJK = re.compile(r"[\u3400-\u9fff]")
 
 
 def main():
@@ -82,6 +83,43 @@ def main():
                 errors.append(f"{w}：date 要係 YYYY-MM-DD")
     if len(po.get("archive", [])) > MAX_ARCHIVE:
         errors.append(f"政策 archive 最多 {MAX_ARCHIVE} 項，請刪走最舊嘅")
+
+    # 英文版：每段文字都要有 *_en，而且唔可以有中文字
+    def en(obj, keys, where):
+        for k in keys:
+            if obj.get(k) in (None, "", []):
+                continue
+            v = obj.get(f"{k}_en")
+            if v in (None, "", []):
+                errors.append(f"{where}：缺少英文 {k}_en")
+            elif CJK.search(json.dumps(v, ensure_ascii=False)):
+                errors.append(f"{where}：{k}_en 入面有中文字")
+            elif isinstance(obj[k], list) and len(v) != len(obj[k]):
+                errors.append(f"{where}：{k}_en 要同 {k} 一樣多項")
+
+    en(mi, ["title", "note"], "醫療通脹")
+    for n, it in enumerate(mi.get("items", []), 1):
+        en(it, ["label", "source", "asOf"], f"醫療通脹第 {n} 項")
+    en(pf, ["title", "intro", "rows", "source", "asOf"], "公立醫院收費")
+    for n, sx in enumerate(pf.get("extraSources", []), 1):
+        en(sx, ["name"], f"公立醫院收費另見第 {n} 項")
+    pc = d.get("privateCosts", {})
+    en(pc, ["title", "intro"], "私家醫院")
+    for n, it in enumerate(pc.get("highlights", []), 1):
+        en(it, ["label", "sub", "source", "asOf"], f"私家醫院第 {n} 項")
+    for n, it in enumerate(pc.get("table", []), 1):
+        en(it, ["procedure", "hospital"], f"私家醫院表格第 {n} 行")
+    en(ca, ["title", "source", "asOf"], "癌症")
+    for n, it in enumerate(ca.get("items", []), 1):
+        en(it, ["label", "value", "sub"], f"癌症第 {n} 項")
+    en(po, ["title"], "政策")
+    for group in ["items", "archive"]:
+        for n, it in enumerate(po.get(group, []), 1):
+            en(it, ["title", "points", "source"], f"政策 {group} 第 {n} 項")
+    b = d.get("basics", {})
+    en(b, ["title", "tips", "source"], "基本保障")
+    for n, it in enumerate(b.get("items", []), 1):
+        en(it, ["name", "solves", "note"], f"基本保障第 {n} 項")
 
     visible = json.dumps({k: v for k, v in d.items() if not k.startswith("_")}, ensure_ascii=False)
     if "【" in visible or "示例" in visible or '"sample"' in visible:

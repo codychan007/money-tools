@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Goal planner: how long to save $500,000? How much a month? | HK Money Compass</title>
+  <meta name="description" content="How long does it take to save $500,000, and how much do you need each month? Compare returns from 2% to 8% side by side, and see what starting 5 years later costs. With the method, a worked example and FAQs.">
+  <meta name="theme-color" content="#F3ECDD">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+  <div class="wrap stack">
+    <section class="hero">
+      <div class="kicker"><span data-seal="標"></span>Check-up step 3 · Goal planner</div>
+      <h1>How long until you reach your goal?</h1>
+      <p>A travel fund, a down payment, your first million. Enter the numbers to see how long it takes at different returns, and how far behind a 5-year delay leaves you.</p>
+    </section>
+
+    <div data-journey="goal"></div>
+    <div id="prefill-note" class="prefill-note hidden"></div>
+
+    <div class="seg" role="tablist">
+      <button role="tab" aria-selected="true" data-mode="time">How long will it take?</button>
+      <button role="tab" aria-selected="false" data-mode="amount">How much a month?</button>
+    </div>
+
+    <section class="card">
+      <label class="field"><span>Target amount</span>
+        <div class="input-money"><input type="text" id="target" value="500,000"></div></label>
+      <label class="field"><span>Savings you already have</span>
+        <div class="input-money"><input type="text" id="savings" value="30,000"></div></label>
+      <label class="field" id="f-monthly"><span>Amount you can put in each month</span>
+        <div class="input-money"><input type="text" id="monthly" value="5,000"></div></label>
+      <label class="field hidden" id="f-years"><span>Reach it within how many years?</span>
+        <input type="number" id="years" value="8" min="1" max="50" inputmode="numeric"></label>
+      <div class="field">
+        <span>Assumed yearly returns (you can change these)</span>
+        <div class="rates">
+          <label><input type="number" class="rate" value="2" step="0.5" inputmode="decimal" aria-label="Return 1"></label>
+          <label><input type="number" class="rate" value="4" step="0.5" inputmode="decimal" aria-label="Return 2"></label>
+          <label><input type="number" class="rate" value="6" step="0.5" inputmode="decimal" aria-label="Return 3"></label>
+          <label><input type="number" class="rate" value="8" step="0.5" inputmode="decimal" aria-label="Return 4"></label>
+        </div>
+        <small class="muted">Returns are assumptions, not guarantees. Actual returns can be higher, lower, or even negative.</small>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 id="res-title">Results</h2>
+      <div class="table-scroll"><table class="data" id="res-table"></table></div>
+      <p class="muted" style="font-size:13px;margin-top:8px">Method: yearly returns converted to monthly compounding, with deposits at the end of each month. Inflation, tax and fees are not included.</p>
+    </section>
+
+    <section class="card tint">
+      <h2>What if you start 5 years later?</h2>
+      <div class="field"><span style="font-size:14px">Compare using which return:</span><div class="chips" id="focus-chips"></div></div>
+      <div id="delay-text" class="result-line"></div>
+    </section>
+
+    <section class="card">
+      <h2>Growth over time</h2>
+      <div class="chart-box"><canvas id="chart" aria-label="Growth at different returns"></canvas></div>
+    </section>
+
+    <div id="next-step"></div>
+
+    <section class="card">
+      <h2>Share to your IG Story</h2>
+      <label class="toggle"><input type="checkbox" id="show-amounts"> Show my target and current savings in the image</label>
+      <button class="btn block" id="share-btn">Create share image</button>
+      <div class="share-preview" id="share-preview"></div>
+    </section>
+
+    <section class="card article">
+      <h2>How is it calculated?</h2>
+      <p>The tool converts the yearly return into an equivalent monthly rate (monthly return = (1 + yearly return)<sup>1/12</sup> − 1), assumes a fixed amount is added at the end of each month, and counts month by month until the total reaches your target. "How much a month?" works the other way round: the monthly amount needed to reach the target within your timeframe.</p>
+      <h3>Example: $30,000 saved, $5,000 a month, target $500,000</h3>
+      <div class="table-scroll"><table class="data">
+        <tr><th>Assumed return</th><th>Time</th><th>You put in</th></tr>
+        {{GOAL_TABLE}}
+      </table></div>
+      <p class="muted" style="font-size:13px;margin:8px 0 0">Returns are assumptions, not guarantees. Inflation, tax and fees are not included.</p>
+    </section>
+
+    <!--FAQ-->
+
+    <div data-disclaimer="tool"></div>
+    <div data-cta></div>
+  </div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script type="module" src="/assets/js/goal.js"></script>
+</body>
+</html>

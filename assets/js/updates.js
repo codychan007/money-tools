@@ -2,12 +2,13 @@
 // 呢度只負責：① 喺文章頁將 PDF 逐頁畫出嚟 ② 舊網址 /updates/?id=xxx 轉去 /updates/xxx/
 // ③ 列表頁加 ?preview=1 時顯示草稿
 import { mountLayout, loadJSON, esc } from './layout.js';
+import { t, P, EN } from './i18n.js';
 
 mountLayout();
 const params = new URLSearchParams(location.search);
 
 const legacyId = params.get('id');
-if (legacyId && /^[\w-]+$/.test(legacyId)) location.replace(`/updates/${legacyId}/`);
+if (legacyId && /^[\w-]+$/.test(legacyId)) location.replace(`${P}/updates/${legacyId}/`);
 
 const pdfBox = document.getElementById('pdf-pages');
 if (pdfBox?.dataset.pdf) renderPdf(pdfBox.dataset.pdf, pdfBox);
@@ -16,10 +17,10 @@ if (params.get('preview') === '1' && document.getElementById('posts')) {
   const idx = await loadJSON('/data/updates.json');
   const drafts = idx.posts.filter(p => p.status !== 'published');
   document.getElementById('posts').insertAdjacentHTML('afterbegin',
-    '<div class="sample-banner">預覽模式：包括未發布嘅草稿。</div>' + drafts.map(p => `
-    <a class="card tool-card" href="/updates/${encodeURIComponent(p.id)}/">
-      <span class="badge">${esc(p.date)}</span> <span class="badge draft">草稿</span>
-      <h3>${esc(p.title)}</h3><p>${esc(p.summary)}</p><span class="go">閱讀全文 →</span>
+    `<div class="sample-banner">${t('預覽模式：包括未發布嘅草稿。', 'Preview mode: includes unpublished drafts.')}</div>` + drafts.map(p => `
+    <a class="card tool-card" href="${P}/updates/${encodeURIComponent(p.id)}/">
+      <span class="badge">${esc(p.date)}</span> <span class="badge draft">${t('草稿', 'Draft')}</span>
+      <h3>${esc((EN && p.title_en) || p.title)}</h3><p>${esc((EN && p.summary_en) || p.summary)}</p><span class="go">${t('閱讀全文 →', 'Read more →')}</span>
     </a>`).join(''));
 }
 
@@ -45,7 +46,7 @@ async function renderPdf(url, box) {
       h.className = 'pdf-page';
       h.style.aspectRatio = `${vp1.width} / ${vp1.height}`;
       h.dataset.n = n;
-      h.setAttribute('aria-label', `第 ${n} 頁，共 ${pdf.numPages} 頁`);
+      h.setAttribute('aria-label', t(`第 ${n} 頁，共 ${pdf.numPages} 頁`, `Page ${n} of ${pdf.numPages}`));
       box.appendChild(h); holders.push(h);
     }
     const draw = async h => {
@@ -62,6 +63,6 @@ async function renderPdf(url, box) {
     const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { draw(en.target); io.unobserve(en.target); } }), { rootMargin: '600px 0px' });
     holders.forEach(h => io.observe(h));
   } catch {
-    box.innerHTML = '<div class="card center">未能喺網頁內顯示 PDF，請按上面「全螢幕開啟 PDF」睇。</div>';
+    box.innerHTML = `<div class="card center">${t('未能喺網頁內顯示 PDF，請按上面「全螢幕開啟 PDF」睇。', "The PDF can't be shown here. Please use “Open the PDF” above.")}</div>`;
   }
 }
