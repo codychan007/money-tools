@@ -239,6 +239,24 @@
     "title_en": "Government healthcare policy: what's new?",
     "items": [
       {
+        "date": "2026-10-23",
+        "title": "社區藥房計劃病人配對啟動；基層醫療共同護理網絡診症共付費調整",
+        "title_en": "Community Pharmacy Programme patient pairing starts; Primary Healthcare Co-care Network co-payment adjustments",
+        "points": [
+          "社區藥房計劃（社區）10 月底起試行病人配對，先在東區、油尖旺、沙田、元朗四區，每區 5 間、共 20 間指定社區藥房；預計明年第四季推展至全部 18 區",
+          "共同護理網絡治療階段診症共付費由 11 月 1 日起按年調整：現有 1 239 個服務點中，1 022 個（82.5%）維持不變，28 個減價，189 個加價，整體加幅 3.7%",
+          "篩查階段共付費上限：心血管疾病風險因素篩查不多於 $120，慢性乙型肝炎篩查不多於 $180"
+        ],
+        "points_en": [
+          "The Community Pharmacy Programme (Community) starts a pilot of patient pairing at the end of October in four districts (Eastern, Yau Tsim Mong, Sha Tin and Yuen Long), with 5 designated community pharmacies in each, 20 in total; it is to extend to all 18 districts in the fourth quarter of next year",
+          "Annual adjustments to Primary Healthcare Co-care Network treatment-phase consultation co-payments take effect on November 1: of 1,239 service points, 1,022 (82.5%) keep their fees unchanged, 28 reduce them and 189 increase them, with an overall increase of 3.7%",
+          "Screening-phase co-payment caps: not more than $120 for cardiovascular disease risk factor screening and not more than $180 for chronic hepatitis B screening"
+        ],
+        "source": "醫務衞生局新聞公報（2026 年 10 月 23 日）",
+        "source_en": "Health Bureau press release (October 23, 2026)",
+        "sourceUrl": "https://www.info.gov.hk/gia/general/202610/23/P2026102300316.htm"
+      },
+      {
         "date": "2026-09-16",
         "title": "2026 施政報告：公營醫療",
         "title_en": "2026 Policy Address: public healthcare",
@@ -273,8 +291,8 @@
         "sourceUrl": "https://www.info.gov.hk/gia/general/202609/16/P2026091600271.htm"
       }
     ],
-    "asOf": "2026-10-19",
-    "reviewBy": "2026-11-28",
+    "asOf": "2026-11-01",
+    "reviewBy": "2026-12-11",
     "archive": [
       {
         "date": "2026-01-01",
