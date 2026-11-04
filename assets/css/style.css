@@ -112,7 +112,7 @@ main { padding: 24px 0 48px; }
 @media (min-width: 1100px) {
   .menu-btn { display: none; }
   .site-header .bar { gap: 16px; flex-wrap: nowrap; }
-  .nav { display: flex !important; padding: 0; gap: 2px; flex-basis: auto; order: 2; }
+  .nav { display: flex !important; align-items: center; padding: 0; gap: 4px; flex-basis: auto; order: 2; margin-left: auto; }   /* 靠右，貼住語言掣 */
   .head-tools { order: 3; margin-left: 0; }
   .nav a { border: 0; padding: 8px 8px; font-size: 15px; border-radius: 4px; white-space: nowrap; }
   .nav a:hover { background: var(--paper-2); }
