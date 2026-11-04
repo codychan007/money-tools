@@ -2,6 +2,33 @@
   "_說明": "市場解讀清單。每兩星期：① 把 PDF 放入 content/updates/（檔名用英文或數字，例如 2026-11-02.pdf）；② 喺下面 posts 最頂加一項。status：published（公開）或 draft（草稿）。highlights 係 3–5 句重點，會直接寫入網頁俾搜尋引擎同讀者睇（建議填寫，唔填都得）。部署時會自動生成 /updates/<id>/ 頁面。 英文版：每期加 title_en、summary_en、highlights_en（同 highlights 一樣多句）、period_en；PDF 用中文都得。",
   "posts": [
     {
+      "id": "2026-11-01",
+      "date": "2026-11-01",
+      "dataAsOf": "2026-10-30",
+      "period": "2026-10-26 至 2026-10-30",
+      "period_en": "26–30 October 2026",
+      "title": "雙週市場速遞：科技巨頭業績分化、晶片股一日崩跌、聯儲局按兵不動",
+      "title_en": "Fortnightly market notes: Big Tech results split, chip stocks plunge in a day, the Fed holds",
+      "summary": "微軟 Azure 增長 48%，Alphabet 卻單日跌 12.6%；Intel 指引疲弱令晶片股週五大跌，納指全週 -2.0%；聯儲局維持利率但有兩票主張加息，資金轉向防守板塊。",
+      "summary_en": "Microsoft's Azure grew 48% while Alphabet fell 12.6% in a day; Intel's weak outlook sank chip stocks on Friday and the Nasdaq lost 2.0% for the week; the Fed held rates with two votes for a hike, and money moved into defensive sectors.",
+      "file": "/content/updates/2026-11-01.pdf",
+      "status": "published",
+      "highlights": [
+        "大科技業績有人歡喜有人愁：微軟 Azure 增長 48%，股價升約 4%；Alphabet 自由現金流轉負，單日跌 12.6%",
+        "Intel 第四季指引疲弱，單日暴跌約 29%，費城半導體指數當日 -7.2%，拖累納指全週 -2.0%",
+        "聯儲局維持利率 3.75%–4.00%，但有兩票主張加息；市場估 12 月加息機會約 75–85%",
+        "資金轉向醫療、原材料、公用事業等防守板塊；恒指全週 +0.9%，恒生科技指數 -3.0%",
+        "荷莫茲海峽有油輪遭水雷襲擊，布蘭特原油維持每桶約 113 美元；黃金、比特幣下跌"
+      ],
+      "highlights_en": [
+        "Big Tech results were mixed: Microsoft's Azure grew 48% and its shares rose about 4%; Alphabet's free cash flow turned negative and it fell 12.6% in a day",
+        "Intel plunged about 29% in a day on a weak fourth-quarter outlook; the Philadelphia Semiconductor Index fell 7.2% that day, pulling the Nasdaq down 2.0% for the week",
+        "The Fed held rates at 3.75%–4.00%, but two members voted for a hike; markets put the chance of a December hike at about 75–85%",
+        "Money rotated into defensive sectors such as healthcare, materials and utilities; the Hang Seng Index rose 0.9% for the week while the Hang Seng Tech Index fell 3.0%",
+        "A tanker was hit by a mine in the Strait of Hormuz and Brent crude held at about US$113 a barrel; gold and bitcoin fell"
+      ]
+    },
+    {
       "id": "2026-10-19",
       "date": "2026-10-19",
       "dataAsOf": "2026-10-18",
