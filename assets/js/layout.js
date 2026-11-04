@@ -8,6 +8,7 @@ import { paintJourney } from './journey.js';
 
 export function mountLayout() {
   paintJourney();
+  mountNavGroup();
   const btn = document.querySelector('.menu-btn');
   const nav = document.getElementById('site-nav');
   if (!btn || !nav) return;
@@ -16,6 +17,17 @@ export function mountLayout() {
     btn.setAttribute('aria-expanded', String(open));
     btn.textContent = open ? '✕' : '☰';
   });
+}
+
+/** 「實用資訊欄」：撳開彈出 4 個選項；撳外面或者按 Esc 收埋 */
+function mountNavGroup() {
+  const group = document.querySelector('.nav-group');
+  const btn = group?.querySelector('.nav-group-btn');
+  if (!btn) return;
+  const set = open => { group.classList.toggle('open', open); btn.setAttribute('aria-expanded', String(open)); };
+  btn.addEventListener('click', e => { e.stopPropagation(); set(!group.classList.contains('open')); });
+  document.addEventListener('click', e => { if (!group.contains(e.target)) set(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && group.classList.contains('open')) { set(false); btn.focus(); } });
 }
 
 // ------------------------------------------------------------

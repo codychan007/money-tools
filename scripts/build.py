@@ -45,11 +45,13 @@ BRAND = SITE["zh"]["brand"]
 
 # 導覽列（路徑唔包括 /en 前綴）。次序同「理財體檢」3 步一樣。
 # 3 個計算工具唔放喺目錄欄（首頁同「理財體檢」已經帶得到），避免太多掣分心
-NAV = [
-    ("/health/", "理財體檢", "Check-up"),
-    ("/insurance/", "保障資訊", "Protection"), ("/updates/", "市場解讀", "Market notes"), ("/market/", "市場快訊", "Markets"),
-    ("/deals/", "優惠回贈", "Rebates"), ("/book/", "預約傾談", "Book a chat"),
-]
+# 目錄欄：理財體檢｜實用資訊欄（撳開先見 4 個資訊頁）｜預約傾談
+NAV_GROUP = ("實用資訊欄", "Useful info", [
+    ("/insurance/", "保障資訊", "Protection facts", "醫療費、醫療通脹、政策", "Medical costs, inflation, policy"),
+    ("/updates/", "市場解讀", "Market notes", "每兩星期講清楚市場", "Markets explained every two weeks"),
+    ("/market/", "市場快訊", "Markets today", "恒指、美股、利率、匯率", "Stocks, rates and FX, daily"),
+    ("/deals/", "優惠回贈", "Card rebates", "信用卡高回贈整理", "Higher-rebate card offers"),
+])
 CHECKUP_PAGES = ("/health/", "/salary/", "/goal/", "/checkup/")   # 呢幾頁都標示「理財體檢」
 FOOTER_LINKS = [
     ("/health/", "健康檢查", "Health check"), ("/salary/", "月薪分配", "Salary split"), ("/goal/", "目標計算機", "Goal planner"),
@@ -169,9 +171,18 @@ def header(path):
     other = "en" if lang == "zh" else "zh"
     current = ' aria-current="page"'
     on = lambda h: (h == "/health/" and base in CHECKUP_PAGES) or h == base or (h != "/" and base.startswith(h))  # 文章頁都標示「市場解讀」
-    links = "".join(
-        f'<a href="{url_for(h, lang)}"{current if on(h) else ""}{" class=\"nav-book\"" if h == "/book/" else ""}>'
-        f'{e(zh if lang == "zh" else en)}</a>' for h, zh, en in NAV)
+    pick = lambda zh, en: zh if lang == "zh" else en
+    gname_zh, gname_en, items = NAV_GROUP
+    group_on = any(on(h) for h, *_ in items)
+    sublinks = "".join(
+        f'<a href="{url_for(h, lang)}"{current if on(h) else ""}><b>{e(pick(zh, en))}</b><small>{e(pick(dzh, den))}</small></a>'
+        for h, zh, en, dzh, den in items)
+    links = (
+        f'<a href="{url_for("/health/", lang)}"{current if on("/health/") else ""}>{e(pick("理財體檢", "Check-up"))}</a>'
+        f'<div class="nav-group{" is-current" if group_on else ""}">'
+        f'<button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-sub">{e(pick(gname_zh, gname_en))}<span class="caret" aria-hidden="true"></span></button>'
+        f'<div class="nav-sub" id="nav-sub">{sublinks}</div></div>'
+        f'<a href="{url_for("/book/", lang)}"{current if on("/book/") else ""} class="nav-book">{e(pick("預約傾談", "Book a chat"))}</a>')
     return f"""
 <header class="site-header">
   <div class="wrap wide">

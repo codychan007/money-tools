@@ -86,13 +86,29 @@ main { padding: 24px 0 48px; }
   background: transparent; border: 0; color: var(--ink); width: var(--tap); height: var(--tap);
   font-size: 22px; cursor: pointer; margin-right: -12px;
 }
-.nav { display: none; padding: 4px 0 12px; flex-basis: 100%; }
+.head-tools { order: 2; }
+.nav { display: none; padding: 4px 0 12px; flex-basis: 100%; order: 3; }   /* 手機：選單喺語言掣同關閉掣下面 */
 .nav.open { display: block; }
 .nav a {
   display: block; color: var(--ink); text-decoration: none; padding: 12px 4px; border-top: 1px solid var(--line);
 }
 .nav a[aria-current="page"] { color: var(--shu); font-weight: 700; }
 .nav a.nav-book { color: var(--shu); font-weight: 700; }
+/* 實用資訊欄（下拉） */
+.nav-group { border-top: 1px solid var(--line); }
+.nav-group-btn {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px; width: 100%; min-height: var(--tap);
+  background: none; border: 0; padding: 12px 4px; font: inherit; color: var(--ink); cursor: pointer; text-align: left;
+}
+.nav-group.is-current > .nav-group-btn { color: var(--shu); font-weight: 700; }
+.caret { width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform .15s; flex-shrink: 0; }
+.nav-group.open .caret { transform: rotate(-135deg) translateY(-2px); }
+.nav-sub { display: none; padding: 0 0 8px 12px; }
+.nav-group.open .nav-sub { display: block; }
+.nav-sub a { border-top: 0; padding: 9px 4px; }
+.nav-sub a b { display: block; font-weight: 600; }
+.nav-sub a small { display: block; color: var(--ink-3); font-size: 12.5px; font-weight: 400; }
+.nav-sub a[aria-current="page"] b { color: var(--shu); }
 @media (min-width: 1100px) {
   .menu-btn { display: none; }
   .site-header .bar { gap: 16px; flex-wrap: nowrap; }
@@ -102,6 +118,16 @@ main { padding: 24px 0 48px; }
   .nav a:hover { background: var(--paper-2); }
   .nav a[aria-current="page"] { box-shadow: inset 0 -2px 0 var(--shu); border-radius: 0; }
   .nav a.nav-book { background: var(--shu); color: #FBF3E4; border-radius: 4px; margin-left: 6px; box-shadow: none; }
+  .nav-group { position: relative; border: 0; }
+  .nav-group-btn { width: auto; min-height: 0; padding: 8px 8px; font-size: 15px; border-radius: 4px; white-space: nowrap; }
+  .nav-group-btn:hover, .nav-group.open > .nav-group-btn { background: var(--paper-2); }
+  .nav-group.is-current > .nav-group-btn { box-shadow: inset 0 -2px 0 var(--shu); border-radius: 0; }
+  .nav-sub {
+    position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%); min-width: 250px; padding: 8px;
+    background: var(--card); border: 2px solid var(--ink); border-radius: var(--radius); box-shadow: 4px 4px 0 rgba(35, 31, 28, .15); z-index: 60;
+  }
+  .nav-sub a { padding: 10px 12px; border-radius: 5px; box-shadow: none !important; }
+  .nav-sub a:hover { background: var(--paper-2); }
 }
 
 /* ---------- 印章 ---------- */
