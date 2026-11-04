@@ -44,12 +44,21 @@ SITE = {
 BRAND = SITE["zh"]["brand"]
 
 # 導覽列（路徑唔包括 /en 前綴）。次序同「理財體檢」3 步一樣。
+# 3 個計算工具唔放喺目錄欄（首頁同「理財體檢」已經帶得到），避免太多掣分心
 NAV = [
-    ("/health/", "健康檢查", "Health check"), ("/salary/", "月薪分配", "Salary"), ("/goal/", "目標計算機", "Goals"),
+    ("/health/", "理財體檢", "Check-up"),
     ("/insurance/", "保障資訊", "Protection"), ("/updates/", "市場解讀", "Market notes"), ("/market/", "市場快訊", "Markets"),
     ("/deals/", "優惠回贈", "Rebates"), ("/book/", "預約傾談", "Book a chat"),
 ]
-FOOTER_EXTRA = [("/about/", "關於我", "About me"), ("/disclaimer/", "免責聲明及私隱政策", "Disclaimer & privacy")]
+CHECKUP_PAGES = ("/health/", "/salary/", "/goal/", "/checkup/")   # 呢幾頁都標示「理財體檢」
+FOOTER_LINKS = [
+    ("/health/", "健康檢查", "Health check"), ("/salary/", "月薪分配", "Salary split"), ("/goal/", "目標計算機", "Goal planner"),
+    ("/insurance/", "保障資訊", "Protection facts"), ("/updates/", "市場解讀", "Market notes"), ("/market/", "市場快訊", "Markets"),
+    ("/deals/", "優惠回贈", "Card rebates"), ("/book/", "預約傾談", "Book a chat"),
+    ("/about/", "關於我", "About me"), ("/disclaimer/", "免責聲明及私隱政策", "Disclaimer & privacy"),
+]
+# 首頁「關於我」嘅頭像：放喺 assets/avatar.jpg（或 .png／.webp）
+AVATAR_NAMES = ("avatar.jpg", "avatar.jpeg", "avatar.png", "avatar.webp")
 
 # 理財體檢 3 步
 JOURNEY = [("health", "健", "健康檢查", "Health check"), ("salary", "薪", "月薪分配", "Salary split"), ("goal", "標", "目標計算", "Goal planner")]
@@ -159,7 +168,7 @@ def header(path):
     S, base = SITE[lang], base_path(path)
     other = "en" if lang == "zh" else "zh"
     current = ' aria-current="page"'
-    on = lambda h: h == base or (h != "/" and base.startswith(h))  # 文章頁都標示「市場解讀」
+    on = lambda h: (h == "/health/" and base in CHECKUP_PAGES) or h == base or (h != "/" and base.startswith(h))  # 文章頁都標示「市場解讀」
     links = "".join(
         f'<a href="{url_for(h, lang)}"{current if on(h) else ""}{" class=\"nav-book\"" if h == "/book/" else ""}>'
         f'{e(zh if lang == "zh" else en)}</a>' for h, zh, en in NAV)
@@ -195,7 +204,7 @@ FOOTER_LEGAL = {
 
 def footer(lang):
     S = SITE[lang]
-    links = "".join(f'<a href="{url_for(h, lang)}">{e(zh if lang == "zh" else en)}</a>' for h, zh, en in NAV + FOOTER_EXTRA)
+    links = "".join(f'<a href="{url_for(h, lang)}">{e(zh if lang == "zh" else en)}</a>' for h, zh, en in FOOTER_LINKS)
     return f"""
 <footer class="site-footer">
   <div class="wrap wide">
@@ -247,6 +256,19 @@ def journey_bar(current, lang):
                      f'{seal(ch, "empty")}<span>{n}. {e(zh if lang == "zh" else en)}</span></a>')
     return (f'<nav class="journey-wrap" aria-label="{e(head[0])}"><div class="journey-head"><b>{e(head[0])}</b>'
             f'<span data-journey-count>{e(head[1])}</span></div><div class="journey">{"".join(steps)}</div></nav>')
+
+
+def avatar(lang):
+    """首頁頭像：印章框，撳落去開 IG。未放相就用「我」字印章頂住。"""
+    found = next((n for n in AVATAR_NAMES if (ROOT / "assets" / n).exists()), None)
+    alt = "Cody Chan" + ("（IG @codychan813）" if lang == "zh" else " (IG @codychan813)")
+    inner = (f'<img src="/assets/{found}" alt="{e(alt)}" width="320" height="320" loading="lazy">' if found
+             else '<span class="avatar-fallback" aria-hidden="true">我</span>')
+    if not found:
+        print("⚠️ 未有 assets/avatar.jpg，首頁「關於我」暫時用印章代替頭像")
+    cap = "IG @codychan813"
+    return (f'<a class="avatar-seal" href="{IG_URL}" target="_blank" rel="noopener" aria-label="{e(alt)}">'
+            f'<span class="frame">{inner}</span><span class="cap">{cap}</span></a>')
 
 
 def person_ld(lang="zh"):
@@ -329,6 +351,8 @@ def finish_page(src, path, extra_ld=None, noindex=False):
 
     src = src.replace('<div data-disclaimer="tool"></div>', TOOL_DISCLAIMER[lang])
     src = src.replace("<div data-cta></div>", CTA[lang])
+    if "<div data-avatar></div>" in src:
+        src = src.replace("<div data-avatar></div>", avatar(lang))
     src = re.sub(r'<div data-journey="(\w*)"></div>', lambda mm: journey_bar(mm.group(1), lang), src)
     src = re.sub(r'<span data-seal="(.)"></span>', lambda mm: seal(mm.group(1), "sm"), src)
     src = re.sub(r'<meta name="theme-color" content="[^"]*">', '<meta name="theme-color" content="#F3ECDD">', src)

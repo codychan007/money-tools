@@ -164,8 +164,21 @@ main { padding: 24px 0 48px; }
 .teaser .arrow { margin-left: auto; color: var(--shu); font-weight: 700; flex-shrink: 0; }
 .section-title { margin-bottom: 4px; }
 .section-sub { color: var(--ink-2); margin-top: 0; }
-.about-strip { display: grid; gap: 16px; }
-@media (min-width: 760px) { .about-strip { grid-template-columns: 1.1fr 1fr; align-items: start; } }
+.about-strip { display: grid; gap: 20px; }
+@media (min-width: 760px) { .about-strip { grid-template-columns: 1.6fr 1fr; align-items: center; } }
+/* 頭像：朱紅印章框，撳落去開 IG */
+.avatar-seal { display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none; color: var(--ink-2); order: -1; }
+@media (min-width: 760px) { .avatar-seal { order: 0; } }
+.avatar-seal .frame {
+  display: block; width: 168px; aspect-ratio: 1; padding: 9px; border-radius: 6px; background: var(--shu);
+  box-shadow: inset 0 0 0 4px var(--shu), inset 0 0 0 5.5px rgba(251, 243, 228, .9), 4px 4px 0 rgba(35, 31, 28, .15);
+  transform: rotate(-2deg); transition: transform .15s;
+}
+@media (min-width: 760px) { .avatar-seal .frame { width: 220px; } }
+.avatar-seal:hover .frame { transform: rotate(0); }
+.avatar-seal img, .avatar-fallback { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 3px; }
+.avatar-fallback { display: grid; place-items: center; background: var(--shu); color: #FBF3E4; font-family: var(--serif); font-weight: 700; font-size: 72px; }
+.avatar-seal .cap { font-size: 13px; font-weight: 700; color: var(--shu-dark); }
 .principles { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
 .principles li { padding-left: 26px; position: relative; }
 .principles li::before { content: ""; position: absolute; left: 2px; top: .55em; width: 12px; height: 12px; background: var(--shu); border-radius: 2px; transform: rotate(45deg) scale(.7); }
