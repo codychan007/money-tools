@@ -9,7 +9,7 @@
   - 每頁加入靜態導覽列、頁尾、免責聲明、預約按鈕、理財體檢進度
   - 每頁加入 canonical、hreflang、Open Graph、favicon、結構化資料（JSON-LD）
   - 計算工具頁：將 {{TOKEN}} 換成強積金法定數字同計算例子，並加入常見問題
-  - 保障資訊頁：由 data/insurance.json 直接生成 HTML（英文用 *_en 欄位）
+  - 保障資訊：2026-11 搬咗去姊妹網站「保障資訊通」（/insurance/ 用 _redirects 轉過去）
   - 市場解讀：每篇 PDF 生成獨立頁 /updates/<id>/ 同 /en/updates/<id>/
   - 生成 sitemap.xml、robots.txt
 
@@ -47,7 +47,7 @@ BRAND = SITE["zh"]["brand"]
 # 3 個計算工具唔放喺目錄欄（首頁同「理財體檢」已經帶得到），避免太多掣分心
 # 目錄欄：理財體檢｜實用資訊欄（撳開先見 4 個資訊頁）｜預約傾談
 NAV_GROUP = ("實用資訊欄", "Useful info", [
-    ("/insurance/", "保障資訊", "Protection facts", "醫療費、醫療通脹、政策", "Medical costs, inflation, policy"),
+    ("/tax/", "慳稅規劃", "Tax saver", "薪俸稅估算、扣稅三寶", "Salaries tax and top deductions"),
     ("/updates/", "市場解讀", "Market notes", "每兩星期講清楚市場", "Markets explained every two weeks"),
     ("/market/", "市場快訊", "Markets today", "恒指、美股、利率、匯率", "Stocks, rates and FX, daily"),
     ("/deals/", "優惠回贈", "Card rebates", "信用卡高回贈整理", "Higher-rebate card offers"),
@@ -55,7 +55,7 @@ NAV_GROUP = ("實用資訊欄", "Useful info", [
 CHECKUP_PAGES = ("/health/", "/salary/", "/goal/", "/checkup/")   # 呢幾頁都標示「理財體檢」
 FOOTER_LINKS = [
     ("/health/", "健康檢查", "Health check"), ("/salary/", "月薪分配", "Salary split"), ("/goal/", "目標計算機", "Goal planner"),
-    ("/insurance/", "保障資訊", "Protection facts"), ("/updates/", "市場解讀", "Market notes"), ("/market/", "市場快訊", "Markets"),
+    ("/tax/", "慳稅規劃", "Tax saver"), ("/updates/", "市場解讀", "Market notes"), ("/market/", "市場快訊", "Markets"),
     ("/deals/", "優惠回贈", "Card rebates"), ("/book/", "預約傾談", "Book a chat"),
     ("/about/", "關於我", "About me"), ("/disclaimer/", "免責聲明及私隱政策", "Disclaimer & privacy"),
 ]
@@ -67,9 +67,9 @@ JOURNEY = [("health", "健", "健康檢查", "Health check"), ("salary", "薪", 
 
 # 每頁用邊張分享圖、邊組常見問題
 PAGE_OG = {"/": "home", "/salary/": "salary", "/goal/": "goal", "/health/": "health",
-           "/insurance/": "insurance", "/updates/": "updates", "/market/": "market", "/deals/": "deals"}
+           "/updates/": "updates", "/market/": "market", "/deals/": "deals"}
 PAGE_FAQ = {"/salary/": "salary", "/goal/": "goal", "/health/": "health"}
-NOINDEX = {"/checkup/", "/tax/"}  # 個人總結頁，冇內容俾搜尋引擎；/tax/ 慳稅規劃：人生規劃通公開當日先拎走（同時加入目錄）
+NOINDEX = {"/checkup/"}  # 個人總結頁，冇內容俾搜尋引擎
 
 # 唔會複製到 dist 嘅嘢
 EXCLUDE_TOP = {".git", ".github", ".claude", "dist", "scripts", "tests", "netlify.toml", "如何更新內容.md", "__pycache__"}
@@ -154,7 +154,6 @@ def tokens(lang):
         n = months_to_goal(500000, 30000, 5000, r)
         rows.append(f"<tr><td>{r * 100:g}%</td><td>{ym(n, lang)}</td><td>{money(30000 + 5000 * n)}</td></tr>")
     t["GOAL_TABLE"] = "".join(rows)
-    t["INFL_DEFAULT"] = f'{load("insurance.json")["medicalInflation"]["defaultRate"]:g}'
     return t
 
 
@@ -437,59 +436,6 @@ def policy_item(it, lang):
             f'<ul>{pts}</ul><div class="source">{TXT[lang]["source"]}{a(L(it, "sourceUrl", lang), L(it, "source", lang))}</div></div>')
 
 
-def insurance_sections(lang):
-    D = load("insurance.json")
-    T = TXT[lang]
-    s = {}
-    mi = D["medicalInflation"]
-    s["inflation"] = (f'<h2>{e(L(mi, "title", lang))}</h2>{stat_cards(mi["items"], lang)}'
-                      f'<p class="muted" style="font-size:13px;margin:12px 0 0">{e(L(mi, "note", lang))}</p>')
-    pf = D["publicFees"]
-    rows = "".join(f'<tr><td>{e(r[0])}</td><td class="num"><b>{e(r[1])}</b></td>'
-                   f'<td style="text-align:left;font-size:13px">{e(r[2])}</td></tr>' for r in L(pf, "rows", lang))
-    h = T["fees_head"]
-    s["public-fees"] = (f'<h2>{e(L(pf, "title", lang))}</h2><p>{e(L(pf, "intro", lang))}</p>'
-                        f'<div class="table-scroll"><table class="data wrap-cells"><tr><th>{h[0]}</th><th>{h[1]}</th><th>{h[2]}</th></tr>{rows}</table></div>'
-                        f'{source_line(pf, lang)}' + (f'<div class="source">{T["see_also"]}{extra_sources(pf.get("extraSources"), lang)}</div>' if pf.get("extraSources") else ""))
-    pc = D["privateCosts"]
-    filled = [r for r in pc.get("table", []) if r.get("p50") and "【" not in r.get("procedure", "")]
-    table = ""
-    if filled:
-        h = T["costs_head"]
-        trs = "".join(f'<tr><td>{a(r["sourceUrl"], L(r, "procedure", lang)) if r.get("sourceUrl") else e(L(r, "procedure", lang))}</td>'
-                      f'<td>{e(L(r, "hospital", lang))}</td><td>{e(r["p50"])}</td><td>{e(r.get("p90", ""))}</td><td>{e(r["period"])}</td></tr>' for r in filled)
-        table = (f'<div class="table-scroll" style="margin-top:12px"><table class="data"><tr><th>{h[0]}</th><th>{h[1]}</th><th>{h[2]}</th>'
-                 f'<th>{h[3]}</th><th>{h[4]}</th></tr>{trs}</table></div>')
-    s["private-costs"] = (f'<h2>{e(L(pc, "title", lang))}</h2><p>{e(L(pc, "intro", lang))}</p>{stat_cards(pc["highlights"], lang)}{table}'
-                          f'<p class="muted" style="font-size:13px;margin:12px 0 0">{T["tip_private"]}</p>')
-    ca = D["cancer"]
-    s["cancer"] = (f'<h2>{e(L(ca, "title", lang))}</h2>{stat_cards(ca["items"], lang)}{source_line(ca, lang)}' +
-                   (f'<div class="source">{T["see_also"]}{extra_sources(ca.get("extraSources"), lang)}</div>' if ca.get("extraSources") else ""))
-    po = D["policy"]
-    items = sorted(po.get("items", []), key=lambda x: x["date"], reverse=True)
-    arch = sorted(po.get("archive", []), key=lambda x: x["date"], reverse=True)
-    body = "".join(policy_item(i, lang) for i in items) if items else f'<p class="muted">{T["no_policy"]}</p>'
-    if arch:
-        body += ('<details style="margin-top:8px"><summary style="cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center">'
-                 f'{T["archive"]} ({len(arch)})</summary><p class="muted" style="font-size:13px;margin:4px 0 0">{T["archive_note"]}</p>'
-                 + "".join(policy_item(i, lang) for i in arch) + "</details>")
-    s["policy"] = (f'<h2>{e(L(po, "title", lang))}</h2>{body}'
-                   f'<div class="source">{T["policy_asof"].format(d=e(po["asOf"]))}{stale_badge(po.get("reviewBy"), T["stale_short"])}</div>')
-    b = D["basics"]
-    cards = "".join(f'<div class="stat"><b>{e(L(i, "name", lang))}</b><span>{T["solves"]}{e(L(i, "solves", lang))}<br>{e(L(i, "note", lang))}</span></div>'
-                    for i in b["items"])
-    tips = "".join(f"<li>{e(t)}</li>" for t in L(b, "tips", lang))
-    s["basics"] = (f'<h2>{e(L(b, "title", lang))}</h2><div class="grid cols-2">{cards}</div>'
-                   f'<ul style="margin:14px 0 0;padding-left:1.2em">{tips}</ul>{source_line(b, lang)}')
-    return s
-
-
-def build_insurance(src, lang):
-    for sid, inner in insurance_sections(lang).items():
-        src = src.replace(f'<section class="card" id="{sid}"></section>', f'<section class="card" id="{sid}">{inner}</section>')
-    return src
-
-
 # ------------------------------------------------------------------
 # 市場解讀
 # ------------------------------------------------------------------
@@ -609,8 +555,6 @@ def main():
                              f'<div id="latest-update">{post_card(latest, lang)}</div>', src, count=1, flags=re.S)
             ld = [{"@type": "WebSite", "name": SITE[lang]["brand"], "url": SITE_URL + url_for("/", lang), "inLanguage": SITE[lang]["html"]},
                   person_ld(lang)]
-        elif base == "/insurance/":
-            src = build_insurance(src, lang)
         elif base == "/updates/":
             cards = "".join(post_card(p, lang) for p in published) or f'<div class="card center muted">{UPD[lang]["empty"]}</div>'
             src = src.replace("<!--POSTS-->", cards)
@@ -632,9 +576,8 @@ def main():
         nf.write_text(finish_page(nf.read_text(encoding="utf-8"), "/404.html", noindex=True), encoding="utf-8")
 
     # sitemap + robots
-    ins = load("insurance.json")["policy"]["asOf"]
     deals = load("deals.json")["updatedOn"]
-    lastmod = {"/insurance/": ins, "/deals/": deals, "/updates/": published[0]["date"] if published else TODAY}
+    lastmod = {"/deals/": deals, "/updates/": published[0]["date"] if published else TODAY}
     urls = [(p, lastmod.get(base_path(p), TODAY)) for p in pages]
     urls += [(url_for(f"/updates/{p['id']}/", lang), p["date"]) for p in published for lang in SITE]
     sm = "".join(f"<url><loc>{SITE_URL}{u}</loc><lastmod>{d}</lastmod></url>" for u, d in urls)

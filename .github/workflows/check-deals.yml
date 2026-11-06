@@ -3,9 +3,9 @@ name: Check data files
 
 on:
   push:
-    paths: ["data/deals.json", "data/insurance.json", "data/updates.json", "data/tax/**", "content/**", "scripts/build.py", "**/*.html"]
+    paths: ["data/deals.json", "data/updates.json", "data/tax/**", "content/**", "scripts/build.py", "**/*.html"]
   pull_request:
-    paths: ["data/deals.json", "data/insurance.json", "data/updates.json", "data/tax/**", "content/**", "scripts/build.py", "**/*.html"]
+    paths: ["data/deals.json", "data/updates.json", "data/tax/**", "content/**", "scripts/build.py", "**/*.html"]
   workflow_dispatch: {}
 
 jobs:
@@ -17,6 +17,5 @@ jobs:
         with:
           python-version: "3.12"
       - run: python scripts/validate_deals.py
-      - run: python scripts/validate_insurance.py
       - run: python scripts/validate_tax.py
       - run: python scripts/build.py
