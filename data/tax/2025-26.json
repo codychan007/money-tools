@@ -1,0 +1,67 @@
+{
+ "_說明": "2025/26 課稅年度（2025-04-01 至 2026-03-31）薪俸稅數字，已對稅務局／GovHK 網頁",
+ "year": "2025/26",
+ "allowances": {
+  "basic": 132000,
+  "married": 264000,
+  "singleParent": 132000,
+  "child": 130000,
+  "childNewborn": 130000,
+  "newbornYears": 1,
+  "parent60": 50000,
+  "parent60Live": 50000,
+  "parent55": 25000,
+  "parent55Live": 25000
+ },
+ "elderlyCare": 100000,
+ "reduction": {
+  "pct": 1.0,
+  "cap": 3000
+ },
+ "bands": [
+  [
+   50000,
+   0.02
+  ],
+  [
+   50000,
+   0.06
+  ],
+  [
+   50000,
+   0.1
+  ],
+  [
+   50000,
+   0.14
+  ],
+  [
+   null,
+   0.17
+  ]
+ ],
+ "standard": [
+  [
+   5000000,
+   0.15
+  ],
+  [
+   null,
+   0.16
+  ]
+ ],
+ "deductions": {
+  "mpf": 18000,
+  "vhisPerInsured": 8000,
+  "tvcQdap": 60000,
+  "rent": 100000,
+  "rentWithChild": 20000,
+  "homeLoan": 100000,
+  "homeLoanWithChild": 20000,
+  "education": 100000,
+  "donationPct": 0.35
+ },
+ "sourceUrl": "https://www.gov.hk/en/residents/taxes/taxfiling/taxrates/salariesrates.htm",
+ "budgetUrl": "https://www.ird.gov.hk/eng/tax/budget.htm",
+ "verifiedOn": "2026-11-06"
+}

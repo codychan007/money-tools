@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tax saver | HK Money Compass</title>
+  <meta name="description" content="Have you used up your deductions? Estimate this year's salaries tax.">
+  <meta name="theme-color" content="#F3ECDD">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+<main>
+  <div class="wrap stack">
+    <section class="hero">
+      <div class="kicker"><span data-seal="稅"></span>Tax saver</div>
+      <h1>Have you used up your deductions? Estimate this year's salaries tax.</h1>
+      <p>Defaults to the 2026/27 year (switchable to 2025/26). Enter income and deductions to estimate salaries tax, then see how much the VHIS, TVC and QDAP deductions could save.</p>
+    </section>
+    <div class="disclaimer"><strong>Important:</strong> This tool only estimates salaries tax. Results are for reference only and are not tax or financial advice; the Inland Revenue Department’s assessment prevails. What you enter is calculated on your own phone or computer and is <strong>never uploaded</strong>.</div>
+    <div class="card wizard" id="wizard" aria-live="polite"><noscript>Please turn on JavaScript to use this tool.</noscript><p class="muted">Loading…</p></div>
+    <div data-cta></div>
+  </div>
+</main>
+<script type="module">import { mountLayout } from '/assets/js/layout.js'; mountLayout();</script>
+<script type="module" src="/assets/js/tax.js"></script>
+</body>
+</html>

@@ -419,3 +419,15 @@ details.faq p { margin: 0 0 12px; color: var(--ink-2); }
 .hidden { display: none !important; }
 .center { text-align: center; }
 .mt0 { margin-top: 0; }
+
+/* ---------- 慳稅規劃：一頁一題問答（2026-11 由人生規劃通搬過嚟） ---------- */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.stepper { display: flex; gap: 8px; align-items: stretch; }
+.stepper input { text-align: center; font-weight: 700; }
+.stepper .btn { padding: 0; width: 52px; flex-shrink: 0; font-size: 1.3rem; }
+.wizard { scroll-margin-top: 80px; }
+.wizard .q-step { font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
+.wizard h3 { font-size: 1.15rem; margin-bottom: 12px; line-height: 1.45; }
+.wizard input[type="text"], .wizard input[type="number"] { width: 100%; min-height: var(--tap); font: inherit; font-size: 1.1rem; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: #FFFDF8; color: var(--ink); }
+.wizard .input-money input { padding-left: 30px; }
+.year-switch { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 14px; }

@@ -16,6 +16,10 @@
 </div></main>
 <script type="module">
   import * as F from '/assets/js/finance.js';
+  import * as T from '/assets/js/calc/tax.js';
+  const J = async u => (await fetch(u, { cache: 'no-cache' })).json();
+  const [Y26, Y25] = await Promise.all([J('/data/tax/2026-27.json'), J('/data/tax/2025-26.json')]);
+  const TP = { income: 360000, marital: 'single', mpf: 18000, housing: 'none' };
   const MPF = { employeeRate: .05, employerRate: .05, minRelevantIncome: 7100, maxRelevantIncome: 30000 };
   const near = (a, b, tol = 0.01) => Math.abs(a - b) <= tol * Math.max(1, Math.abs(b)) / 100;   // 0.01% 誤差
   const cases = [
@@ -42,6 +46,13 @@
       () => F.healthScores({ income: 30000, expenses: 15000, cash: 120000, debt: 3000, revolving: 'sometimes', saving: 7000, medical: 2, lifeCI: 2, invest: 2, budget: 2 }).total, 96, 'eq'],
     ['醫療通脹：$100,000，9%，20 年', () => 100000 * Math.pow(1.09, 20), 560441.08, 'near'],
     ['醫療通脹：$50,000，5%，10 年', () => 50000 * Math.pow(1.05, 10), 81444.73, 'near'],
+    ['慳稅：2026/27 單身年入 $360,000、強積金 $18,000 → 薪俸稅', () => T.salariesTax(Y26, TP).tax, 15580, 'eq'],
+    ['慳稅：用盡三寶後', () => T.maxOutThree(Y26, TP).after.tax, 6900, 'eq'],
+    ['慳稅：用盡三寶可慳', () => T.maxOutThree(Y26, TP).saving, 8680, 'eq'],
+    ['慳稅：同一人 2025/26（扣 $3,000 寬減）', () => T.salariesTax(Y25, TP).tax, 14700, 'eq'],
+    ['慳稅：年入 $300 萬用標準稅率', () => T.salariesTax(Y26, { income: 3000000, marital: 'single', mpf: 18000 }).tax, 447300, 'eq'],
+    ['慳稅：已婚（配偶冇入息）＋2 子女（1 個新生）＋同住 60 歲父母 → 免稅額', () => T.allowances(Y26, { marital: 'marriedNoIncome', children: 2, newborns: 1, parent60Live: 1 }), 820000, 'eq'],
+    ['慳稅：租金扣除有子女上限', () => T.deductions(Y26, { housing: 'rent', housingAmt: 200000, children: 1 }).items.housing, 120000, 'eq'],
   ];
   let ok = 0;
   document.getElementById('t').innerHTML = '<tr><th>項目</th><th>網站計到</th><th>預期</th><th></th></tr>' + cases.map(([name, fn, exp, mode]) => {

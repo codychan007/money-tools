@@ -69,7 +69,7 @@ JOURNEY = [("health", "健", "健康檢查", "Health check"), ("salary", "薪", 
 PAGE_OG = {"/": "home", "/salary/": "salary", "/goal/": "goal", "/health/": "health",
            "/insurance/": "insurance", "/updates/": "updates", "/market/": "market", "/deals/": "deals"}
 PAGE_FAQ = {"/salary/": "salary", "/goal/": "goal", "/health/": "health"}
-NOINDEX = {"/checkup/"}  # 個人總結頁，冇內容俾搜尋引擎
+NOINDEX = {"/checkup/", "/tax/"}  # 個人總結頁，冇內容俾搜尋引擎；/tax/ 慳稅規劃：人生規劃通公開當日先拎走（同時加入目錄）
 
 # 唔會複製到 dist 嘅嘢
 EXCLUDE_TOP = {".git", ".github", ".claude", "dist", "scripts", "tests", "netlify.toml", "如何更新內容.md", "__pycache__"}

@@ -1,0 +1,67 @@
+{
+ "_說明": "2026/27 課稅年度（2026-04-01 至 2027-03-31）：免稅額調高、長者院舍上限 $110,000、新生子女額外免稅額兩年（2026-05-22 刊憲）；一次性寬減未公布 = 0",
+ "year": "2026/27",
+ "allowances": {
+  "basic": 145000,
+  "married": 290000,
+  "singleParent": 145000,
+  "child": 140000,
+  "childNewborn": 140000,
+  "newbornYears": 2,
+  "parent60": 55000,
+  "parent60Live": 55000,
+  "parent55": 27500,
+  "parent55Live": 27500
+ },
+ "elderlyCare": 110000,
+ "reduction": {
+  "pct": 0,
+  "cap": 0
+ },
+ "bands": [
+  [
+   50000,
+   0.02
+  ],
+  [
+   50000,
+   0.06
+  ],
+  [
+   50000,
+   0.1
+  ],
+  [
+   50000,
+   0.14
+  ],
+  [
+   null,
+   0.17
+  ]
+ ],
+ "standard": [
+  [
+   5000000,
+   0.15
+  ],
+  [
+   null,
+   0.16
+  ]
+ ],
+ "deductions": {
+  "mpf": 18000,
+  "vhisPerInsured": 8000,
+  "tvcQdap": 60000,
+  "rent": 100000,
+  "rentWithChild": 20000,
+  "homeLoan": 100000,
+  "homeLoanWithChild": 20000,
+  "education": 100000,
+  "donationPct": 0.35
+ },
+ "sourceUrl": "https://www.gov.hk/en/residents/taxes/taxfiling/taxrates/salariesrates.htm",
+ "budgetUrl": "https://www.ird.gov.hk/eng/tax/budget.htm",
+ "verifiedOn": "2026-11-06"
+}
