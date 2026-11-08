@@ -103,7 +103,7 @@ export function justEnough(Y, p) {
       if (withExtra(mid).tax <= 0.005) hi = mid; else lo = mid + 1;
     }
   }
-  return { before, floor, need: lo, saving: Math.max(0, before.tax - floor), roomV, roomT, persons };
+  return { before, floor, need: lo, after: withExtra(lo), saving: Math.max(0, before.tax - floor), roomV, roomT, persons, curV, curT };
 }
 
 /** 強積金強制性供款（僱員部分，全年）：月入低過下限唔使供，高過上限按上限計 */

@@ -69,6 +69,9 @@ function planHtml(Y, p, r) {
   const who = p.vhisPersons > 0 ? t(`${j.persons} 位受保人`, `${j.persons} insured`) : t('當你自己 1 位受保人', 'counting just you');
   const vOnly = j.need <= j.roomV, tOnly = j.need <= j.roomT;
   const a = Math.min(j.need, j.roomV), b = j.need - a;
+  const per = (Math.round((j.saving / j.need) * 1000) / 10).toString();
+  const hadParts = [j.curV > 0 ? t(`自願醫保 ${money(j.curV)}`, `VHIS ${money(j.curV)}`) : '', j.curT > 0 ? t(`TVC／QDAP ${money(j.curT)}`, `TVC / QDAP ${money(j.curT)}`) : ''].filter(Boolean);
+  const had = hadParts.length ? `<p class="muted" style="font-size:14px">${t(`你已經有：${hadParts.join('、')}（已經扣咗，上面「估計應繳薪俸稅」已計入）。以上只係計仲要再加幾多。`, `You already have: ${hadParts.join(', ')} (already deducted in the estimated tax above). The figures above are only the extra amount needed.`)}</p>` : '';
   const opts = [
     `<li><b>${t('只用自願醫保：', 'VHIS only: ')}</b>${vOnly
       ? t(`多交 ${money(j.need)} 保費就夠（${who}，每位上限 ${cap(capV)}）`, `${money(j.need)} more in premiums is enough (${who}, cap ${cap(capV)} each)`)
@@ -87,6 +90,12 @@ function planHtml(Y, p, r) {
             : t(`就算用盡上限，稅款都只可以由 <b>${money(r.tax)}</b> 減到 <b>${money(j.floor)}</b>，慳 <b>${money(j.saving)}</b>。要做到呢個效果，要多扣 ${money(j.need)}。`,
                 `Even at the full limits, your tax only falls from <b>${money(r.tax)}</b> to <b>${money(j.floor)}</b>, saving <b>${money(j.saving)}</b>. That takes ${money(j.need)} more in deductions.`)}</p>
           <ul class="tips">${opts.join('')}</ul>
+          ${had}
+          <div class="callout" style="font-size:14px">
+            <b>${t('點解要咁多？', 'Why so much?')}</b> ${t(`呢個數係將額外供款加入扣除，再由頭計一次估計應繳薪俸稅得出。你平均每多扣 $100 只慳大約 $${per}（即係你嘅稅款所落嘅稅率），所以要扣咁多先抵銷到 ${money(j.saving)} 稅款。`,
+              `This figure comes from adding the extra contributions as deductions and recalculating your estimated salaries tax from scratch. On average each extra $100 deducted saves only about $${per} (the tax rate your tax falls in), so this much is needed to cancel ${money(j.saving)} of tax.`)}
+          </div>
+          <div class="report-row"><span>${t(`多扣 ${money(j.need)} 之後，再計一次估計應繳薪俸稅`, `Estimated salaries tax recalculated after ${money(j.need)} more`)}</span><b>${money(j.after.tax)}</b></div>
           <p class="muted" style="font-size:13px">${t('要真係交咗保費／供咗款先可以扣；呢啲係長期承擔，唔好單為慳稅而做。自願醫保要每位受保人有自己嘅保單先計得。', 'You can only deduct what you actually pay; these are long-term commitments, so don’t do it just for tax. VHIS needs a policy for each insured person.')}</p>
         </div>`;
 }
