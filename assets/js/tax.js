@@ -5,7 +5,7 @@
 import { t } from './i18n.js';
 import { money, loadJSON, esc } from './layout.js';
 import { wizard } from './wizard.js';
-import { salariesTax, maxOutThree, mpfEmployeeAnnual } from './calc/tax.js';
+import { salariesTax, maxOutThree, justEnough, mpfEmployeeAnnual } from './calc/tax.js';
 
 const box = document.getElementById('wizard');
 const [IDX, STAT] = await Promise.all([loadJSON('/data/tax/index.json'), loadJSON('/data/statutory.json')]);
@@ -59,6 +59,38 @@ function toParams(a) {
   };
 }
 
+/** 「慳稅規劃」：最少要多扣幾多先令稅款歸零，同埋點樣分配自願醫保同 TVC／QDAP */
+function planHtml(Y, p, r) {
+  const j = justEnough(Y, p);
+  if (r.tax <= 0) return `<p class="callout green">${t('你估計唔使交稅，暫時唔使為慳稅加扣除。', 'You likely pay no tax, so extra deductions won’t help now.')}</p>`;
+  if (j.need <= 0) return `<p class="callout green">${t('你已經用盡自願醫保同 TVC／QDAP 嘅上限。', 'You have already used the full VHIS and TVC / QDAP limits.')}</p>`;
+  const zero = j.floor <= 0.5;
+  const capV = Y.deductions.vhisPerInsured, capT = Y.deductions.tvcQdap;
+  const who = p.vhisPersons > 0 ? t(`${j.persons} 位受保人`, `${j.persons} insured`) : t('當你自己 1 位受保人', 'counting just you');
+  const vOnly = j.need <= j.roomV, tOnly = j.need <= j.roomT;
+  const a = Math.min(j.need, j.roomV), b = j.need - a;
+  const opts = [
+    `<li><b>${t('只用自願醫保：', 'VHIS only: ')}</b>${vOnly
+      ? t(`多交 ${money(j.need)} 保費就夠（${who}，每位上限 ${cap(capV)}）`, `${money(j.need)} more in premiums is enough (${who}, cap ${cap(capV)} each)`)
+      : t(`最多只可以多扣 ${money(j.roomV)}（${who}，每位上限 ${cap(capV)}），唔夠，要夾埋 TVC／QDAP`, `At most ${money(j.roomV)} more (${who}, cap ${cap(capV)} each), not enough on its own`)}</li>`,
+    `<li><b>${t('只用 TVC／QDAP：', 'TVC / QDAP only: ')}</b>${tOnly
+      ? t(`多供 ${money(j.need)} 就夠（兩樣合共上限 ${cap(capT)}）`, `${money(j.need)} more is enough (combined cap ${cap(capT)})`)
+      : t(`最多只可以多扣 ${money(j.roomT)}（兩樣合共上限 ${cap(capT)}），唔夠，要夾埋自願醫保`, `At most ${money(j.roomT)} more (combined cap ${cap(capT)}), not enough on its own`)}</li>`,
+    `<li><b>${t('兩樣夾埋：', 'A mix of both: ')}</b>${t(`合共多扣 ${money(j.need)} 就得，喺各自上限之內點分都得，例如自願醫保 ${money(a)}${b > 0 ? ` ＋ TVC／QDAP ${money(b)}` : ''}`, `${money(j.need)} more in total, split any way within each cap, e.g. VHIS ${money(a)}${b > 0 ? ` + TVC / QDAP ${money(b)}` : ''}`)}</li>`,
+  ];
+  return `<div>
+          <h3>${zero ? t('最少要多扣幾多，稅款先會歸零？', 'The least extra you need for zero tax') : t('最多可以慳幾多？', 'The most you could save')}</h3>
+          <div class="big-result">${money(j.need)}</div>
+          <p>${zero
+            ? t(`只要多 ${money(j.need)} 嘅自願醫保保費或者 TVC／QDAP 供款，稅款就由 <b>${money(r.tax)}</b> 減到 <b>$0</b>，慳 <b>${money(j.saving)}</b>。唔使買到上限，多過呢個數都唔會再慳到稅。`,
+                `Just ${money(j.need)} more in VHIS premiums or TVC / QDAP contributions takes your tax from <b>${money(r.tax)}</b> to <b>$0</b>, saving <b>${money(j.saving)}</b>. You don’t need to go up to the limits; anything above this saves no more tax.`)
+            : t(`就算用盡上限，稅款都只可以由 <b>${money(r.tax)}</b> 減到 <b>${money(j.floor)}</b>，慳 <b>${money(j.saving)}</b>。要做到呢個效果，要多扣 ${money(j.need)}。`,
+                `Even at the full limits, your tax only falls from <b>${money(r.tax)}</b> to <b>${money(j.floor)}</b>, saving <b>${money(j.saving)}</b>. That takes ${money(j.need)} more in deductions.`)}</p>
+          <ul class="tips">${opts.join('')}</ul>
+          <p class="muted" style="font-size:13px">${t('要真係交咗保費／供咗款先可以扣；呢啲係長期承擔，唔好單為慳稅而做。自願醫保要每位受保人有自己嘅保單先計得。', 'You can only deduct what you actually pay; these are long-term commitments, so don’t do it just for tax. VHIS needs a policy for each insured person.')}</p>
+        </div>`;
+}
+
 function result(a, api) {
   const p = toParams(a);
   const draw = year => {
@@ -89,17 +121,7 @@ function result(a, api) {
           ${row(t('標準稅率計', 'Standard rate'), money(r.std))}
           <p class="muted" style="font-size:14px">${r.useStd ? t('標準稅率計出嚟較少，所以用標準稅率。', 'The standard rate gives less tax, so it applies.') : t('兩種計法取較低者：今次用累進稅率。', 'The lower of the two applies: progressive rates here.')}</p>
         </div>
-        <div>
-          <h3>${t('用盡「扣稅三寶」可以慳幾多？', 'How much could the “three big deductions” save?')}</h3>
-          ${m.saving > 0 ? `<div class="big-result">${money(m.saving)}</div>
-          <p>${t(`即係自願醫保保費補到每位受保人 ${cap(Y.deductions.vhisPerInsured)}、TVC＋QDAP 補到 ${cap(Y.deductions.tvcQdap)} 之後，稅款由`, `Topping up VHIS premiums to ${cap(Y.deductions.vhisPerInsured)} per insured person and TVC + QDAP to ${cap(Y.deductions.tvcQdap)} would take your tax from`)} <b>${money(r.tax)}</b> ${t('減到', 'to')} <b>${money(m.after.tax)}</b>。</p>
-          <ul class="tips">
-            ${m.extraVhis > 0 ? `<li>${t(`自願醫保：多交 ${money(m.extraVhis)} 保費（${p.vhisPersons > 0 ? `${Math.max(1, p.vhisPersons)} 位受保人` : '當你自己 1 位'}）`, `VHIS: ${money(m.extraVhis)} more in premiums (${p.vhisPersons > 0 ? `${Math.max(1, p.vhisPersons)} insured` : 'counting just you'})`)}</li>` : ''}
-            ${m.extraTvc > 0 ? `<li>${t(`TVC／QDAP：多供 ${money(m.extraTvc)}`, `TVC / QDAP: ${money(m.extraTvc)} more`)}</li>` : ''}
-          </ul>
-          <p class="muted" style="font-size:13px">${t('要真係交咗保費／供咗款先可以扣；呢啲係長期承擔，唔好單為慳稅而做。', 'You can only deduct what you actually pay; these are long-term commitments, so don’t do it just for tax.')}</p>`
-          : `<p class="callout green">${r.tax === 0 ? t('你估計唔使交稅，暫時唔使為慳稅加扣除。', 'You likely pay no tax, so extra deductions won’t help now.') : t('你已經用盡三寶嘅上限。', 'You have already used the full limits.')}</p>`}
-        </div>
+        ${planHtml(Y, p, r)}
         ${p.marital === 'marriedBoth' ? `<p class="callout">${t('雙方都有收入：呢度只計你一個（分開評稅），子女同父母免稅額當你申索。夫婦可以比較「合併評稅」，有時會更少稅。', 'Both earn income: this shows your separate assessment only, with child and parent allowances claimed by you. Couples can compare joint assessment, which sometimes lowers tax.')}</p>` : ''}
         <p class="muted" style="font-size:13px">${t(`只計薪俸稅；個人入息課稅、合併評稅只作提示。數字來源：稅務局／GovHK（核對日期 ${esc(Y.verifiedOn)}）。實際稅款以稅務局評稅為準。`, `Salaries tax only; personal assessment and joint assessment are mentioned for reference. Figures from IRD / GovHK (checked ${esc(Y.verifiedOn)}). Your actual tax is set by the IRD assessment.`)}
           <a href="${esc(Y.budgetUrl)}" target="_blank" rel="noopener">${t('稅務局預算案措施', 'IRD budget measures')}</a></p>

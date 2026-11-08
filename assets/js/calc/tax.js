@@ -78,6 +78,34 @@ export function maxOutThree(Y, p) {
   };
 }
 
+/**
+ * 「啱啱好」：最少要多扣幾多（自願醫保＋TVC／QDAP），稅款先跌到最低（通常係 $0）。
+ * 自願醫保：每位受保人上限（冇填受保人就當自己 1 位）；TVC＋QDAP：共用一個上限。
+ * 兩樣都係扣除，效果一樣，所以只計「合共要多扣幾多」，再睇點樣分配。
+ */
+export function justEnough(Y, p) {
+  const D = Y.deductions;
+  const persons = Math.max(1, p.vhisPersons | 0);
+  const curV = Math.min(p.vhis || 0, D.vhisPerInsured * persons);
+  const curT = Math.min(p.tvcQdap || 0, D.tvcQdap);
+  const roomV = D.vhisPerInsured * persons - curV, roomT = D.tvcQdap - curT;
+  const withExtra = x => {
+    const v = Math.min(x, roomV);
+    return salariesTax(Y, { ...p, vhisPersons: persons, vhis: curV + v, tvcQdap: curT + (x - v) });
+  };
+  const before = salariesTax(Y, p);
+  const floor = withExtra(roomV + roomT).tax;          // 用盡兩個上限後嘅最低稅款
+  let lo = 0, hi = roomV + roomT;
+  if (floor > 0.005) lo = hi;                           // 用盡都去唔到零：每多扣一蚊都再慳，所以要用盡
+  else if (before.tax > 0.005) {
+    while (lo < hi) {                                   // 搵最細嘅額外扣除（以 $1 計），稅款啱啱好歸零
+      const mid = Math.floor((lo + hi) / 2);
+      if (withExtra(mid).tax <= 0.005) hi = mid; else lo = mid + 1;
+    }
+  }
+  return { before, floor, need: lo, saving: Math.max(0, before.tax - floor), roomV, roomT, persons };
+}
+
 /** 強積金強制性供款（僱員部分，全年）：月入低過下限唔使供，高過上限按上限計 */
 export function mpfEmployeeAnnual(annualIncome, mpf) {
   const m = annualIncome / 12;
