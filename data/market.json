@@ -1,13 +1,13 @@
 {
   "_說明": "市場快訊數據，由 scripts/update_market.py 每日自動更新兩次，一般唔使手動改。maxAgeDays：數據超過呢個日數未更新，網站會顯示「可能未更新」提示。value 係 null 代表暫時未能讀取，網站會照實顯示，唔會用示例數據。",
-  "lastRun": "2026-11-14 06:33",
+  "lastRun": "2026-11-14 10:43",
   "items": [
     {
       "id": "hsi",
       "group": "股市",
       "name": "恒生指數",
       "value": "23,637.60",
-      "change": "-2.79%",
+      "change": "-1.55%",
       "direction": "down",
       "updatedAt": "2026-11-13 16:08",
       "source": "Yahoo Finance",
