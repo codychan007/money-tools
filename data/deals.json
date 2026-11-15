@@ -1,7 +1,7 @@
 {
   "_說明": "優惠回贈。每兩星期由自動程序（或人手）按官方條款更新。每項必須有 url（官方條款或官方網頁）同 verifiedOn（核實日期）。categories 只可用：dining 餐飲、online 網購、transport 交通、travel 旅遊、supermarket 超市。expiry 過咗會自動隱藏；null 代表官方未列明完結日期。改完請執行 python scripts/validate_deals.py 檢查。 英文版：每項要有 title_en、type_en、highlight_en、conditions_en（同 conditions 一樣多項）；rate 有中文字就要加 rate_en。",
-  "updatedOn": "2026-11-01",
-  "reviewBy": "2026-11-19",
+  "updatedOn": "2026-11-15",
+  "reviewBy": "2026-12-03",
   "categories": {
     "dining": "餐飲",
     "online": "網購",
@@ -17,33 +17,6 @@
     "supermarket": "Supermarket"
   },
   "items": [
-    {
-      "title": "信銀國際 Motion 信用卡",
-      "title_en": "China CITIC Bank International Motion Credit Card",
-      "type": "信用卡",
-      "type_en": "Credit card",
-      "categories": [
-        "dining",
-        "online"
-      ],
-      "rate": "6%",
-      "highlight": "食肆及網上簽賬 6% 現金回贈",
-      "highlight_en": "6% cash rebate on dining and online spending",
-      "conditions": [
-        "每曆月合資格零售簽賬滿 HK$3,800",
-        "額外回贈每月上限 HK$200（約首 HK$3,571 食肆／網上簽賬賺足 6%）",
-        "經 WeChat Pay、AlipayHK、PayMe、轉數快，以及超市網上平台、酒店餐飲等交易不計"
-      ],
-      "conditions_en": [
-        "Eligible retail spending of HK$3,800 or more per calendar month",
-        "Extra rebate capped at HK$200 a month (roughly the first HK$3,571 of dining / online spending earns the full 6%)",
-        "Excludes WeChat Pay, AlipayHK, PayMe and FPS transactions, as well as online supermarket platforms and hotel dining"
-      ],
-      "start": "2026-07-01",
-      "expiry": "2026-12-31",
-      "url": "https://www.cncbinternational.com/_document/personal/motion_credit_card/tc/motion_cardcvp_tnc_tc.pdf",
-      "verifiedOn": "2026-11-01"
-    },
     {
       "title": "AEON CARD WAKUWAKU",
       "title_en": "AEON CARD WAKUWAKU",
@@ -69,7 +42,7 @@
       "start": "2026-09-01",
       "expiry": "2027-02-28",
       "url": "https://www.aeon.com.hk/tc/pdf/credit-card/AEONCARDWAKUWAKU_RBBD_TC.pdf",
-      "verifiedOn": "2026-11-01"
+      "verifiedOn": "2026-11-15"
     },
     {
       "title": "Citi 八達通信用卡",
@@ -93,7 +66,7 @@
       "start": "2026-09-01",
       "expiry": "2027-06-30",
       "url": "https://www1.citibank.com.hk/chinese/credit-cards/octopus-cards",
-      "verifiedOn": "2026-11-01"
+      "verifiedOn": "2026-11-15"
     },
     {
       "title": "滙豐信用卡：八達通自動增值",
@@ -120,7 +93,7 @@
       "start": "2026-02-01",
       "expiry": "2027-01-31",
       "url": "https://retailbank.hsbc.com.hk/promo/octopus-aavs/zh-hk/home/",
-      "verifiedOn": "2026-11-01"
+      "verifiedOn": "2026-11-15"
     },
     {
       "title": "工銀亞洲銀聯信用卡",
@@ -147,7 +120,7 @@
       "start": "2026-10-01",
       "expiry": "2026-12-31",
       "url": "https://www.icbcasia.com/hk/tc/promotion/unionpay-overseas-cash-rebate.html",
-      "verifiedOn": "2026-11-01"
+      "verifiedOn": "2026-11-15"
     },
     {
       "title": "中銀 Chill World Mastercard",
@@ -172,7 +145,7 @@
       "start": null,
       "expiry": "2026-12-31",
       "url": "https://www.bochk.com/dam/boccreditcard/chillcard/chill_offer_tnc_tc.pdf",
-      "verifiedOn": "2026-11-01"
+      "verifiedOn": "2026-11-15"
     },
     {
       "title": "Mox Credit",
@@ -196,7 +169,7 @@
       "start": null,
       "expiry": null,
       "url": "https://mox.com/zh/promotions/cashback-with-mox-credit/",
-      "verifiedOn": "2026-11-01"
+      "verifiedOn": "2026-11-15"
     },
     {
       "title": "滙豐信用卡：中國內地餐飲簽賬獎賞",
@@ -226,7 +199,7 @@
       "start": "2026-07-01",
       "expiry": "2026-12-31",
       "url": "https://www.redhotoffers.hsbc.com.hk/media/112417288/2026RedHotSpendingRewards_MainlandChina_Tnc_TC.pdf",
-      "verifiedOn": "2026-11-01"
+      "verifiedOn": "2026-11-15"
     },
     {
       "title": "滙豐信用卡：foodpanda 外賣 5% 回贈",
@@ -257,7 +230,7 @@
       "start": "2026-01-03",
       "expiry": "2026-12-30",
       "url": "https://www.redhotoffers.hsbc.com.hk/media/101115438/tnc_HeroDining2026_Foodpanda_TC.pdf",
-      "verifiedOn": "2026-11-01"
+      "verifiedOn": "2026-11-15"
     }
   ]
 }
