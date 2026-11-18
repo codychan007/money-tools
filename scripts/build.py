@@ -50,13 +50,13 @@ NAV_GROUP = ("實用資訊欄", "Useful info", [
     ("/tax/", "慳稅規劃", "Tax saver", "薪俸稅估算、扣稅三寶", "Salaries tax and top deductions"),
     ("/updates/", "市場解讀", "Market notes", "每兩星期講清楚市場", "Markets explained every two weeks"),
     ("/market/", "市場快訊", "Markets today", "恒指、美股、利率、匯率", "Stocks, rates and FX, daily"),
-    ("/deals/", "優惠回贈", "Card rebates", "信用卡高回贈整理", "Higher-rebate card offers"),
+    ("/deals/", "優惠福利", "Deals & benefits", "信用卡回贈、福利檢查", "Card rebates, benefits check"),
 ])
 CHECKUP_PAGES = ("/health/", "/salary/", "/goal/", "/checkup/")   # 呢幾頁都標示「理財體檢」
 FOOTER_LINKS = [
     ("/health/", "健康檢查", "Health check"), ("/salary/", "月薪分配", "Salary split"), ("/goal/", "目標計算機", "Goal planner"),
     ("/tax/", "慳稅規劃", "Tax saver"), ("/updates/", "市場解讀", "Market notes"), ("/market/", "市場快訊", "Markets"),
-    ("/deals/", "優惠回贈", "Card rebates"), ("/book/", "預約傾談", "Book a chat"),
+    ("/deals/", "優惠福利", "Deals & benefits"), ("/book/", "預約傾談", "Book a chat"),
     ("/about/", "關於我", "About me"), ("/disclaimer/", "免責聲明及私隱政策", "Disclaimer & privacy"),
 ]
 # 首頁「關於我」嘅頭像：放喺 assets/avatar.jpg（或 .png／.webp）

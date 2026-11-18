@@ -1,8 +1,20 @@
-// 優惠回贈：讀 data/deals.json，按類別篩選，過期自動收埋。英文頁用 *_en 欄位。
+// 優惠福利（信用卡優惠分頁）：讀 data/deals.json，按類別篩選，過期自動收埋。英文頁用 *_en 欄位。
 import { mountLayout, loadJSON, esc, todayHK } from './layout.js';
 import { EN, t } from './i18n.js';
 
 mountLayout();
+
+// 兩個分頁：信用卡優惠／福利檢查（#benefits 直接開福利檢查）
+const tabs = [...document.querySelectorAll('[data-tab]')];
+function showTab(name, push) {
+  tabs.forEach(b => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+  document.getElementById('panel-cards')?.classList.toggle('hidden', name !== 'cards');
+  document.getElementById('panel-benefits')?.classList.toggle('hidden', name !== 'benefits');
+  if (push) history.replaceState(null, '', name === 'benefits' ? '#benefits' : location.pathname);
+}
+tabs.forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab, true)));
+showTab(location.hash === '#benefits' ? 'benefits' : 'cards');
+window.addEventListener('hashchange', () => showTab(location.hash === '#benefits' ? 'benefits' : 'cards'));
 const d = await loadJSON('/data/deals.json');
 const today = todayHK();
 const L = (o, k) => (EN && o[`${k}_en`] != null && o[`${k}_en`] !== '' ? o[`${k}_en`] : o[k]);

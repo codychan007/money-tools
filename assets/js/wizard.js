@@ -4,6 +4,7 @@
 //   { key, q, help, type: 'options', opts: [[值, 標籤], …] }
 //   { key, q, help, type: 'money' | 'number', min, max, def: ans => 預設值, optional: true, unit }
 //   { key, q, help, type: 'counts', fields: [[key, 標籤, max]] }   // 同一頁幾個加減數
+//   { key, q, help, type: 'multi', opts: [[值, 標籤], …], none: '冇揀項目嘅值' }   // 可以揀多項，答案係陣列
 //   when: ans => 布林值（唔符合就跳過呢題）；q／help 可以係 ans => 字串
 // wizard(box, questions, onDone(ans, api))；api.edit() 返去最後一題、api.restart()
 // ============================================================
@@ -42,6 +43,10 @@ export function wizard(box, Q, onDone, init = {}) {
         <p class="muted" id="wz-err" style="color:var(--danger);display:none;font-size:14px"></p>
         <button type="button" class="btn shu block" data-next>${t('下一步 →', 'Next →')}</button>
         ${q.optional ? `<button type="button" class="btn secondary block" style="margin-top:8px" data-skip>${q.skipLabel || t('唔知／跳過', 'Not sure / skip')}</button>` : ''}`;
+    } else if (q.type === 'multi') {
+      const cur = ans[q.key] || [];
+      body = `<div class="options">${q.opts.map(([v, l]) => `<button type="button" class="option" data-m="${esc(v)}" aria-pressed="${cur.includes(v)}">${l}</button>`).join('')}</div>
+        <button type="button" class="btn shu block" style="margin-top:12px" data-next>${t('下一步 →', 'Next →')}</button>`;
     } else if (q.type === 'counts') {
       body = `${q.fields.map(([k, l, max]) => `<div class="field"><span>${l}</span>
         <div class="stepper"><button type="button" class="btn secondary" data-step="${k}" data-d="-1" aria-label="${t('減一', 'Minus one')}">−</button>
@@ -57,7 +62,21 @@ export function wizard(box, Q, onDone, init = {}) {
       ${body}
       ${hist.length ? `<div class="q-nav"><button type="button" class="btn secondary" data-back>${t('← 返回上一題', '← Back')}</button></div>` : ''}`;
 
-    box.querySelectorAll('.option').forEach(b => b.addEventListener('click', () => { ans[q.key] = b.dataset.v; go(i + 1); }));
+    box.querySelectorAll('.option[data-v]').forEach(b => b.addEventListener('click', () => { ans[q.key] = b.dataset.v; go(i + 1); }));
+    if (q.type === 'multi') {
+      const btns = [...box.querySelectorAll('.option[data-m]')];
+      btns.forEach(b => b.addEventListener('click', () => {
+        const on = b.getAttribute('aria-pressed') !== 'true';
+        b.setAttribute('aria-pressed', String(on));
+        if (on) btns.forEach(x => {   // 「以上都冇」同其他選項互相排斥
+          if (x !== b && (x.dataset.m === q.none || b.dataset.m === q.none)) x.setAttribute('aria-pressed', 'false');
+        });
+      }));
+      box.querySelector('[data-next]').addEventListener('click', () => {
+        ans[q.key] = btns.filter(b => b.getAttribute('aria-pressed') === 'true').map(b => b.dataset.m);
+        go(i + 1);
+      });
+    }
     box.querySelector('[data-back]')?.addEventListener('click', back);
     const inp = box.querySelector('#wz-in');
     if (inp) {

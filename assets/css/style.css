@@ -431,3 +431,20 @@ details.faq p { margin: 0 0 12px; color: var(--ink-2); }
 .wizard input[type="text"], .wizard input[type="number"] { width: 100%; min-height: var(--tap); font: inherit; font-size: 1.1rem; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: #FFFDF8; color: var(--ink); }
 .wizard .input-money input { padding-left: 30px; }
 .year-switch { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 14px; }
+
+/* ---------- 福利檢查 ---------- */
+.benefit-head { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.badge.status-likely { background: var(--matcha-50); color: var(--matcha); border-color: transparent; }
+.badge.status-maybe { background: var(--ochre-50); color: #7A5410; border-color: transparent; }
+.badge.status-no { background: var(--paper-2); color: var(--ink-3); }
+.card.benefit.likely { border-left: 4px solid var(--matcha); }
+.card.benefit.maybe { border-left: 4px solid var(--ochre); }
+.reasons { list-style: none; padding: 0; margin: 8px 0 12px; display: grid; gap: 4px; font-size: 14.5px; }
+.reasons li { display: flex; gap: 8px; }
+.reasons li span { width: 18px; flex-shrink: 0; font-weight: 700; text-align: center; }
+.reasons .r-true span { color: var(--matcha); }
+.reasons .r-false span { color: var(--danger); }
+.reasons .r-null span { color: var(--ochre); }
+.benefit-facts { display: grid; gap: 8px; margin: 0; font-size: 14.5px; }
+.benefit-facts dt { font-weight: 700; color: var(--ink-2); font-size: 13px; }
+.benefit-facts dd { margin: 0; }

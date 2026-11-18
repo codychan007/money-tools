@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>信用卡回贈優惠整理：餐飲、網購、交通、旅遊、超市｜香港地一站式理財資訊通</title>
-  <meta name="description" content="每兩星期整理香港高回贈信用卡優惠，按餐飲、網購、交通、旅遊、超市分類，列明回贈率、簽賬要求、上限同到期日，全部附官方條款連結。">
+  <title>優惠福利：信用卡回贈整理同政府福利檢查｜香港地一站式理財資訊通</title>
+  <meta name="description" content="香港打工仔嘅優惠同福利：每兩星期整理高回贈信用卡優惠；再用 12 條問題檢查你有冇錯過持續進修基金、職津、公屋、青年宿舍、交通補貼等政府福利，附官方連結。">
   <meta name="theme-color" content="#F3ECDD">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
@@ -12,10 +12,20 @@
 <main>
   <div class="wrap stack">
     <section class="hero">
-      <div class="kicker"><span data-seal="惠"></span>優惠回贈</div>
-      <h1>食飯、網購、搭車，邊張卡著數啲？</h1>
-      <p>每兩星期整理一次高回贈信用卡優惠，全部附官方條款連結。過咗期嘅會自動收埋。</p>
+      <div class="kicker"><span data-seal="惠"></span>優惠福利</div>
+      <h1>有咩著數，你仲未攞？</h1>
+      <p>信用卡回贈每兩星期整理一次；政府福利用 12 條問題幫你檢查有冇錯過。全部附官方連結。</p>
     </section>
+    <div class="seg" role="tablist" aria-label="優惠福利">
+      <button role="tab" id="tab-cards" aria-selected="true" aria-controls="panel-cards" data-tab="cards">信用卡優惠</button>
+      <button role="tab" id="tab-benefits" aria-selected="false" aria-controls="panel-benefits" data-tab="benefits">福利檢查</button>
+    </div>
+    <div id="panel-benefits" role="tabpanel" aria-labelledby="tab-benefits" class="stack hidden">
+      <section class="card wizard" id="benefit-box" aria-live="polite"><noscript>請開啟 JavaScript 先用到呢個工具。</noscript><p class="muted">載入中…</p></section>
+      <div class="disclaimer">福利資料整理自政府及相關機構官方網頁，每 3 個月核對一次，並以官方最新公布為準。檢查結果只屬估算，不構成任何申請資格嘅保證。本網站與香港政府並無關連。</div>
+      <div data-cta></div>
+    </div>
+    <div id="panel-cards" role="tabpanel" aria-labelledby="tab-cards" class="stack">
     <div id="status"></div>
     <div class="chips" id="cats"></div>
     <div id="list" class="stack"></div>
@@ -23,8 +33,10 @@
       <b>用卡前諗清楚：</b>高回贈通常有最低簽賬要求同上限，為咗賺回贈而使多咗就唔化算。外幣簽賬一般另收外幣交易手續費，計實際回贈時記得扣除。卡數要每月全數還清，否則利息遠高過回贈。
     </div>
     <div class="disclaimer">優惠資料只供參考，整理自發卡機構公開條款，並以其最新條款為準；發卡機構可隨時修改或終止優惠。本網站並非任何發卡機構，亦不收取推介費。本頁不構成申請任何信用卡之建議。借定唔借？還得到先好借！</div>
+    </div>
   </div>
 </main>
 <script type="module" src="/assets/js/deals.js"></script>
+<script type="module" src="/assets/js/benefits.js"></script>
 </body>
 </html>

@@ -1,0 +1,268 @@
+{
+  "_說明": "福利檢查（/deals/ 嘅「福利檢查」分頁）。每項福利嘅文字（中英）、金額同官方連結喺 items；用嚟判斷資格嘅數字喺 tables（按住戶人數排：第 1 個 = 1 人）。每 3 個月由 Claude 定時任務按 scripts/benefits-quarterly-prompt.md 核對官方來源更新。改完請執行 python scripts/validate_benefits.py。判斷規則喺 assets/js/benefits.js，數字改咗唔使改程式。",
+  "reviewedOn": "2026-11-18",
+  "reviewBy": "2027-02-28",
+  "tables": {
+    "prh": {
+      "income": [13230, 20680, 25870, 32020, 40150, 46620, 51400, 57470, 63380, 69150],
+      "assets": [295000, 400000, 521000, 608000, 675000, 731000, 781000, 816000, 904000, 974000],
+      "asOf": "2026-04-01",
+      "sourceUrl": "https://www.housingauthority.gov.hk/tc/common/pdf/global-elements/forms/flat-application/HD274A.pdf"
+    },
+    "wfa": {
+      "full": [12500, 16800, 21000, 26500, 26500, 27600],
+      "threeQuarter": [15000, 20100, 25200, 31700, 31700, 33100],
+      "half": [17500, 23500, 29400, 37000, 37000, 38600],
+      "assets": [295000, 400000, 521000, 608000, 675000, 731000, 781000, 816000, 904000, 974000],
+      "basic": [1150, 863, 575],
+      "medium": [1380, 1035, 690],
+      "high": [1610, 1208, 805],
+      "child": [1610, 1208, 805],
+      "asOf": "2026-04（2026/27 申領月份）",
+      "sourceUrl": "https://www.wfsfaa.gov.hk/tc/wfao/wfas/eligibility.php"
+    },
+    "hosWhite": { "income1": 30000, "income2": 60000, "assets1": 615000, "assets2": 1230000, "asOf": "2025-12（居屋 2025）",
+      "sourceUrl": "https://www.info.gov.hk/gia/general/202512/18/P2025121800568.htm" },
+    "youthHostel": { "ageMin": 18, "ageMax": 30, "income1": 29200, "assets1": 404000, "asOf": "2025-12",
+      "sourceUrl": "https://www.aud.gov.hk/pdf_ca/c86ch08.pdf" },
+    "carer": { "income": [18000, 24225, 30750, 38700, 47925, 52800], "asOf": "2026-03",
+      "sourceUrl": "https://www.swd.gov.hk/tc/pubsvc/elderly/cat_careersupp/allowanceforcarersoftheelderly/" },
+    "cssa": { "singleAbleBodied": 37000, "familyAbleBodied": [24500, 49000, 73500, 98000], "perPersonIncomeHint": 4000, "asOf": "2026-02-01",
+      "sourceUrl": "https://www.swd.gov.hk/tc/pubsvc/socsecu/cssa_limit_amt/cssa_ass_limit/index.html" },
+    "textbook": { "fullAFI": 46292, "halfAFI": 89515, "asOf": "2026/27 學年",
+      "sourceUrl": "https://www.wfsfaa.gov.hk/tc/sfo/primarysecondary/tt/amount.php" },
+    "ptfss": { "threshold": 500, "cap": 400, "rate": 0.3333333333, "asOf": "2025-06-01",
+      "sourceUrl": "https://www.info.gov.hk/gia/general/202505/26/P2025052600290.htm" },
+    "oala": { "incomeSingle": 10900, "assetsSingle": 415000, "incomeCouple": 16680, "assetsCouple": 630000, "asOf": "2026-02-01",
+      "sourceUrl": "https://www.swd.gov.hk/tc/pubsvc/socsecu/ssallowance/ssaec/ssaec_oala/ssaec_oala_limit/" }
+  },
+  "groups": {
+    "work": { "zh": "進修及就業", "en": "Study and work" },
+    "housing": { "zh": "住屋", "en": "Housing" },
+    "living": { "zh": "生活津貼", "en": "Living allowances" },
+    "family": { "zh": "家庭及子女", "en": "Family and children" },
+    "parents": { "zh": "屋企人（父母）可以申請", "en": "For your parents" }
+  },
+  "items": [
+    {
+      "id": "cef", "group": "work",
+      "name": { "zh": "持續進修基金", "en": "Continuing Education Fund (CEF)" },
+      "summary": { "zh": "18 歲或以上嘅香港居民修讀指定課程，完成後可以申請發還部分學費。", "en": "Hong Kong residents aged 18 or above can claim back part of the fees for approved courses after finishing them." },
+      "amount": { "zh": "每人合共最多 $25,000：首 $10,000 資助 80%，其餘 $15,000 資助 60%", "en": "Up to $25,000 per person: 80% of fees for the first $10,000 of subsidy, 60% for the remaining $15,000" },
+      "apply": { "zh": "報讀「可獲發還款項課程」，出席率達 70% 及評核合格，修畢後一年內向持續進修基金辦事處網上或郵寄申請發還。", "en": "Enrol in a CEF reimbursable course, meet the 70% attendance and assessment requirements, and claim within one year of finishing, online or by post." },
+      "notes": { "zh": "開課時要年滿 18 歲，2022 年 8 月起開課嘅課程唔設年齡上限；同一課程唔可以同時獲其他公帑資助。", "en": "You must be 18 when the course starts; no upper age limit for courses from August 2022. The same course can't also receive other public funding." },
+      "url": { "zh": "https://www.wfsfaa.gov.hk/tc/ce/cef/eligibility.php", "en": "https://www.wfsfaa.gov.hk/en/ce/cef/eligibility.php" },
+      "source": { "zh": "在職家庭及學生資助事務處：持續進修基金", "en": "WFSFAA: Continuing Education Fund" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "erb", "group": "work",
+      "name": { "zh": "僱員再培訓局課程", "en": "Employees Retraining Board (ERB) courses" },
+      "summary": { "zh": "15 歲或以上合資格僱員可以報讀。失業人士讀「就業掛鈎課程」學費全免，課程 7 日或以上仲有再培訓津貼。", "en": "Eligible employees aged 15+ can enrol. Placement-tied courses for unemployed people are free, with a retraining allowance for courses of 7 days or more." },
+      "amount": { "zh": "就業掛鈎課程：免學費，再培訓津貼每日 $333（每月上限 $8,000）；其他課程月入 $15,000 或以下可申請豁免學費，$15,000 以上至 $23,500 只付資助學費", "en": "Placement-tied courses: free, retraining allowance $333 a day (cap $8,000 a month). Other courses: fee waiver for monthly income $15,000 or below; subsidised fee for over $15,000 up to $23,500" },
+      "apply": { "zh": "經僱員再培訓局網站、熱線或委任培訓機構報名。", "en": "Apply through the ERB website, hotline or an appointed training body." },
+      "notes": { "zh": "就業掛鈎課程為失業嘅香港永久性居民等而設；各課程有自己嘅入學要求。", "en": "Placement-tied courses are for unemployed permanent residents and some other residents; each course has its own entry requirements." },
+      "url": { "zh": "https://www.erb.org/tc/training-courses/erb-courses/overview", "en": "https://www.erb.org/en/training-courses/erb-courses/overview" },
+      "source": { "zh": "僱員再培訓局：課程簡介", "en": "ERB: course overview" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "yes", "group": "work",
+      "name": { "zh": "展翅青年就業計劃", "en": "Youth Employment and Training Programme (YETP)" },
+      "summary": { "zh": "15 至 29 歲、學歷副學位或以下嘅青年，可以參加求職培訓、工作實習同有薪在職培訓。", "en": "Young people aged 15 to 29 with sub-degree education or below can join job-search training, work placements and paid on-the-job training." },
+      "amount": { "zh": "完成工作實習（出席率 80% 或以上）可獲實習津貼 $8,000；在職培訓期間以僱員身份支薪", "en": "$8,000 placement allowance for completing a work placement (80%+ attendance); paid as an employee during on-the-job training" },
+      "apply": { "zh": "經勞工處「展翅青年就業計劃」網站或熱線登記做學員。", "en": "Register as a trainee on the Labour Department YETP website or hotline." },
+      "notes": null,
+      "url": { "zh": "https://www.yes.labour.gov.hk/Employers/Employer/Index?c=zh-hk", "en": "https://www.yes.labour.gov.hk/Employers/Employer/Index?c=en-us" },
+      "source": { "zh": "勞工處：展翅青年就業計劃", "en": "Labour Department: YETP" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "gbayes", "group": "work",
+      "name": { "zh": "大灣區青年就業計劃", "en": "Greater Bay Area Youth Employment Scheme" },
+      "summary": { "zh": "18 至 29 歲、持副學位或以上學歷嘅青年，可以應徵企業喺大灣區內地城市嘅職位。", "en": "Young people aged 18 to 29 with sub-degree education or above can apply for jobs with companies in Mainland GBA cities." },
+      "amount": { "zh": "學士或以上學歷月薪不低於 $18,000；副學位按市場薪酬", "en": "Monthly salary at least $18,000 for degree holders; market pay for sub-degree holders" },
+      "apply": { "zh": "喺勞工處「互動就業服務」大灣區青年就業計劃專頁應徵職位。本屆招聘期至 2026 年 12 月 31 日。", "en": "Apply for jobs on the Labour Department Interactive Employment Service GBA page. The current round runs until 31 December 2026." },
+      "notes": null,
+      "url": { "zh": "https://www1.jobs.gov.hk/0/tc/information/gbayes/", "en": "https://www1.jobs.gov.hk/0/en/information/gbayes/" },
+      "source": { "zh": "勞工處：大灣區青年就業計劃", "en": "Labour Department: GBA Youth Employment Scheme" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "loan", "group": "work",
+      "name": { "zh": "學生貸款延期還款", "en": "Student loan repayment deferment" },
+      "summary": { "zh": "欠緊學生資助處貸款，而因為繼續全日制進修、經濟困難或患重病令還款有困難，可以申請延期還款。", "en": "If you owe a student loan and have trouble repaying because of full-time study, financial hardship or serious illness, you can apply to defer repayments." },
+      "amount": { "zh": "部分計劃喺延期期間唔計利息；還款期最多可延長兩年", "en": "Some schemes charge no interest during deferment; the repayment period can be extended by up to two years" },
+      "apply": { "zh": "喺分期還款到期日之前，用指定表格連證明文件交學生資助處。", "en": "Submit the form with supporting documents to the Student Finance Office before the instalment due date." },
+      "notes": { "zh": "申請時貸款帳戶唔可以拖欠超過一期季度還款（或連續五期月供）。", "en": "Your loan account must not be more than one quarterly (or five monthly) instalments in arrears." },
+      "url": { "zh": "https://www.wfsfaa.gov.hk/tc/resources/loanrepayment/difficulties/deferment.htm", "en": "https://www.wfsfaa.gov.hk/en/resources/loanrepayment/difficulties/deferment.htm" },
+      "source": { "zh": "學生資助處：延期還款", "en": "Student Finance Office: deferment" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "prh", "group": "housing",
+      "name": { "zh": "公共租住房屋（公屋）", "en": "Public rental housing (PRH)" },
+      "summary": { "zh": "住戶入息同資產低過限額、冇住宅物業，就可以申請公屋。", "en": "Households under the income and asset limits that own no residential property can apply for public rental housing." },
+      "amount": { "zh": "租金遠低於私樓；2026/27 入息上限：1 人 $13,230、2 人 $20,680、3 人 $25,870、4 人 $32,020", "en": "Rent far below private market; 2026/27 income limits: 1 person $13,230, 2 people $20,680, 3 people $25,870, 4 people $32,020" },
+      "apply": { "zh": "網上或郵寄向房屋署遞交公屋申請表。", "en": "Submit a PRH application to the Housing Department online or by post." },
+      "notes": { "zh": "非長者一人申請以「配額及計分制」編配，輪候時間較長。強積金法定供款可以喺入息扣除。", "en": "Non-elderly one-person applicants are allocated under the Quota and Points System, with longer waits. Mandatory MPF contributions can be deducted from income." },
+      "url": { "zh": "https://www.housingauthority.gov.hk/tc/flat-application/income-and-asset-limits/index.html", "en": "https://www.housingauthority.gov.hk/en/flat-application/income-and-asset-limits/index.html" },
+      "source": { "zh": "房屋委員會：入息及資產限額（2026 年 4 月 1 日起）", "en": "Housing Authority: income and asset limits (from 1 April 2026)" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "lph", "group": "housing",
+      "name": { "zh": "簡約公屋", "en": "Light Public Housing" },
+      "summary": { "zh": "輪候傳統公屋三年或以上嘅家庭（二人或以上），可以申請先入住簡約公屋，唔影響公屋輪候。", "en": "Households of two or more who have waited three years or more for PRH can move into Light Public Housing first, without affecting their PRH application." },
+      "amount": { "zh": "租金約為同區新落成公屋嘅九成，例如每月約 $900 至 $3,310（視乎項目同面積）", "en": "Rent about 90% of nearby new PRH, e.g. about $900 to $3,310 a month depending on project and size" },
+      "apply": { "zh": "經房屋局簡約公屋網站申請；而家全部項目都接受申請。", "en": "Apply on the Housing Bureau Light Public Housing website; all projects are now open for applications." },
+      "notes": { "zh": "公屋申請正處於凍結或暫緩階段嘅，要等完結先可以申請。", "en": "If your PRH application is frozen or suspended, wait until that ends." },
+      "url": { "zh": "https://www.hb.gov.hk/tc/policy/housing/policy/light_public_housing/index.html", "en": "https://www.hb.gov.hk/eng/policy/housing/policy/light_public_housing/index.html" },
+      "source": { "zh": "房屋局：簡約公屋", "en": "Housing Bureau: Light Public Housing" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "hos", "group": "housing",
+      "name": { "zh": "居屋（白表）", "en": "Home Ownership Scheme (White Form)" },
+      "summary": { "zh": "冇住宅物業、入息同資產喺限額之內，可以用白表申請買居屋。", "en": "If you own no residential property and are within the income and asset limits, you can apply to buy a HOS flat with the White Form." },
+      "amount": { "zh": "樓價以市價折扣出售；白表限額：一人每月入息 $30,000、資產 $615,000；二人或以上 $60,000、$1,230,000", "en": "Flats sold at a discount to market price. White Form limits: one person $30,000 a month income and $615,000 assets; two or more $60,000 and $1,230,000" },
+      "apply": { "zh": "留意房委會推售公布，喺接受申請期內網上申請。居屋 2025 已於 2026 年第二季接受申請。", "en": "Watch for Housing Authority sale announcements and apply online during the application period. HOS 2025 took applications in Q2 2026." },
+      "notes": null,
+      "url": { "zh": "https://www.housingauthority.gov.hk/tc/home-ownership/hos-flats/eligibility/index.html", "en": "https://www.housingauthority.gov.hk/en/home-ownership/hos-flats/eligibility/index.html" },
+      "source": { "zh": "房屋委員會：居屋資格準則", "en": "Housing Authority: HOS eligibility" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "greenform", "group": "housing",
+      "name": { "zh": "綠置居／居屋（綠表）", "en": "Green Form Subsidised Home Ownership (GSH / HOS)" },
+      "summary": { "zh": "住緊公屋嘅住戶可以用綠表，以更低價錢申請買綠置居或居屋。", "en": "PRH tenants can use the Green Form to apply to buy GSH or HOS flats at lower prices." },
+      "amount": { "zh": "綠置居定價一般低過居屋；居屋單位綠表同白表配額比例為 50:50", "en": "GSH flats are usually priced below HOS; HOS flats are split 50:50 between Green and White Form buyers" },
+      "apply": { "zh": "留意房委會推售公布，喺接受申請期內申請。", "en": "Watch for Housing Authority sale announcements and apply during the application period." },
+      "notes": null,
+      "url": { "zh": "https://www.housingauthority.gov.hk/tc/home-ownership/hos-flats/eligibility/index.html", "en": "https://www.housingauthority.gov.hk/en/home-ownership/hos-flats/eligibility/index.html" },
+      "source": { "zh": "房屋委員會：居屋資格準則", "en": "Housing Authority: HOS eligibility" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "youthHostel", "group": "housing",
+      "name": { "zh": "青年宿舍計劃", "en": "Youth Hostel Scheme" },
+      "summary": { "zh": "18 至 30 歲、有工作嘅香港永久性居民，可以申請租住由非政府機構營運嘅青年宿舍，儲錢上樓。", "en": "Working Hong Kong permanent residents aged 18 to 30 can rent rooms in NGO-run youth hostels and save towards their goals." },
+      "amount": { "zh": "租金不超過鄰近相若單位市值六成；首次租期最少兩年，最長合共五年", "en": "Rent no more than 60% of nearby market rent; first tenancy at least two years, up to five years in total" },
+      "apply": { "zh": "向個別宿舍嘅營運機構申請（宿舍列表見民政及青年事務局網頁）。", "en": "Apply to the NGO running each hostel (list on the Home and Youth Affairs Bureau website)." },
+      "notes": { "zh": "全日制學生唔合資格；唔可以擁有香港住宅物業。入息及資產限額每年調整，一人申請約為每月 $29,200 及 $404,000，以各宿舍公布為準。", "en": "Full-time students aren't eligible, and you can't own residential property in Hong Kong. Limits change yearly, about $29,200 a month income and $404,000 assets for one person; each hostel's announcement prevails." },
+      "url": { "zh": "https://www.hyab.gov.hk/tc/policy_responsibilities/Social_Harmony_and_Civic_Education/youth_hostel_scheme.htm", "en": "https://www.hyab.gov.hk/en/policy_responsibilities/Social_Harmony_and_Civic_Education/youth_hostel_scheme.htm" },
+      "source": { "zh": "民政及青年事務局：青年宿舍計劃；審計署報告（2026 年 3 月）", "en": "Home and Youth Affairs Bureau: Youth Hostel Scheme; Audit Commission report (March 2026)" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "wfa", "group": "living",
+      "name": { "zh": "在職家庭津貼（職津）", "en": "Working Family Allowance (WFA)" },
+      "summary": { "zh": "住戶（包括一人住戶）工時達標，而入息同資產低過限額，每月可以申領津貼；有 15 歲以下子女仲有兒童津貼。", "en": "Households (including one-person households) that meet the working-hour requirement and are under the income and asset limits get a monthly allowance, plus a child allowance for children under 15." },
+      "amount": { "zh": "每月每戶 $575 至 $1,610（按工時同入息）；每名合資格兒童另加 $805 至 $1,610", "en": "$575 to $1,610 a month per household (by hours and income), plus $805 to $1,610 per eligible child" },
+      "apply": { "zh": "經職津網上平台或交表格向在職家庭津貼辦事處申請，每次申領最多六個月。", "en": "Apply online or by form to the Working Family Allowance Office; each claim covers up to six months." },
+      "notes": { "zh": "非單親住戶每月合共工時要 144 小時或以上；單親住戶 36 小時或以上。", "en": "Non-single-parent households need 144+ working hours a month in total; single-parent households 36+." },
+      "url": { "zh": "https://www.wfsfaa.gov.hk/tc/wfao/wfas/eligibility.php", "en": "https://www.wfsfaa.gov.hk/en/wfao/wfas/eligibility.php" },
+      "source": { "zh": "在職家庭及學生資助事務處：職津申請資格及津貼金額", "en": "WFSFAA: WFA eligibility and amounts" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "ptfss", "group": "living",
+      "name": { "zh": "公共交通費用補貼計劃", "en": "Public Transport Fare Subsidy Scheme" },
+      "summary": { "zh": "每月公共交通開支超過 $500，超出部分補貼三分之一，唔使申請。", "en": "If you spend over $500 a month on public transport, a third of the excess is subsidised. No application needed." },
+      "amount": { "zh": "每月最多 $400；補貼 = （每月開支 − $500）÷ 3", "en": "Up to $400 a month; subsidy = (monthly spending − $500) ÷ 3" },
+      "apply": { "zh": "用同一張八達通或已登記嘅電子支付工具乘車，每月 16 日起喺補貼領取點或八達通 App 領取上個月嘅補貼，三個月內有效。", "en": "Travel with the same Octopus or registered e-payment, then collect last month's subsidy from the 16th at collection points or in the Octopus app, within three months." },
+      "notes": null,
+      "url": { "zh": "https://www.ptfss.gov.hk/zh-hk/home.html", "en": "https://www.ptfss.gov.hk/en-hk/home.html" },
+      "source": { "zh": "運輸署：公共交通費用補貼計劃", "en": "Transport Department: PTFSS" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "cssa", "group": "living",
+      "name": { "zh": "綜合社會保障援助（綜援）", "en": "Comprehensive Social Security Assistance (CSSA)" },
+      "summary": { "zh": "入息不足以應付基本生活、資產低過限額嘅住戶，可以申請綜援補足差額。", "en": "Households whose income can't meet basic needs and whose assets are under the limits can apply for CSSA to make up the difference." },
+      "amount": { "zh": "按住戶嘅認可需要計算；資產上限：單身健全成人 $37,000", "en": "Based on the household's recognised needs; asset limit for a single able-bodied adult: $37,000" },
+      "apply": { "zh": "向社會福利署社會保障辦事處申請，或網上下載表格。", "en": "Apply at a Social Welfare Department social security field unit, or download the form." },
+      "notes": { "zh": "申請人一般要成為香港居民最少一年。15 至 59 歲健全人士要積極求職，或每月工作不少於 120 小時並有不少於 $2,725 收入。", "en": "Applicants usually need one year of Hong Kong residence. Able-bodied people aged 15 to 59 must look for work, or work 120+ hours a month earning at least $2,725." },
+      "url": { "zh": "https://www.swd.gov.hk/tc/pubsvc/socsecu/cssa_limit_amt/cssa_ass_limit/index.html", "en": "https://www.swd.gov.hk/en/pubsvc/socsecu/cssa_limit_amt/cssa_ass_limit/index.html" },
+      "source": { "zh": "社會福利署：綜援資產限額（2026 年 2 月 1 日起）", "en": "SWD: CSSA asset limits (from 1 February 2026)" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "carer", "group": "living",
+      "name": { "zh": "低收入照顧者生活津貼", "en": "Living allowance for low-income carers" },
+      "summary": { "zh": "每月照顧輪候長期護理服務嘅長者，或者殘疾家人最少 80 小時，而住戶入息低過限額，可以申請。", "en": "If you care for an elderly person waiting for long-term care, or a family member with a disability, for 80+ hours a month and your household income is under the limit, you can apply." },
+      "amount": { "zh": "每月 $3,000（照顧多於一名長者最高 $6,000）；2026 年施政報告宣布上調至每月 $3,300，以社署公布為準", "en": "$3,000 a month (up to $6,000 for more than one elderly person). The 2026 Policy Address announced a rise to $3,300; SWD's announcement prevails" },
+      "apply": { "zh": "向社會福利署（護老者計劃）或負責個案嘅社工查詢申請。", "en": "Apply through the Social Welfare Department carer schemes or your case social worker." },
+      "notes": { "zh": "照顧者本身唔可以領取綜援、長者生活津貼或傷殘津貼；資產唔計算。", "en": "The carer can't receive CSSA, Old Age Living Allowance or Disability Allowance; assets aren't counted." },
+      "url": { "zh": "https://www.swd.gov.hk/tc/pubsvc/elderly/cat_careersupp/allowanceforcarersoftheelderly/", "en": "https://www.swd.gov.hk/en/pubsvc/elderly/cat_careersupp/allowanceforcarersoftheelderly/" },
+      "source": { "zh": "社會福利署：為低收入家庭護老者提供生活津貼計劃", "en": "SWD: Living Allowance for Low-income Carers of Elderly Persons" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "newborn", "group": "family",
+      "name": { "zh": "新生嬰兒獎勵金", "en": "Newborn Baby Bonus" },
+      "summary": { "zh": "嬰兒喺香港出生，而申請時父母其中一方係香港永久性居民，可以獲發獎勵金。計劃已延續至 2029 年 10 月 24 日。", "en": "For babies born in Hong Kong where one parent is a permanent resident when applying. The scheme now runs to 24 October 2029." },
+      "amount": { "zh": "每名嬰兒 $20,000；2026 年 9 月 16 日或以後喺香港出生嘅第二名或之後子女建議增至 $30,000（有待立法會通過）", "en": "$20,000 per baby; proposed $30,000 for a second or later child born in Hong Kong on or after 16 September 2026 (subject to Legislative Council approval)" },
+      "apply": { "zh": "出生後 42 日內辦理出生登記時一併申請；逾期亦可喺出生起計 6 個月內申請。", "en": "Apply when registering the birth within 42 days, or within 6 months of birth." },
+      "notes": null,
+      "url": { "zh": "https://www.cso.gov.hk/newbornbabybonus/eng/index.htm", "en": "https://www.cso.gov.hk/newbornbabybonus/eng/index.htm" },
+      "source": { "zh": "政務司司長辦公室：新生嬰兒獎勵金；立法會文件（2026 年 9 月）", "en": "Chief Secretary for Administration's Office: Newborn Baby Bonus; LegCo paper (September 2026)" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "textbook", "group": "family",
+      "name": { "zh": "學校書簿津貼（中小學生資助）", "en": "School Textbook Assistance (primary and secondary)" },
+      "summary": { "zh": "子女讀中小學，家庭入息經審查後可以獲發書簿津貼，同一份申請亦包括其他中小學生資助。", "en": "If your children are in primary or secondary school, a means test can give you textbook assistance; the same application covers other school-level aid." },
+      "amount": { "zh": "2026/27 學年全額例如小學每年 $6,398；半額約為全額一半", "en": "2026/27 full rate e.g. $6,398 a year for primary; half rate is about half" },
+      "apply": { "zh": "每年經學生資助處「學生資助計劃綜合申請」申請；2026/27 學年截止 2026 年 10 月 31 日，下一個學年留意學資處公布。", "en": "Apply each year through the Student Finance Office combined application; the 2026/27 deadline was 31 October 2026, so watch for the next year's announcement." },
+      "notes": { "zh": "用「調整後家庭收入」計：全年入息 ÷（家庭人數 + 1）。", "en": "Uses adjusted family income: annual income ÷ (family size + 1)." },
+      "url": { "zh": "https://www.wfsfaa.gov.hk/tc/sfo/primarysecondary/tt/amount.php", "en": "https://www.wfsfaa.gov.hk/en/sfo/primarysecondary/tt/amount.php" },
+      "source": { "zh": "學生資助處：中、小學生資助計劃", "en": "Student Finance Office: primary and secondary student aid" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "fare2", "group": "parents",
+      "name": { "zh": "「兩蚊兩折」乘車優惠", "en": "“$2 or 20%” public transport fare concession" },
+      "summary": { "zh": "60 歲或以上香港居民乘搭指定交通工具，成人車費 $10 或以下付 $2，超過 $10 付兩折。", "en": "Residents aged 60+ pay $2 for adult fares of $10 or less, or 20% of fares over $10, on designated transport." },
+      "amount": { "zh": "成人車費 $10 或以下：$2；超過 $10：成人車費兩折（2026 年 4 月 3 日起）", "en": "Adult fare $10 or less: $2; over $10: 20% of the adult fare (from 3 April 2026)" },
+      "apply": { "zh": "用「樂悠咭」或長者八達通乘車，唔使另外申請。", "en": "Use a JoyYou Card or Elder Octopus; no separate application." },
+      "notes": null,
+      "url": { "zh": "https://www.td.gov.hk/tc/gov_public_transport_fare_concession/index.html", "en": "https://www.td.gov.hk/en/gov_public_transport_fare_concession/index.html" },
+      "source": { "zh": "運輸署：政府長者及合資格殘疾人士公共交通票價優惠計劃", "en": "Transport Department: Government Public Transport Fare Concession Scheme" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "hcv", "group": "parents",
+      "name": { "zh": "長者醫療券", "en": "Elderly Health Care Vouchers" },
+      "summary": { "zh": "65 歲或以上香港長者每年獲發醫療券，可以喺私家醫生、牙醫、中醫等使用。", "en": "Elderly residents aged 65+ get yearly vouchers to use with private doctors, dentists, Chinese medicine practitioners and more." },
+      "amount": { "zh": "每年 $2,000，累積上限 $8,000", "en": "$2,000 a year, up to $8,000 accumulated" },
+      "apply": { "zh": "毋須申請，年滿 65 歲自動合資格；到登記咗嘅醫療服務提供者出示身份證使用。", "en": "No application: eligible automatically at 65; show the ID card at an enrolled provider." },
+      "notes": null,
+      "url": { "zh": "https://www.hcv.gov.hk/tc/hcvs/background.html", "en": "https://www.hcv.gov.hk/en/hcvs/background.html" },
+      "source": { "zh": "醫務衞生局：長者醫療券計劃", "en": "Health Bureau: Elderly Health Care Voucher Scheme" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "oaa", "group": "parents",
+      "name": { "zh": "高齡津貼（生果金）", "en": "Old Age Allowance (OAA)" },
+      "summary": { "zh": "70 歲或以上、住港滿 7 年嘅長者每月可以領取，唔使經濟審查。", "en": "Residents aged 70+ with 7 years' residence get a monthly allowance with no means test." },
+      "amount": { "zh": "每月 $1,675（2026 年 2 月 1 日起）", "en": "$1,675 a month (from 1 February 2026)" },
+      "apply": { "zh": "年滿 70 歲前一個月起經網上、郵寄或社會保障辦事處申請。", "en": "Apply from one month before turning 70, online, by post or at a social security office." },
+      "notes": { "zh": "同一時間只可以領高齡津貼、長者生活津貼、傷殘津貼或綜援其中一項。", "en": "Only one of OAA, Old Age Living Allowance, Disability Allowance or CSSA can be received at a time." },
+      "url": { "zh": "https://www.swd.gov.hk/tc/pubsvc/socsecu/ssallowance/ssa_amt/ssa_amt_all/index.html", "en": "https://www.swd.gov.hk/en/pubsvc/socsecu/ssallowance/ssa_amt/ssa_amt_all/index.html" },
+      "source": { "zh": "社會福利署：公共福利金計劃各類津貼金額", "en": "SWD: Social Security Allowance rates" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "oala", "group": "parents",
+      "name": { "zh": "長者生活津貼", "en": "Old Age Living Allowance (OALA)" },
+      "summary": { "zh": "65 歲或以上、入息同資產低過限額嘅長者，每月可以領取。", "en": "Residents aged 65+ under the income and asset limits get a monthly allowance." },
+      "amount": { "zh": "每月 $4,345；限額：單身每月入息 $10,900、資產 $415,000；夫婦 $16,680、$630,000", "en": "$4,345 a month. Limits: single $10,900 income and $415,000 assets; couple $16,680 and $630,000" },
+      "apply": { "zh": "經網上、郵寄或社會保障辦事處申請。", "en": "Apply online, by post or at a social security office." },
+      "notes": { "zh": "長者生活津貼同高齡津貼唔可以同時領取。", "en": "OALA and OAA can't be received at the same time." },
+      "url": { "zh": "https://www.swd.gov.hk/tc/pubsvc/socsecu/ssallowance/ssaec/ssaec_oala/ssaec_oala_limit/", "en": "https://www.swd.gov.hk/en/pubsvc/socsecu/ssallowance/ssaec/ssaec_oala/ssaec_oala_limit/" },
+      "source": { "zh": "社會福利署：長者生活津貼入息及資產限額", "en": "SWD: OALA income and asset limits" },
+      "asOf": "2026-11-18"
+    }
+  ]
+}
