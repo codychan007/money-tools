@@ -458,7 +458,10 @@ def post_card(p, lang, summary=True):
     # 主頁只顯示標題（summary=False）；市場解讀列表頁先顯示摘要
     href = url_for(f"/updates/{p['id']}/", lang)
     desc = f'<p>{e(L(p, "summary", lang))}</p>' if summary else ""
-    return (f'<a class="card tool-card" href="{href}"><span class="badge">{e(p["date"])}</span>'
+    badge = f'<span class="badge">{e(p["date"])}</span>'
+    if not summary:  # 主頁：日期放喺同印章一樣高嘅位，標題同隔籬卡對齊
+        badge = f'<div class="card-top">{badge}</div>'
+    return (f'<a class="card tool-card" href="{href}">{badge}'
             f'<h3>{e(L(p, "title", lang))}</h3>{desc}<span class="go">{UPD[lang]["read"]}</span></a>')
 
 
