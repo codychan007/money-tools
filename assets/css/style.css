@@ -166,6 +166,9 @@ main { padding: 24px 0 48px; }
 .tool-card:active { transform: none; box-shadow: var(--shadow); }
 .tool-card .seal { margin-bottom: 10px; }
 .tool-card h3 { margin: 4px 0 4px; }
+/* 主頁最新市場解讀：張卡要同隔籬嘅工具卡一樣高 */
+#latest-update { display: flex; }
+#latest-update > .card { flex: 1; }
 .tool-card p { margin: 0; color: var(--ink-2); font-size: 15px; }
 .tool-card .go { color: var(--shu-dark); font-weight: 700; font-size: 14px; margin-top: 12px; display: inline-block; }
 
