@@ -14,7 +14,8 @@ CJK = re.compile(r"[㐀-鿿]")
 GROUPS = {"work", "housing", "living", "family", "parents"}
 # assets/js/benefits.js 有判斷規則嘅福利；加新項目要同時加規則
 RULE_IDS = {"cef", "erb", "yes", "gbayes", "loan", "prh", "lph", "hos", "greenform", "youthHostel",
-            "wfa", "ptfss", "cssa", "carer", "newborn", "textbook", "fare2", "hcv", "oaa", "oala"}
+            "wfa", "ptfss", "cssa", "carer", "newborn", "textbook", "fare2", "hcv", "oaa", "oala",
+            "postsec", "wsm", "familyPriority", "haWaiver", "kcfrs", "seniorCard", "colonscreen"}
 TEXT = ["name", "summary", "amount", "apply", "source"]
 
 
@@ -58,7 +59,8 @@ def main():
     need = {"prh": ["income", "assets"], "wfa": ["full", "threeQuarter", "half", "assets", "basic", "medium", "high", "child"],
             "hosWhite": ["income1", "income2", "assets1", "assets2"], "youthHostel": ["ageMin", "ageMax", "income1", "assets1"],
             "carer": ["income"], "cssa": ["singleAbleBodied", "familyAbleBodied", "perPersonIncomeHint"],
-            "textbook": ["fullAFI", "halfAFI"], "ptfss": ["threshold", "cap", "rate"], "oala": ["incomeSingle", "assetsSingle", "incomeCouple", "assetsCouple"]}
+            "textbook": ["fullAFI", "halfAFI"], "kcfrs": ["fullAFI", "threeQuarterAFI", "halfAFI"],
+            "haWaiver": ["income", "fullIncome", "elderlyAssetAdd"], "ptfss": ["threshold", "cap", "rate"], "oala": ["incomeSingle", "assetsSingle", "incomeCouple", "assetsCouple"]}
     for tab, keys in need.items():
         x = T.get(tab)
         if not x:
@@ -76,6 +78,9 @@ def main():
     for k in ("full", "threeQuarter", "half"):
         if len(T.get("wfa", {}).get(k, [])) != 6:
             errors.append(f"tables.wfa.{k}：要有 6 個（1 至 6 人或以上）")
+    for k in ("income", "fullIncome"):
+        if len(T.get("haWaiver", {}).get(k, [])) != 5:
+            errors.append(f"tables.haWaiver.{k}：要有 5 個（1 至 5 人或以上）")
     for k in ("basic", "medium", "high", "child"):
         if len(T.get("wfa", {}).get(k, [])) != 3:
             errors.append(f"tables.wfa.{k}：要有 3 個（全額、3/4 額、半額）")

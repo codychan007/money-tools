@@ -31,6 +31,11 @@
       "sourceUrl": "https://www.swd.gov.hk/tc/pubsvc/socsecu/cssa_limit_amt/cssa_ass_limit/index.html" },
     "textbook": { "fullAFI": 46292, "halfAFI": 89515, "asOf": "2026/27 學年",
       "sourceUrl": "https://www.wfsfaa.gov.hk/tc/sfo/primarysecondary/tt/amount.php" },
+    "kcfrs": { "fullAFI": 46292, "threeQuarterAFI": 56707, "halfAFI": 89515, "asOf": "2026/27 學年",
+      "sourceUrl": "https://www.wfsfaa.gov.hk/tc/sfo/preprimary/kcfr/assessment.php" },
+    "haWaiver": { "income": [15450, 24200, 40200, 55100, 51100], "fullIncome": [7725, 18150, 30150, 41325, 38325], "elderlyAssetAdd": 168000, "asOf": "2026-01-01",
+      "_說明": "income = 部分減免入息上限（1 至 5 人或以上），fullIncome = 一般可獲全數減免嘅入息上限；資產上限 = 公屋資產限額（tables.prh.assets）",
+      "sourceUrl": "https://ewsecal.ha.org.hk/calculator/ews.html?lang=tc" },
     "ptfss": { "threshold": 500, "cap": 400, "rate": 0.3333333333, "asOf": "2025-06-01",
       "sourceUrl": "https://www.info.gov.hk/gia/general/202505/26/P2025052600290.htm" },
     "oala": { "incomeSingle": 10900, "assetsSingle": 415000, "incomeCouple": 16680, "assetsCouple": 630000, "asOf": "2026-02-01",
@@ -100,6 +105,17 @@
       "asOf": "2026-11-18"
     },
     {
+      "id": "postsec", "group": "work",
+      "name": { "zh": "專上學生資助（助學金及貸款）", "en": "Post-secondary student finance (grants and loans)" },
+      "summary": { "zh": "全日制讀學士、副學士或高級文憑，可以按家庭入息同資產申請助學金同貸款；唔想經審查，亦可以申請免入息審查貸款交學費。", "en": "Full-time students on degree, associate degree or higher diploma courses can apply for means-tested grants and loans, or a non-means-tested loan for tuition fees." },
+      "amount": { "zh": "助學金幫交學費同學習支出，貸款應付生活費；免入息審查貸款最多可借全年學費（2026/27 學年合併終身上限 $419,400）", "en": "Grants cover tuition and study costs, loans cover living costs. Non-means-tested loans can cover the full tuition fee (combined lifetime limit $419,400 in 2026/27)" },
+      "apply": { "zh": "經學生資助處網上平台申請：公帑資助課程用「資助專上課程學生資助計劃」（TSFS），自資課程用「專上學生資助計劃」（FASP）及「專上學生免入息審查貸款計劃」（NLSPS）。每個學年都要申請。", "en": "Apply online to the Student Finance Office: TSFS for publicly funded courses, FASP and NLSPS for self-financing courses. Apply every academic year." },
+      "notes": { "zh": "要有香港居留權，或者課程開始前本人或家庭已連續住港滿 3 年。免入息審查貸款由發放日起計利息（讀書期間都計）。", "en": "You need right of abode, or you or your family must have lived in Hong Kong for 3 continuous years before the course starts. Non-means-tested loans charge interest from the day they are paid, including while you study." },
+      "url": { "zh": "https://www.wfsfaa.gov.hk/tc/sfo/postsecondary/tsfs/overview.php", "en": "https://www.wfsfaa.gov.hk/en/sfo/postsecondary/tsfs/overview.php" },
+      "source": { "zh": "學生資助處：專上程度學生資助（TSFS、FASP、NLSPS）", "en": "Student Finance Office: post-secondary student finance (TSFS, FASP, NLSPS)" },
+      "asOf": "2026-11-18"
+    },
+    {
       "id": "prh", "group": "housing",
       "name": { "zh": "公共租住房屋（公屋）", "en": "Public rental housing (PRH)" },
       "summary": { "zh": "住戶入息同資產低過限額、冇住宅物業，就可以申請公屋。", "en": "Households under the income and asset limits that own no residential property can apply for public rental housing." },
@@ -133,6 +149,17 @@
       "asOf": "2026-11-18"
     },
     {
+      "id": "wsm", "group": "housing",
+      "name": { "zh": "白表居屋第二市場計劃（白居二）", "en": "White Form Secondary Market Scheme (WSM)" },
+      "summary": { "zh": "白表人士抽中配額，就可以用未補價價錢，喺二手市場買居屋、綠置居等資助出售單位；40 歲以下可以揀參加「青年計劃」。", "en": "White Form buyers who win a quota can buy subsidised flats such as HOS and GSH on the secondary market without paying the premium. Applicants under 40 can join the Youth Scheme." },
+      "amount": { "zh": "未補價單位樓價一般低過同區私樓；白居二 2025 配額 7,000 個（包括 2,000 個青年配額）。限額同居屋白表：一人每月入息 $30,000、資產 $615,000；二人或以上 $60,000、$1,230,000", "en": "Unpaid-premium flats usually cost less than nearby private flats. WSM 2025 had 7,000 quotas (including 2,000 for the Youth Scheme). Limits as for HOS White Form: one person $30,000 a month and $615,000 assets; two or more $60,000 and $1,230,000" },
+      "apply": { "zh": "留意房委會公布，喺申請期內申請；白居二 2025 申請期為 2026 年 4 月 30 日至 5 月 20 日（已截止）。獲配額後 6 星期內要申領「購買資格證明書」。", "en": "Watch for Housing Authority announcements and apply during the application period; WSM 2025 took applications from 30 April to 20 May 2026 (now closed). Successful applicants must get a Certificate of Eligibility to Purchase within 6 weeks." },
+      "notes": { "zh": "「青年計劃（白居二）」：申請截止時年滿 18 歲，而申請開始時未滿 40 歲；成功嘅青年申請者要做業主或聯名業主。", "en": "Youth Scheme (WSM): you must be 18 by the closing date and under 40 on the opening date, and must be an owner or joint owner of the flat you buy." },
+      "url": { "zh": "https://www.housingauthority.gov.hk/tc/home-ownership/hos-secondary-market/sms-white-form/index.html", "en": "https://www.housingauthority.gov.hk/en/home-ownership/hos-secondary-market/sms-white-form/index.html" },
+      "source": { "zh": "房屋委員會：白表居屋第二市場計劃", "en": "Housing Authority: White Form Secondary Market Scheme" },
+      "asOf": "2026-11-18"
+    },
+    {
       "id": "greenform", "group": "housing",
       "name": { "zh": "綠置居／居屋（綠表）", "en": "Green Form Subsidised Home Ownership (GSH / HOS)" },
       "summary": { "zh": "住緊公屋嘅住戶可以用綠表，以更低價錢申請買綠置居或居屋。", "en": "PRH tenants can use the Green Form to apply to buy GSH or HOS flats at lower prices." },
@@ -141,6 +168,17 @@
       "notes": null,
       "url": { "zh": "https://www.housingauthority.gov.hk/tc/home-ownership/hos-flats/eligibility/index.html", "en": "https://www.housingauthority.gov.hk/en/home-ownership/hos-flats/eligibility/index.html" },
       "source": { "zh": "房屋委員會：居屋資格準則", "en": "Housing Authority: HOS eligibility" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "familyPriority", "group": "housing",
+      "name": { "zh": "「家有初生」／「天倫樂」優先上樓", "en": "Priority housing for families with newborns or elderly parents" },
+      "summary": { "zh": "申請公屋時有初生嬰兒，或者同 60 歲或以上父母一齊申請，可以縮短輪候時間；買居屋或綠置居亦有優先選樓配額。", "en": "Public housing applicants with a newborn, or who apply together with a parent aged 60+, wait less; there is also a priority quota when buying HOS or GSH flats." },
+      "amount": { "zh": "公屋：「家有初生」輪候時間縮短 1 年；「天倫樂」（同長者一齊申請）提早 6 個月處理；兩者合共最多縮短 1 年。居屋／綠置居：預留約 40% 單位俾「家有初生」同「家有長者」申請者優先選樓", "en": "Public housing: 1 year less waiting for families with newborns; 6 months earlier for the Harmonious Families Priority Scheme (applying with an elderly person); at most 1 year in total. HOS/GSH: about 40% of flats reserved for families with newborns or elderly members to choose first" },
+      "apply": { "zh": "公屋：喺申請表加入嬰兒（要喺嬰兒滿 1 歲或之前加入），或者同長者一齊申請並揀參加「天倫樂」。居屋／綠置居：喺申請表揀參加「家有初生」或「家有長者」優先選樓計劃。", "en": "Public housing: add the baby to your application on or before the baby's first birthday, or apply with the elderly person under the Harmonious Families Priority Scheme. HOS/GSH: opt into the newborn or elderly priority scheme on the form." },
+      "notes": { "zh": "嬰兒要喺 2023 年 10 月 25 日或之後出生；居屋／綠置居計嬰兒 3 歲或以下，或家庭成員已懷孕滿 16 週。「天倫樂」要同長者同住或入住就近單位並照顧佢。2026 年施政報告：由下一期居屋起，有新生嬰兒嘅白表家庭最高按揭成數提升至 95%。", "en": "The baby must be born on or after 25 October 2023; for HOS/GSH the child must be 3 or under, or a family member at least 16 weeks pregnant. Under the Harmonious Families scheme you must live with, or near, and care for the elderly person. 2026 Policy Address: from the next HOS sale, White Form families with a newborn can borrow up to 95%." },
+      "url": { "zh": "https://www.housingauthority.gov.hk/tc/flat-application/families-with-newborns-allocation-priority-scheme/index.html", "en": "https://www.housingauthority.gov.hk/en/flat-application/families-with-newborns-allocation-priority-scheme/index.html" },
+      "source": { "zh": "房屋委員會：「家有初生」及「天倫樂」優先配屋計劃、居屋 2025 一般資料", "en": "Housing Authority: Families with Newborns and Harmonious Families priority schemes; HOS 2025 general information" },
       "asOf": "2026-11-18"
     },
     {
@@ -188,6 +226,17 @@
       "asOf": "2026-11-18"
     },
     {
+      "id": "haWaiver", "group": "living",
+      "name": { "zh": "公營醫療費用減免", "en": "Public hospital and clinic fee waiver" },
+      "summary": { "zh": "公營醫療收費 2026 年 1 月起改革，同時大幅放寬費用減免：入息同資產喺限額之內，睇公立醫院同診所可以申請全數或部分減免。", "en": "Alongside the public healthcare fee reform from January 2026, the fee waiver was widened: if your income and assets are within the limits, you can apply for a full or partial waiver at public hospitals and clinics." },
+      "amount": { "zh": "全數或部分減免收費。部分減免入息上限（每月）：1 人 $15,450、2 人 $24,200、3 人 $40,200、4 人 $55,100；入息更低一般可全數減免。資產上限跟公屋資產限額", "en": "Full or partial waiver. Monthly income limits for a partial waiver: 1 person $15,450, 2 people $24,200, 3 people $40,200, 4 people $55,100; lower incomes usually get a full waiver. Asset limits follow the public housing asset limits" },
+      "apply": { "zh": "向公立醫院或診所嘅醫務社會服務部，或社署綜合家庭服務中心申請；可以先用醫管局「經濟審查計算程式」自己估。", "en": "Apply at the medical social services department of a public hospital or clinic, or an SWD integrated family service centre. You can first try the Hospital Authority's online calculator." },
+      "notes": { "zh": "未婚、唔係受供養嘅成年病人當一人家庭計（唔計同住父母）。家中每有一名 65 歲或以上長者，資產上限加 $168,000。綜援受助人可以直接豁免收費。減免最長有效 18 個月。", "en": "An unmarried adult patient who is not a dependant is assessed as a one-person household (parents living with you are not counted). The asset limit rises by $168,000 for each household member aged 65+. CSSA recipients are exempt. A waiver lasts up to 18 months." },
+      "url": { "zh": "https://www.ha.org.hk/haho/ho/cs/Fee_AM_IF_tc.pdf", "en": "https://www.ha.org.hk/haho/ho/cs/Fee_AM_IF_en.pdf" },
+      "source": { "zh": "醫院管理局：醫療費用援助優化措施（2025 年 11 月）及經濟審查計算程式", "en": "Hospital Authority: enhanced medical fee assistance (November 2025) and financial assessment calculator" },
+      "asOf": "2026-11-18"
+    },
+    {
       "id": "carer", "group": "living",
       "name": { "zh": "低收入照顧者生活津貼", "en": "Living allowance for low-income carers" },
       "summary": { "zh": "每月照顧輪候長期護理服務嘅長者，或者殘疾家人最少 80 小時，而住戶入息低過限額，可以申請。", "en": "If you care for an elderly person waiting for long-term care, or a family member with a disability, for 80+ hours a month and your household income is under the limit, you can apply." },
@@ -218,6 +267,17 @@
       "notes": { "zh": "用「調整後家庭收入」計：全年入息 ÷（家庭人數 + 1）。", "en": "Uses adjusted family income: annual income ÷ (family size + 1)." },
       "url": { "zh": "https://www.wfsfaa.gov.hk/tc/sfo/primarysecondary/tt/amount.php", "en": "https://www.wfsfaa.gov.hk/en/sfo/primarysecondary/tt/amount.php" },
       "source": { "zh": "學生資助處：中、小學生資助計劃", "en": "Student Finance Office: primary and secondary student aid" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "kcfrs", "group": "family",
+      "name": { "zh": "幼稚園及幼兒中心學費減免", "en": "Kindergarten and Child Care Centre Fee Remission" },
+      "summary": { "zh": "子女讀幼稚園或者幼兒中心全日制服務，家庭入息經審查後可以減免學費；幼稚園學生仲可以申請就學開支津貼。", "en": "If your child attends kindergarten or full-day child care, a means test can reduce the fees; kindergarten pupils can also get a student grant." },
+      "amount": { "zh": "按「調整後家庭收入」減免全額、3/4 額或半額學費（2026/27 學年：$46,292 或以下全額、$89,515 以上唔合資格）", "en": "Full, 3/4 or half fee remission by adjusted family income (2026/27: full rate at $46,292 or below, not eligible above $89,515)" },
+      "apply": { "zh": "經學生資助處「學生資助計劃綜合申請」申請（同書簿津貼同一份表），每個學年都要申請；2026/27 學年建議 5 月 31 日前交。", "en": "Apply each school year through the Student Finance Office combined application (the same form as textbook assistance); for 2026/27 it was best to apply by 31 May." },
+      "notes": { "zh": "幼稚園要係參加「幼稚園教育計劃」嘅本地課程幼稚園；幼兒中心要係社署轄下全日制服務，仲要通過「社會需要」審查，半日制唔資助。「調整後家庭收入」= 全年入息 ÷（家庭人數 + 1）。", "en": "The kindergarten must offer a local curriculum under the Kindergarten Education Scheme; child care must be full-day at an SWD centre and also pass a social needs test (half-day isn't covered). Adjusted family income = annual income ÷ (family size + 1)." },
+      "url": { "zh": "https://www.wfsfaa.gov.hk/tc/sfo/preprimary/kcfr/overview.php", "en": "https://www.wfsfaa.gov.hk/en/sfo/preprimary/kcfr/overview.php" },
+      "source": { "zh": "學生資助處：幼稚園及幼兒中心學費減免計劃", "en": "Student Finance Office: Kindergarten and Child Care Centre Fee Remission Scheme" },
       "asOf": "2026-11-18"
     },
     {
@@ -262,6 +322,28 @@
       "notes": { "zh": "長者生活津貼同高齡津貼唔可以同時領取。", "en": "OALA and OAA can't be received at the same time." },
       "url": { "zh": "https://www.swd.gov.hk/tc/pubsvc/socsecu/ssallowance/ssaec/ssaec_oala/ssaec_oala_limit/", "en": "https://www.swd.gov.hk/en/pubsvc/socsecu/ssallowance/ssaec/ssaec_oala/ssaec_oala_limit/" },
       "source": { "zh": "社會福利署：長者生活津貼入息及資產限額", "en": "SWD: OALA income and asset limits" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "seniorCard", "group": "parents",
+      "name": { "zh": "長者咭", "en": "Senior Citizen Card" },
+      "summary": { "zh": "65 歲或以上香港居民可以免費申請長者咭，喺政府部門、公共機構同參與商戶享有折扣、優惠同優先服務。", "en": "Residents aged 65+ can get a free Senior Citizen Card for discounts, concessions and priority service at government departments, public bodies and participating shops." },
+      "amount": { "zh": "免費申請（補領 $25）；亦有「智方便」電子長者咭", "en": "Free (replacement $25); an e-card on iAM Smart is also available" },
+      "apply": { "zh": "網上、郵寄或親身向社會福利署長者咭辦事處申請；65 歲生日前 60 日內可以預先遞交。", "en": "Apply online, by post or in person to the SWD Senior Citizen Card Office; you can apply up to 60 days before turning 65." },
+      "notes": null,
+      "url": { "zh": "https://www.swd.gov.hk/tc/pubsvc/elderly/cat_commsupp/seniorciti/", "en": "https://www.swd.gov.hk/en/pubsvc/elderly/cat_commsupp/seniorciti/" },
+      "source": { "zh": "社會福利署：長者咭計劃", "en": "SWD: Senior Citizen Card Scheme" },
+      "asOf": "2026-11-18"
+    },
+    {
+      "id": "colonscreen", "group": "parents",
+      "name": { "zh": "大腸癌篩查計劃", "en": "Colorectal Cancer Screening Programme" },
+      "summary": { "zh": "50 至 75 歲、冇大腸癌徵狀嘅香港居民，可以喺參與計劃嘅私家基層醫療醫生做政府資助篩查；大便隱血測試呈陽性就轉介做資助大腸鏡。", "en": "Residents aged 50 to 75 without symptoms can get government-subsidised screening from participating private primary care doctors; a positive stool test leads to a subsidised colonoscopy." },
+      "amount": { "zh": "登記同大便隱血測試化驗由政府全數資助；醫生診症有資助，可能要付少量額外費用（視乎醫生）", "en": "Enrolment and the stool test are fully subsidised; doctor consultations are subsidised but may carry a small co-payment depending on the doctor" },
+      "apply": { "zh": "先登記「醫健通」，再搵參與計劃嘅基層醫療醫生登記參加。", "en": "Register with eHealth first, then enrol with a participating primary care doctor." },
+      "notes": { "zh": "有大腸癌徵狀、高風險因素，或者指定期限內做過篩查或檢查嘅人士唔適用。", "en": "Not for people with symptoms, high-risk factors, or recent screening or examination within the set period." },
+      "url": { "zh": "https://www.colonscreen.gov.hk/tc/public/programme/who_may_enrol.html", "en": "https://www.colonscreen.gov.hk/en/public/programme/who_may_enrol.html" },
+      "source": { "zh": "衞生署：大腸癌篩查計劃", "en": "Department of Health: Colorectal Cancer Screening Programme" },
       "asOf": "2026-11-18"
     }
   ]

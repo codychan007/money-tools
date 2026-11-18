@@ -53,7 +53,7 @@ async function init() {
     { key: 'transport', q: t('你每月搭公共交通大約使幾多？', 'Roughly how much do you spend on public transport each month?'), type: 'options',
       opts: [['lt500', t('少於 $500', 'Under $500')], ['500', '$500 – $999'], ['1000', '$1,000 – $1,799'], ['1800', t('$1,800 或以上', '$1,800 or more')], unsure] },
     { key: 'family', q: t('以下有冇適用於你？（可以揀多項）', 'Do any of these apply to you? (Pick all that apply)'), type: 'multi', none: 'none',
-      opts: [['baby', t('有未滿 1 歲嘅子女，或者準備生育', 'A child under 1, or planning a baby')], ['school', t('有讀小學或中學嘅子女', 'Children in primary or secondary school')],
+      opts: [['baby', t('有未滿 1 歲嘅子女，或者準備生育', 'A child under 1, or planning a baby')], ['kinder', t('有讀幼稚園或幼兒中心嘅子女', 'A child at kindergarten or a child care centre')], ['school', t('有讀小學或中學嘅子女', 'Children in primary or secondary school')],
         ['p60', t('有 60 至 64 歲嘅父母', 'A parent aged 60 to 64')], ['p65', t('有 65 至 69 歲嘅父母', 'A parent aged 65 to 69')], ['p70', t('有 70 歲或以上嘅父母', 'A parent aged 70 or above')],
         ['carer', t('我每月照顧輪候長期護理服務嘅長者，或殘疾家人，最少 80 小時', 'I care for an elderly person waiting for long-term care, or a family member with a disability, 80+ hours a month')],
         ['none', t('以上都冇', 'None of these')]] },
@@ -116,9 +116,21 @@ async function init() {
       check(size >= 2, ['二人或以上家庭', 'Household of 2 or more'], ['非長者一人申請唔合資格', "Non-elderly one-person applicants aren't eligible"], [''])] };
 
     const hosInc = size === 1 ? T.hosWhite.income1 : T.hosWhite.income2, hosAst = size === 1 ? T.hosWhite.assets1 : T.hosWhite.assets2;
-    R.hos = { reasons: [check(ownsHome === null ? null : !ownsHome, ['冇住宅物業', 'No residential property'], ['擁有住宅物業唔可以申請', "Owning residential property isn't allowed"], ['唔可以擁有住宅物業', "You mustn't own residential property"]),
+    const whiteForm = () => [check(ownsHome === null ? null : !ownsHome, ['冇住宅物業', 'No residential property'], ['擁有住宅物業唔可以申請', "Owning residential property isn't allowed"], ['唔可以擁有住宅物業', "You mustn't own residential property"]),
       check(le(inc, hosInc), [`住戶月入低於 ${fmt(hosInc)}`, `Household income under ${fmt(hosInc)}`], [`住戶月入高於 ${fmt(hosInc)}`, `Household income above ${fmt(hosInc)}`], [`住戶月入要低於 ${fmt(hosInc)}`, `Household income must be under ${fmt(hosInc)}`]),
-      check(le(ast, hosAst), [`資產低於 ${fmt(hosAst)}`, `Assets under ${fmt(hosAst)}`], [`資產高於 ${fmt(hosAst)}`, `Assets above ${fmt(hosAst)}`], [`資產要低於 ${fmt(hosAst)}`, `Assets must be under ${fmt(hosAst)}`])] };
+      check(le(ast, hosAst), [`資產低於 ${fmt(hosAst)}`, `Assets under ${fmt(hosAst)}`], [`資產高於 ${fmt(hosAst)}`, `Assets above ${fmt(hosAst)}`], [`資產要低於 ${fmt(hosAst)}`, `Assets must be under ${fmt(hosAst)}`])];
+    R.hos = { reasons: whiteForm() };
+
+    // 白居二：限額同居屋白表；住緊公屋嘅人一般用綠表買二手居屋
+    R.wsm = { extra: ageIn(18, 39) !== false && !inPRH && !ownsHome ?t('40 歲以下可以揀參加「青年計劃（白居二）」', 'Under 40? You can join the Youth Scheme (WSM)') : '',
+      reasons: [...whiteForm(), check(inPRH === null ? null : !inPRH, ['唔係公屋住戶，用白表', 'Not a public housing tenant, so White Form applies'], ['公屋住戶一般用綠表買二手居屋', 'Public housing tenants usually buy on the secondary market with the Green Form'], ['公屋住戶一般用綠表', 'Public housing tenants usually use the Green Form'])] };
+
+    // 家有初生／天倫樂：要有初生嬰兒或 60 歲以上父母，而且申請緊或準備申請公屋／居屋
+    const hasBaby = fam.includes('baby'), hasElder = fam.includes('p60') || fam.includes('p65') || fam.includes('p70');
+    R.familyPriority = { reasons: [
+      check(hasBaby || hasElder, [hasBaby ? '有初生嬰兒或準備生育' : '有 60 歲或以上父母', hasBaby ? 'A newborn or a baby planned' : 'A parent aged 60+'], ['要有初生嬰兒，或者同 60 歲或以上父母一齊申請', 'You need a newborn, or to apply with a parent aged 60+'], ['']),
+      check(ownsHome === null ? null : !ownsHome, ['冇住宅物業，可以申請公屋或居屋', 'No residential property, so you can apply for public housing or HOS'], ['擁有住宅物業唔可以申請公屋或居屋', "Owning residential property rules out public housing and HOS"], ['唔可以擁有住宅物業', "You mustn't own residential property"]),
+      ...(!hasBaby && hasElder ? [unk('「天倫樂」要同長者一齊申請，並同住或入住就近單位照顧佢', 'You must apply with the elderly parent and live with, or near, and care for them')] : [])] };
 
     R.greenform = { reasons: [check(inPRH, ['住緊公屋，可以用綠表', 'In public housing, so you can use the Green Form'], ['綠表主要為公屋住戶而設', 'The Green Form is mainly for public housing tenants'], ['要係公屋住戶', 'Must be a public housing tenant'])] };
 
@@ -153,6 +165,13 @@ async function init() {
     R.cssa = { cap: 'maybe', reasons: [check(le(ast, cLim), [`資產低於 ${fmt(cLim)}`, `Assets under ${fmt(cLim)}`], [`資產高於 ${fmt(cLim)}（健全成人上限）`, `Assets above ${fmt(cLim)} (able-bodied limit)`], [`資產要低於 ${fmt(cLim)}`, `Assets must be under ${fmt(cLim)}`]),
       check(needy, ['入息可能不足以應付基本生活', 'Income may not cover basic needs'], ['以你嘅住戶入息，一般高過綜援認可需要', 'Your household income is usually above CSSA recognised needs'], ['要入息不足以應付基本生活', "Income must fall short of basic needs"])] };
 
+    const H = T.haWaiver, hi5 = Math.min(size, 5) - 1, hLim = H.income[hi5], hAst = T.prh.assets[idx];
+    R.haWaiver = { extra: inc != null && inc <= H.fullIncome[hi5] && le(ast, hAst) !== false ? t('估計一般可獲全數減免', 'Likely a full waiver') : '',
+      reasons: [check(le(inc, hLim), [`住戶月入低於 ${fmt(hLim)}（${size} 人上限）`, `Household income under ${fmt(hLim)} (limit for ${size})`],
+        [`住戶月入高於 ${fmt(hLim)}（${size} 人上限）`, `Household income above ${fmt(hLim)} (limit for ${size})`], [`住戶月入要低於 ${fmt(hLim)}`, `Household income must be under ${fmt(hLim)}`]),
+      check(le(ast, hAst), [`資產低於 ${fmt(hAst)}`, `Assets under ${fmt(hAst)}`], [`資產高於 ${fmt(hAst)}（家有 65 歲以上長者可以提高）`, `Assets above ${fmt(hAst)} (higher if an elderly person lives with you)`], [`資產要低於 ${fmt(hAst)}`, `Assets must be under ${fmt(hAst)}`]),
+      unk('只喺你需要睇公立醫院或診所時先申請；未婚成年人一般當一人家庭計', 'Apply only when you use public hospitals or clinics; unmarried adults are usually assessed as a one-person household')] };
+
     const ci = T.carer.income[Math.min(size, 6) - 1];
     R.carer = { reasons: [check(fam.includes('carer'), ['你每月照顧家人 80 小時或以上', 'You provide 80+ hours of care a month'], ['要每月照顧合資格家人最少 80 小時', 'You must provide 80+ hours of care a month to an eligible person'], ['']),
       check(le(inc, ci), [`住戶月入低於 ${fmt(ci)}`, `Household income under ${fmt(ci)}`], [`住戶月入高於 ${fmt(ci)}`, `Household income above ${fmt(ci)}`], [`住戶月入要低於 ${fmt(ci)}`, `Household income must be under ${fmt(ci)}`])] };
@@ -161,13 +180,26 @@ async function init() {
       check(perm, ['你係香港永久性居民', 'You are a permanent resident'], ['父母其中一方要係香港永久性居民', 'One parent must be a permanent resident'], ['父母其中一方要係香港永久性居民', 'One parent must be a permanent resident'])] };
 
     const afi = inc == null ? null : (inc * 12) / (size + 1);
-    R.textbook = { extra: afi == null ? '' : afi <= T.textbook.fullAFI ? t('估計可獲全額', 'Likely full rate') : afi <= T.textbook.halfAFI ? t('估計可獲半額', 'Likely half rate') : '',
+    R.textbook = { extra: afi == null || !fam.includes('school') ? '' : afi <= T.textbook.fullAFI ? t('估計可獲全額', 'Likely full rate') : afi <= T.textbook.halfAFI ? t('估計可獲半額', 'Likely half rate') : '',
       reasons: [check(fam.includes('school'), ['有讀中小學嘅子女', 'Children in primary or secondary school'], ['為有中小學生嘅家庭而設', 'For families with school children'], ['']),
         check(afi == null ? null : afi <= T.textbook.halfAFI, [`調整後家庭收入約 ${fmt(afi || 0)}，喺上限之內`, `Adjusted family income about ${fmt(afi || 0)}, within the limit`], [`調整後家庭收入約 ${fmt(afi || 0)}，高過上限 ${fmt(T.textbook.halfAFI)}`, `Adjusted family income about ${fmt(afi || 0)}, above the ${fmt(T.textbook.halfAFI)} limit`], ['按家庭入息審查', 'Means-tested on family income'])] };
+
+    const K = T.kcfrs;
+    R.kcfrs = { extra: afi == null || !fam.includes('kinder') ? '' : afi <= K.fullAFI ? t('估計可獲全額減免', 'Likely full remission') : afi <= K.threeQuarterAFI ? t('估計可獲 3/4 額減免', 'Likely 3/4 remission') : afi <= K.halfAFI ? t('估計可獲半額減免', 'Likely half remission') : '',
+      reasons: [check(fam.includes('kinder'), ['有讀幼稚園或幼兒中心嘅子女', 'A child at kindergarten or child care'], ['為有幼稚園或幼兒中心學童嘅家庭而設', 'For families with a child at kindergarten or child care'], ['']),
+        check(afi == null ? null : afi <= K.halfAFI, [`調整後家庭收入約 ${fmt(afi || 0)}，喺上限之內`, `Adjusted family income about ${fmt(afi || 0)}, within the limit`], [`調整後家庭收入約 ${fmt(afi || 0)}，高過上限 ${fmt(K.halfAFI)}`, `Adjusted family income about ${fmt(afi || 0)}, above the ${fmt(K.halfAFI)} limit`], ['按家庭入息審查', 'Means-tested on family income'])] };
+
+    // 專上學生資助：全日制學生；要有居留權或住港滿 3 年
+    R.postsec = { reasons: [check(a.work === 'student' ? true : known(a.work) ? false : null, ['你係全日制學生', 'You are a full-time student'], ['為全日制專上學生而設', 'For full-time post-secondary students'], ['要係全日制專上學生', 'You must be a full-time post-secondary student']),
+      check(['perm', '7y'].includes(a.res) ? true : null, ['有居留權或住港滿 3 年', 'Right of abode or 3+ years in Hong Kong'], [''], ['要有香港居留權，或者本人或家庭已連續住港滿 3 年', 'You need right of abode, or you or your family must have lived here 3 continuous years']),
+      unk('助學金要經家庭入息及資產審查；免入息審查貸款就唔使', 'Grants are means-tested; the non-means-tested loan is not')] };
 
     // 父母
     const p60 = fam.includes('p60') || fam.includes('p65') || fam.includes('p70'), p65 = fam.includes('p65') || fam.includes('p70'), p70 = fam.includes('p70');
     if (p60) {
+      R.seniorCard = { reasons: [check(p65, ['父母 65 歲或以上', 'Parent aged 65+'], ['年滿 65 歲先可以申請（生日前 60 日可預先遞交）', 'Available from 65 (apply up to 60 days early)'], [''])] };
+      R.colonscreen = { reasons: [check(fam.includes('p60') || fam.includes('p65') ? true : null, ['父母 50 至 75 歲', 'Parent aged 50 to 75'], [''], ['父母要 75 歲或以下', 'Your parent must be 75 or under']),
+        unk('要冇大腸癌徵狀或高風險因素，並經醫生評估', 'No symptoms or high-risk factors; a doctor will assess')] };
       R.fare2 = { reasons: [yes('父母 60 歲或以上', 'Parent aged 60+')] };
       R.hcv = { reasons: [check(p65, ['父母 65 歲或以上', 'Parent aged 65+'], ['年滿 65 歲先有醫療券', 'Vouchers start at age 65'], [''])] };
       R.oaa = { reasons: [check(p70, ['父母 70 歲或以上', 'Parent aged 70+'], ['年滿 70 歲先可以申請', 'Available from age 70'], ['']), unk('要住港最少 7 年', 'Needs 7 years of residence')] };
