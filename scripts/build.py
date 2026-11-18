@@ -454,10 +454,12 @@ UPD = {
 }
 
 
-def post_card(p, lang):
+def post_card(p, lang, summary=True):
+    # 主頁只顯示標題（summary=False）；市場解讀列表頁先顯示摘要
     href = url_for(f"/updates/{p['id']}/", lang)
+    desc = f'<p>{e(L(p, "summary", lang))}</p>' if summary else ""
     return (f'<a class="card tool-card" href="{href}"><span class="badge">{e(p["date"])}</span>'
-            f'<h3>{e(L(p, "title", lang))}</h3><p>{e(L(p, "summary", lang))}</p><span class="go">{UPD[lang]["read"]}</span></a>')
+            f'<h3>{e(L(p, "title", lang))}</h3>{desc}<span class="go">{UPD[lang]["read"]}</span></a>')
 
 
 def pdf_for(p, lang):
@@ -571,7 +573,7 @@ def main():
             latest = published[0] if published else None
             if latest:
                 src = re.sub(r'<div id="latest-update"[^>]*>.*?</div>',
-                             f'<div id="latest-update">{post_card(latest, lang)}</div>', src, count=1, flags=re.S)
+                             f'<div id="latest-update">{post_card(latest, lang, summary=False)}</div>', src, count=1, flags=re.S)
             ld = [{"@type": "WebSite", "name": SITE[lang]["brand"], "url": SITE_URL + url_for("/", lang), "inLanguage": SITE[lang]["html"]},
                   person_ld(lang)]
         elif base == "/updates/":
