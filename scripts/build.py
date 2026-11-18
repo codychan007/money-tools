@@ -460,6 +460,19 @@ def post_card(p, lang):
             f'<h3>{e(L(p, "title", lang))}</h3><p>{e(L(p, "summary", lang))}</p><span class="go">{UPD[lang]["read"]}</span></a>')
 
 
+def pdf_for(p, lang):
+    """中文頁用 file；有 file_en 時英文頁用英文 PDF。舊期冇 file_en，英文頁繼續用中文 PDF。"""
+    if lang == "en" and p.get("file_en"):
+        return p["file_en"]
+    return p["file"]
+
+
+def require_public_pdf(url):
+    path = ROOT / str(url).lstrip("/")
+    if not path.is_file():
+        raise SystemExit(f"❌ 找不到市場解讀 PDF：{url}")
+
+
 def update_page(p, lang):
     U = UPD[lang]
     S = SITE[lang]
@@ -473,6 +486,9 @@ def update_page(p, lang):
     period = U["period"].format(p=e(period_txt)) if period_txt else ""
     title = L(p, "title", lang)
     summary = L(p, "summary", lang)
+    pdf = pdf_for(p, lang)
+    # 英文 PDF 上線後，唔可以再話呢期全文係中文。冇 file_en 嘅舊期維持原句。
+    note = "" if lang == "en" and p.get("file_en") else U["pdf_note"]
     sep = "｜" if lang == "zh" else " | "
     src = f"""<!doctype html>
 <html lang="{S['html']}">
@@ -494,12 +510,12 @@ def update_page(p, lang):
       <h1>{e(title)}</h1>
       <p>{e(summary)}</p>
       {hl_html}
-      {U['pdf_note']}
+      {note}
       <div class="grid cols-2">
-        <a class="btn block" href="{e(p['file'])}" target="_blank" rel="noopener">{U['open']}</a>
-        <a class="btn secondary block" href="{e(p['file'])}" download>{U['download']}</a>
+        <a class="btn block" href="{e(pdf)}" target="_blank" rel="noopener">{U['open']}</a>
+        <a class="btn secondary block" href="{e(pdf)}" download>{U['download']}</a>
       </div>
-      <div id="pdf-pages" class="stack" data-pdf="{e(p['file'])}"><div class="card center muted">{U['loading']}</div></div>
+      <div id="pdf-pages" class="stack" data-pdf="{e(pdf)}"><div class="card center muted">{U['loading']}</div></div>
     </article>
     {U['disclaimer']}
     <div data-cta></div>
@@ -520,6 +536,9 @@ def update_page(p, lang):
 def published_posts():
     posts = load("updates.json")["posts"]
     for p in posts:
+        require_public_pdf(p["file"])
+        if p.get("file_en"):
+            require_public_pdf(p["file_en"])
         if p.get("status") == "published" and not (p.get("title_en") and p.get("summary_en")):
             print(f"⚠️ 市場解讀 {p['id']} 未有英文 title_en／summary_en，英文頁會暫時用中文")
     return sorted([p for p in posts if p.get("status") == "published"], key=lambda p: p["date"], reverse=True), posts
