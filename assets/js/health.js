@@ -2,7 +2,7 @@ import { mountLayout, money, readNum, moneyInput } from './layout.js';
 import { healthScores, healthGrade } from './finance.js';
 import { buildCard, shareCanvas } from './sharecard.js';
 import { t, locale } from './i18n.js';
-import { saveStep, nextCard, stepUrl } from './journey.js';
+import { saveStep, nextCard, stepUrl, chatCard } from './journey.js';
 
 mountLayout();
 const $ = id => document.getElementById(id);
@@ -51,13 +51,22 @@ function renderQ() {
   $('next').textContent = idx === QUESTIONS.length - 1 ? t('睇結果', 'See my score') : t('下一題', 'Next');
 
   if (q.type === 'money') {
+    // 「每月實際儲到幾多」：第一次去到，用「收入 − 開支 − 還款」預先填好，免得留空當 0
+    if (q.key === 'saving' && answers.saving === undefined && answers.income > 0) {
+      const left = Math.max(0, answers.income - (answers.expenses || 0) - (answers.debt || 0));
+      answers.saving = left;
+      $('q-hint').textContent = t(
+        `照你頭先答，收入減開支同還款大約剩 ${money(left)}，已經幫你填咗。實際儲唔到咁多就改低佢（包括轉去儲蓄戶口、定期投資嘅錢）。`,
+        `Based on your answers, about ${money(left)} is left after spending and repayments, so we've filled that in. If you actually save less, change it (include transfers to savings and regular investing).`);
+    }
     const v = answers[q.key] ?? '';
     $('q-body').innerHTML = `<div class="input-money"><input type="text" id="q-input" aria-label="${q.title}"
       placeholder="${PLACEHOLDER[q.key] || ''}" value="${v === '' ? '' : Number(v).toLocaleString(locale)}"></div>`;
     const inp = $('q-input'); moneyInput(inp);
-    inp.addEventListener('input', () => { answers[q.key] = readNum(inp); });
+    const sync = () => { answers[q.key] = inp.value.trim() ? readNum(inp) : undefined; };
+    inp.addEventListener('input', sync);
     inp.addEventListener('keydown', e => { if (e.key === 'Enter') next(); });
-    answers[q.key] = readNum(inp);
+    sync();
     setTimeout(() => inp.focus({ preventScroll: true }), 50);
   } else {
     $('q-body').innerHTML = `<div class="options">${q.options.map(([v, label]) =>
@@ -74,6 +83,11 @@ function renderQ() {
 function next() {
   const q = QUESTIONS[idx];
   if (q.type === 'choice' && answers[q.key] === undefined) { $('q-hint').textContent = t('揀一個答案先', 'Please pick an answer first'); return; }
+  if (q.type === 'money' && answers[q.key] === undefined) {
+    $('q-hint').textContent = t('填個大約數先，唔使好準；冇就填 0。', "Enter a rough figure first. It doesn't need to be exact; enter 0 if none.");
+    $('q-input')?.focus();
+    return;
+  }
   if (idx < QUESTIONS.length - 1) { idx++; renderQ(); } else showResult();
 }
 $('next').addEventListener('click', next);
@@ -168,13 +182,14 @@ function showResult() {
     `<div class="bar-row"><span>${DIM_LABELS[k]}</span><div class="progress"><i style="width:${v}%"></i></div><b class="num">${Math.round(v)}</b></div>`).join('');
   const tips = tipsFor(r, answers);
   $('tips').innerHTML = tips.map(x => `<li><b>${DIM_LABELS[x.k]}${t('：', ': ')}</b>${x.text}</li>`).join('');
-  $('next-step').innerHTML = nextStepHtml(r, answers);
-
-  saveStep('health', {
+  const saved = {
     total: r.total, tone: g.tone, dims: r.dims, saveRate: r.saveRate, efMonths: r.efMonths,
     income: answers.income || 0, expenses: answers.expenses || 0, cash: answers.cash || 0, saving: answers.saving || 0,
     weakest: tips[0]?.k, weakestTip: tips[0]?.text,
-  });
+  };
+  saveStep('health', saved);
+  // 先俾一個低壓力嘅「WhatsApp 我」，再帶去第 2 步
+  $('next-step').innerHTML = chatCard(saved) + nextStepHtml(r, answers);
 
   if (window.Chart) {
     const data = {

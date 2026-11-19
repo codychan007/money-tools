@@ -1,7 +1,7 @@
 // 理財體檢總結：將 3 步嘅結果（只喺訪客瀏覽器）放埋一頁
 import { mountLayout, money, ym, esc } from './layout.js';
 import { t } from './i18n.js';
-import { readJourney, clearJourney, STEPS, stepName, stepUrl, doneCount } from './journey.js';
+import { readJourney, clearJourney, STEPS, stepName, stepUrl, doneCount, chatCard } from './journey.js';
 
 mountLayout();
 const $ = id => document.getElementById(id);
@@ -68,6 +68,7 @@ function render() {
     out.push(`<section class="card tint"><h2>${t('最值得先處理嘅 1 件事', 'The one thing worth tackling first')}</h2>
       <p class="mt0"><b>${esc(DIM[j.health.weakest] || '')}${t('：', ': ')}</b>${esc(j.health.weakestTip)}</p>
       <p class="muted" style="font-size:13px;margin:0">${t('以上係一般性建議，冇考慮你嘅全部個人情況，亦唔涉及任何產品。', 'This is general guidance. It does not consider your full personal situation and does not involve any product.')}</p></section>`);
+    out.push(chatCard(j.health, { detail: true }));
   }
 
   if (missing.length) {
