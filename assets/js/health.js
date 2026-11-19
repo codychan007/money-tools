@@ -2,7 +2,7 @@ import { mountLayout, money, readNum, moneyInput } from './layout.js';
 import { healthScores, healthGrade } from './finance.js';
 import { buildCard, shareCanvas } from './sharecard.js';
 import { t, locale } from './i18n.js';
-import { saveStep, nextCard, stepUrl, chatCard } from './journey.js';
+import { saveStep, nextCard, stepUrl, chatCard, hideBottomCta } from './journey.js';
 
 mountLayout();
 const $ = id => document.getElementById(id);
@@ -93,7 +93,7 @@ function next() {
 $('next').addEventListener('click', next);
 $('prev').addEventListener('click', () => { if (idx > 0) { idx--; renderQ(); } });
 $('restart').addEventListener('click', () => {
-  idx = 0; $('result').classList.add('hidden'); $('quiz').classList.remove('hidden'); renderQ();
+  idx = 0; $('result').classList.add('hidden'); $('quiz').classList.remove('hidden'); hideBottomCta(false); renderQ();
   $('quiz').scrollIntoView({ behavior: 'smooth' });
 });
 
@@ -190,6 +190,7 @@ function showResult() {
   saveStep('health', saved);
   // 先俾一個低壓力嘅「WhatsApp 我」，再帶去第 2 步
   $('next-step').innerHTML = chatCard(saved) + nextStepHtml(r, answers);
+  hideBottomCta(true);   // 結果頁已經有「WhatsApp 我」卡，唔再喺頁底重複叫預約
 
   if (window.Chart) {
     const data = {

@@ -1,7 +1,7 @@
 // 理財體檢總結：將 3 步嘅結果（只喺訪客瀏覽器）放埋一頁
 import { mountLayout, money, ym, esc } from './layout.js';
 import { t } from './i18n.js';
-import { readJourney, clearJourney, STEPS, stepName, stepUrl, doneCount, chatCard } from './journey.js';
+import { readJourney, clearJourney, STEPS, stepName, stepUrl, doneCount, chatCard, hideBottomCta } from './journey.js';
 
 mountLayout();
 const $ = id => document.getElementById(id);
@@ -29,6 +29,7 @@ function render() {
       <p>${t('你未做任何一步。3 步大約 5 分鐘，做完呢度就會見到你嘅總結。', "You haven't done any steps yet. The 3 steps take about 5 minutes, and your summary will appear here.")}</p>
       <a class="btn shu lg" href="${stepUrl('health')}">${t('開始第 1 步：健康檢查 →', 'Start step 1: Health check →')}</a></div>`;
     $('clear-box').classList.add('hidden');
+    hideBottomCta(false);
     return;
   }
 
@@ -68,7 +69,6 @@ function render() {
     out.push(`<section class="card tint"><h2>${t('最值得先處理嘅 1 件事', 'The one thing worth tackling first')}</h2>
       <p class="mt0"><b>${esc(DIM[j.health.weakest] || '')}${t('：', ': ')}</b>${esc(j.health.weakestTip)}</p>
       <p class="muted" style="font-size:13px;margin:0">${t('以上係一般性建議，冇考慮你嘅全部個人情況，亦唔涉及任何產品。', 'This is general guidance. It does not consider your full personal situation and does not involve any product.')}</p></section>`);
-    out.push(chatCard(j.health, { detail: true }));
   }
 
   if (missing.length) {
@@ -76,6 +76,11 @@ function render() {
       <h2>${t('做埋先睇到完整總結', 'Finish them to see the full picture')}</h2>
       <div class="grid">${missing.map(s => `<a class="btn secondary block" href="${stepUrl(s)}">${t(`去做：${stepName(s)} →`, `Do it now: ${stepName(s)} →`)}</a>`).join('')}</div></section>`);
   }
+
+  // 「WhatsApp 我」放最尾；有咗佢就收埋頁底預約掣，免得叫兩次
+  const chat = chatCard(j.health, { detail: true });
+  out.push(chat);
+  hideBottomCta(!!chat);
 
   $('report').innerHTML = out.join('');
   $('clear-box').classList.remove('hidden');

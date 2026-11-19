@@ -123,6 +123,11 @@ export function chatCard(h, { detail = false } = {}) {
   </section>`;
 }
 
+/** 頁面已經有「WhatsApp 我」卡（入面有預約連結）就收埋頁底預約掣，免得重複叫人預約 */
+export function hideBottomCta(hide = true) {
+  document.querySelectorAll('[data-cta]').forEach(el => { el.hidden = hide; });
+}
+
 /** 頁底預約掣：做咗健康檢查就跟住分數講，唔再係一句通用嘢 */
 export function personaliseCta(j = readJourney()) {
   const w = weakest(j.health);
