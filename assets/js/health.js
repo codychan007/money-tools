@@ -2,7 +2,7 @@ import { mountLayout, money, readNum, moneyInput } from './layout.js';
 import { healthScores, healthGrade } from './finance.js';
 import { buildCard, shareCanvas } from './sharecard.js';
 import { t, locale } from './i18n.js';
-import { saveStep, nextCard, stepUrl, chatCard, hideBottomCta } from './journey.js';
+import { saveStep, nextCard, stepUrl, hideBottomCta } from './journey.js';
 
 mountLayout();
 const $ = id => document.getElementById(id);
@@ -188,9 +188,8 @@ function showResult() {
     weakest: tips[0]?.k, weakestTip: tips[0]?.text,
   };
   saveStep('health', saved);
-  // 先俾一個低壓力嘅「WhatsApp 我」，再帶去第 2 步
-  $('next-step').innerHTML = chatCard(saved) + nextStepHtml(r, answers);
-  hideBottomCta(true);   // 結果頁已經有「WhatsApp 我」卡，唔再喺頁底重複叫預約
+  // 第 1 步做完唔好咁快叫人 WhatsApp：「WhatsApp 我」卡只喺做晒 3 步嘅總結頁先出
+  $('next-step').innerHTML = nextStepHtml(r, answers);
 
   if (window.Chart) {
     const data = {

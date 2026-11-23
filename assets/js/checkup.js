@@ -77,8 +77,8 @@ function render() {
       <div class="grid">${missing.map(s => `<a class="btn secondary block" href="${stepUrl(s)}">${t(`去做：${stepName(s)} →`, `Do it now: ${stepName(s)} →`)}</a>`).join('')}</div></section>`);
   }
 
-  // 「WhatsApp 我」放最尾；有咗佢就收埋頁底預約掣，免得叫兩次
-  const chat = chatCard(j.health, { detail: true });
+  // 「WhatsApp 我」放最尾，做晒 3 步先出；有咗佢就收埋頁底預約掣，免得叫兩次
+  const chat = missing.length ? '' : chatCard(j.health, { detail: true });
   out.push(chat);
   hideBottomCta(!!chat);
 
