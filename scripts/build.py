@@ -442,27 +442,29 @@ def policy_item(it, lang):
 UPD = {
     "zh": {"disclaimer": """<div class="disclaimer"><strong>重要提示：</strong>市場解讀只係一般資訊整理，反映撰寫時嘅公開資料，
   不構成任何投資建議，亦唔係買賣任何資產嘅推介。投資涉及風險，過往表現不代表將來。</div>""",
-           "read": "閱讀全文 →", "back": "← 所有市場解讀", "draft": "草稿：未經審閱，請勿分享或公開。", "period": "回顧期 {p}｜",
+           "read": "閱讀全文 →", "seal": "讀", "back": "← 所有市場解讀", "draft": "草稿：未經審閱，請勿分享或公開。", "period": "回顧期 {p}｜",
            "asof": "數據截至 {d}", "highlights": "本期重點", "open": "全螢幕開啟 PDF", "download": "下載 PDF", "loading": "PDF 載入中……",
            "pdf_note": "", "empty": "第一篇市場解讀準備緊，遲啲再嚟睇。"},
     "en": {"disclaimer": """<div class="disclaimer"><strong>Important:</strong> Market notes are a general summary of public information at the time of writing.
   They are not investment advice or a recommendation to buy or sell any asset. Investment involves risk; past performance is not indicative of future results.</div>""",
-           "read": "Read more →", "back": "← All market notes", "draft": "Draft: not yet reviewed. Please don't share.", "period": "Covering {p} | ",
+           "read": "Read more →", "seal": "讀", "back": "← All market notes", "draft": "Draft: not yet reviewed. Please don't share.", "period": "Covering {p} | ",
            "asof": "Data as of {d}", "highlights": "Key points", "open": "Open the PDF", "download": "Download the PDF", "loading": "Loading the PDF…",
            "pdf_note": '<div class="lang-note">The full report (PDF) is written in Chinese. The key points above are in English.</div>',
            "empty": "The first market note is on its way. Check back soon."},
 }
 
 
-def post_card(p, lang, summary=True):
-    # 主頁只顯示標題（summary=False）；市場解讀列表頁先顯示摘要
+def post_card(p, lang):
     href = url_for(f"/updates/{p['id']}/", lang)
-    desc = f'<p>{e(L(p, "summary", lang))}</p>' if summary else ""
-    badge = f'<span class="badge">{e(p["date"])}</span>'
-    if not summary:  # 主頁：日期放喺同印章一樣高嘅位，標題同隔籬卡對齊
-        badge = f'<div class="card-top">{badge}</div>'
-    return (f'<a class="card tool-card" href="{href}">{badge}'
-            f'<h3>{e(L(p, "title", lang))}</h3>{desc}<span class="go">{UPD[lang]["read"]}</span></a>')
+    return (f'<a class="card tool-card" href="{href}"><span class="badge">{e(p["date"])}</span>'
+            f'<h3>{e(L(p, "title", lang))}</h3><p>{e(L(p, "summary", lang))}</p><span class="go">{UPD[lang]["read"]}</span></a>')
+
+
+def post_link(p, lang):
+    """主頁「計完之後，仲可以睇」：最新一期市場解讀，一行標題 + 日期"""
+    href = url_for(f"/updates/{p['id']}/", lang)
+    return (f'<a class="teaser" href="{href}"><span data-seal="{UPD[lang]["seal"]}"></span>'
+            f'<div><b>{e(L(p, "title", lang))}</b><span>{e(p["date"])}</span></div><span class="arrow">→</span></a>')
 
 
 def pdf_for(p, lang):
@@ -576,7 +578,7 @@ def main():
             latest = published[0] if published else None
             if latest:
                 src = re.sub(r'<div id="latest-update"[^>]*>.*?</div>',
-                             f'<div id="latest-update">{post_card(latest, lang, summary=False)}</div>', src, count=1, flags=re.S)
+                             f'<div id="latest-update">{post_link(latest, lang)}</div>', src, count=1, flags=re.S)
             ld = [{"@type": "WebSite", "name": SITE[lang]["brand"], "url": SITE_URL + url_for("/", lang), "inLanguage": SITE[lang]["html"]},
                   person_ld(lang)]
         elif base == "/updates/":
