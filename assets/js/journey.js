@@ -37,6 +37,16 @@ export function paintJourney(justDone) {
   const j = readJourney();
   document.querySelectorAll('.journey .step').forEach(a => {
     const s = a.dataset.step, seal = a.querySelector('.seal');
+    // 上一步未完成就唔俾撳，免得跳步：冇 href 嘅 <a> 唔會撳得到
+    const i = STEPS.indexOf(s), open = STEPS.slice(0, i).every(p => j[p]);
+    const href = a.getAttribute('href') || a.dataset.href;
+    if (href) a.dataset.href = href;
+    a.classList.toggle('locked', !open);
+    if (open) { a.setAttribute('href', href); a.removeAttribute('aria-disabled'); a.removeAttribute('title'); }
+    else {
+      a.removeAttribute('href'); a.setAttribute('aria-disabled', 'true');
+      a.title = t(`完成第 ${i} 步先可以做呢步`, `Finish step ${i} first`);
+    }
     if (!seal) return;
     seal.classList.toggle('empty', !j[s]);
     if (j[s] && s === justDone) { seal.classList.remove('stamped'); void seal.offsetWidth; seal.classList.add('stamped'); }

@@ -49,13 +49,13 @@ BRAND = SITE["zh"]["brand"]
 NAV_GROUP = ("實用資訊欄", "Useful info", [
     ("/tax/", "慳稅規劃", "Tax saver", "薪俸稅估算、扣稅三寶", "Salaries tax and top deductions"),
     ("/updates/", "市場解讀", "Market notes", "每兩星期講清楚市場", "Markets explained every two weeks"),
-    ("/market/", "市場快訊", "Markets today", "恒指、美股、利率、匯率", "Stocks, rates and FX, daily"),
+    ("/market/", "市場指數", "Market indices", "恒指、美股、利率、匯率", "Stocks, rates and FX, daily"),
     ("/deals/", "優惠福利", "Deals & benefits", "信用卡回贈、福利檢查", "Card rebates, benefits check"),
 ])
 CHECKUP_PAGES = ("/health/", "/salary/", "/goal/", "/checkup/")   # 呢幾頁都標示「理財體檢」
 FOOTER_LINKS = [
     ("/health/", "健康檢查", "Health check"), ("/salary/", "月薪分配", "Salary split"), ("/goal/", "目標計算機", "Goal planner"),
-    ("/tax/", "慳稅規劃", "Tax saver"), ("/updates/", "市場解讀", "Market notes"), ("/market/", "市場快訊", "Markets"),
+    ("/tax/", "慳稅規劃", "Tax saver"), ("/updates/", "市場解讀", "Market notes"), ("/market/", "市場指數", "Market indices"),
     ("/deals/", "優惠福利", "Deals & benefits"), ("/book/", "預約傾談", "Book a chat"),
     ("/about/", "關於我", "About me"), ("/disclaimer/", "免責聲明及私隱政策", "Disclaimer & privacy"),
 ]
@@ -262,7 +262,10 @@ def journey_bar(current, lang):
     steps = []
     for n, (key, ch, zh, en) in enumerate(JOURNEY, 1):
         cur = ' aria-current="step"' if key == current else ""
-        steps.append(f'<a class="step" href="{url_for(f"/{key}/", lang)}" data-step="{key}"{cur}>'
+        href = url_for(f"/{key}/", lang)
+        # 第 1 步一開始就撳得；之後嘅步驟要上一步完成先開（journey.js paintJourney 會解鎖）
+        link = f'class="step" href="{href}"' if n == 1 else f'class="step locked" data-href="{href}" aria-disabled="true"'
+        steps.append(f'<a {link} data-step="{key}"{cur}>'
                      f'{seal(ch, "empty")}<span>{n}. {e(zh if lang == "zh" else en)}</span></a>')
     return (f'<nav class="journey-wrap" aria-label="{e(head[0])}"><div class="journey-head"><b>{e(head[0])}</b>'
             f'<span data-journey-count>{e(head[1])}</span></div><div class="journey">{"".join(steps)}</div></nav>')

@@ -1,4 +1,4 @@
-// 市場快訊：先顯示 data/market.json（每日自動更新），
+// 市場指數：先顯示 data/market.json（每日自動更新），
 // 再喺訪客瀏覽器直接向金管局／Frankfurter 讀取最新利率及匯率（讀到就覆蓋）。
 import { mountLayout, loadJSON, esc, todayHK } from './layout.js';
 import { EN, t } from './i18n.js';
