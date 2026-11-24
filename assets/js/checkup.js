@@ -1,6 +1,7 @@
 // 理財體檢總結：將 3 步嘅結果（只喺訪客瀏覽器）放埋一頁
 import { mountLayout, money, ym, esc } from './layout.js';
 import { t } from './i18n.js';
+import { buildCard, shareCanvas } from './sharecard.js';
 import { readJourney, clearJourney, STEPS, stepName, stepUrl, doneCount, chatCard, hideBottomCta } from './journey.js';
 
 mountLayout();
@@ -82,9 +83,59 @@ function render() {
   out.push(chat);
   hideBottomCta(!!chat);
 
+  // 做晒 3 步先有「3 步完成」分享圖
+  if (!missing.length) {
+    out.push(`<section class="card"><h2>${t('分享到 IG Story', 'Share to your IG Story')}</h2>
+      <p class="muted mt0">${t('分享圖會顯示分數、儲蓄比例同達標時間，唔會顯示你嘅收入或者存款。', "The image shows your score, savings share and time to goal. It doesn't show your income or savings.")}</p>
+      <label class="toggle"><input type="checkbox" id="show-amounts"> ${t('喺圖入面顯示目標金額', 'Show my goal amount in the image')}</label>
+      <button class="btn block" id="share-btn">${t('生成「3 步完成」分享圖', 'Create my "3 steps done" image')}</button>
+      <div class="share-preview" id="share-preview"></div></section>`);
+  }
+
   $('report').innerHTML = out.join('');
   $('clear-box').classList.remove('hidden');
 }
+
+// ---------- 「3 步完成」分享卡（唔顯示收入同存款）----------
+function goalLine(g, showAmt) {
+  const amt = showAmt ? t(`儲到 ${money(g.target)}`, `reach ${money(g.target)}`) : t('儲到目標', 'reach my goal');
+  if (g.mode === 'time') {
+    return g.months != null ? t(`${ym(g.months)}${amt}`, `${ym(g.months)} to ${amt}`) : t(`50 年內未${amt}`, `Over 50 years to ${amt}`);
+  }
+  return t(`${g.years} 年內${amt}`, `${amt} within ${g.years} years`);
+}
+
+$('report').addEventListener('click', e => {
+  if (!e.target.closest('#share-btn')) return;
+  const j = readJourney();
+  if (!j.health || !j.salary || !j.goal) return;
+  const h = j.health, showAmt = $('show-amounts')?.checked;
+  const rows = [
+    ['健', t('理財健康檢查', 'Money health check'), t(`緊急備用金夠 ${(h.efMonths || 0).toFixed(1)} 個月`, `Emergency fund: ${(h.efMonths || 0).toFixed(1)} months`)],
+    ['薪', t('月薪分配', 'Salary split'), t(`每月儲 ${j.salary.pct}% 人工`, `Saving ${j.salary.pct}% of my pay`)],
+    ['標', t('目標計算', 'Goal planner'), goalLine(j.goal, showAmt)],
+  ];
+  const cv = buildCard({
+    kicker: t('理財體檢 3 步・全部完成', '3-step money check-up · all done'),
+    title: t('我做完 3 步理財體檢！', 'I finished the 3-step check-up!'),
+    big: `${h.total}`, bigSub: t(`理財健康分數・${GRADE[h.tone] || ''}`, `Money health score · ${GRADE[h.tone] || ''}`),
+    draw(ctx, box, { C, FONT, stamp }) {
+      let y = box.y + 40;
+      rows.forEach(([ch, label, value], i) => {
+        stamp(ctx, box.x, y, 92, ch);
+        ctx.fillStyle = C.ink2; ctx.font = `500 30px ${FONT}`; ctx.fillText(`${i + 1}. ${label}`, box.x + 126, y + 36);
+        ctx.fillStyle = C.ink; ctx.font = `700 40px ${FONT}`; ctx.fillText(value, box.x + 126, y + 88);
+        y += 150;
+        if (i < rows.length - 1) { ctx.fillStyle = C.line; ctx.fillRect(box.x, y - 26, box.w, 2); }
+      });
+      ctx.fillStyle = C.ochre50; ctx.fillRect(box.x - 20, y + 10, box.w + 40, 96);
+      ctx.fillStyle = '#6B4A0E'; ctx.font = `700 34px ${FONT}`; ctx.textAlign = 'center';
+      ctx.fillText(t('3 步大約 5 分鐘，資料唔會上傳', '3 steps, about 5 minutes, nothing uploaded'), box.x + box.w / 2, y + 70);
+      ctx.textAlign = 'left';
+    },
+  });
+  shareCanvas(cv, 'my-money-checkup.png', $('share-preview'));
+});
 
 $('clear').addEventListener('click', () => {
   clearJourney();

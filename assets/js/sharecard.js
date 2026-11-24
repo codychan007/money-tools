@@ -33,7 +33,7 @@ export function wrapText(ctx, text, x, y, maxW, lineH) {
   return y;
 }
 
-function stamp(ctx, x, y, size, ch) {
+export function stamp(ctx, x, y, size, ch) {
   ctx.save();
   ctx.translate(x + size / 2, y + size / 2); ctx.rotate(-3 * Math.PI / 180);
   ctx.fillStyle = C.shu; rr(ctx, -size / 2, -size / 2, size, size, size * 0.1); ctx.fill();
@@ -83,7 +83,7 @@ export function buildCard(opts) {
     ctx.fillText(opts.bigSub || '', W / 2, box.y + 270);
     ctx.textAlign = 'left';
   }
-  if (opts.draw) opts.draw(ctx, { x: box.x + 60, y: box.y + (opts.big ? 330 : 80), w: box.w - 120, h: box.h - 400 }, { C, FONT, rr });
+  if (opts.draw) opts.draw(ctx, { x: box.x + 60, y: box.y + (opts.big ? 330 : 80), w: box.w - 120, h: box.h - 400 }, { C, FONT, rr, stamp });
 
   // 頁尾
   ctx.fillStyle = C.ink; ctx.font = `700 42px ${SERIF}`; ctx.textAlign = 'center';
