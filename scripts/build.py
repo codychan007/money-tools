@@ -260,7 +260,8 @@ CTA = {
 
 def journey_bar(current, lang):
     head = {"zh": ("理財體檢 3 步", "完成 0 / 3"), "en": ("3-step money check-up", "0 of 3 done")}[lang]
-    hint = {"zh": "🔒 要逐步完成：做完上一步，下一步先會解鎖。", "en": "🔒 One step at a time: finish a step to unlock the next."}[lang]
+    hint = {"zh": "跟住次序做，每步接住上一步，最後拼成一頁總結。",
+            "en": "Go in order: each step builds on the one before, and they come together in a one-page summary."}[lang]
     steps = []
     for n, (key, ch, zh, en) in enumerate(JOURNEY, 1):
         cur = ' aria-current="step"' if key == current else ""

@@ -15,6 +15,7 @@ if (btn && n > 0) {
     btn.href = stepUrl(s);
     if (note) note.textContent = t(`你已完成 ${n} / 3 步，上次嘅結果仲喺你部機度。`, `You've done ${n} of 3 steps. Your earlier results are still on this device.`);
   } else {
+    document.getElementById('gains')?.setAttribute('hidden', '');   // 做晒 3 步，唔使再講「做完會有咩」
     btn.textContent = t('睇我嘅理財體檢總結 →', 'See my check-up summary →');
     btn.href = `${P}/checkup/`;
     if (note) note.textContent = t('3 步已經做晒。可以隨時返嚟睇總結，或者重新做一次。', "You've finished all 3 steps. Come back to the summary any time, or redo a step.");
