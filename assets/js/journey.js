@@ -52,6 +52,9 @@ export function paintJourney(justDone) {
     if (j[s] && s === justDone) { seal.classList.remove('stamped'); void seal.offsetWidth; seal.classList.add('stamped'); }
   });
   const n = doneCount(j);
+  // 三步都解鎖咗就唔使再提「逐步完成」
+  const allOpen = STEPS.every((s, i) => STEPS.slice(0, i).every(p => j[p]));
+  document.querySelectorAll('[data-journey-hint]').forEach(el => { el.hidden = allOpen; });
   document.querySelectorAll('[data-journey-count]').forEach(el => { el.textContent = t(`完成 ${n} / 3`, `${n} of 3 done`); });
   personaliseCta(j);
 }

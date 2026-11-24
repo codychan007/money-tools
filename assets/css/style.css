@@ -228,6 +228,8 @@ main { padding: 24px 0 48px; }
 /* 上一步未完成：灰咗、撳唔到（journey.js 會拎走 href） */
 .journey .step.locked { cursor: not-allowed; opacity: .45; }
 .journey .step.locked[aria-current="step"] { opacity: 1; cursor: default; }
+.journey .step.locked > span::after { content: " 🔒"; font-size: 11px; }
+.journey-hint { margin: 8px 0 0; font-size: 13px; color: var(--ink-2); text-align: center; }
 .journey-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; font-size: 13px; color: var(--ink-2); }
 .journey-head b { font-family: var(--serif); color: var(--ink); font-size: 15px; }
 

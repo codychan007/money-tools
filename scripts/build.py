@@ -259,6 +259,7 @@ CTA = {
 
 def journey_bar(current, lang):
     head = {"zh": ("理財體檢 3 步", "完成 0 / 3"), "en": ("3-step money check-up", "0 of 3 done")}[lang]
+    hint = {"zh": "🔒 要逐步完成：做完上一步，下一步先會解鎖。", "en": "🔒 One step at a time: finish a step to unlock the next."}[lang]
     steps = []
     for n, (key, ch, zh, en) in enumerate(JOURNEY, 1):
         cur = ' aria-current="step"' if key == current else ""
@@ -268,7 +269,8 @@ def journey_bar(current, lang):
         steps.append(f'<a {link} data-step="{key}"{cur}>'
                      f'{seal(ch, "empty")}<span>{n}. {e(zh if lang == "zh" else en)}</span></a>')
     return (f'<nav class="journey-wrap" aria-label="{e(head[0])}"><div class="journey-head"><b>{e(head[0])}</b>'
-            f'<span data-journey-count>{e(head[1])}</span></div><div class="journey">{"".join(steps)}</div></nav>')
+            f'<span data-journey-count>{e(head[1])}</span></div><div class="journey">{"".join(steps)}</div>'
+            f'<p class="journey-hint" data-journey-hint>{e(hint)}</p></nav>')
 
 
 def avatar(lang):
