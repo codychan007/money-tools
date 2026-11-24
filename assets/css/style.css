@@ -197,6 +197,8 @@ main { padding: 24px 0 48px; }
 .teaser b { font-family: var(--serif); font-size: 1.05rem; display: block; }
 .teaser span { color: var(--ink-2); font-size: 14px; }
 .teaser .arrow { margin-left: auto; color: var(--shu); font-weight: 700; flex-shrink: 0; }
+/* 印章字唔好跟 .teaser span 變細變灰：用返米白色同放大，紅底上面先睇得清 */
+.teaser .seal { color: #FBF3E4; font-size: 26px; }
 .section-title { margin-bottom: 4px; }
 .section-sub { color: var(--ink-2); margin-top: 0; }
 .about-strip { display: grid; gap: 20px; }

@@ -220,7 +220,8 @@ $('share-btn').addEventListener('click', () => {
     draw(ctx, box, { C, FONT }) {
       // 雷達圖
       const keys = Object.keys(r.dims), N = keys.length;
-      const cx = box.x + box.w / 2, cy = box.y + 230, R = 190;
+      // 雷達圖同下面 5 條分項要全部收喺白卡入面（白卡底 ≈ box.y + 710），唔好壓到頁尾
+      const cx = box.x + box.w / 2, cy = box.y + 190, R = 160;
       const pt = (i, s) => { const a = -Math.PI / 2 + i * 2 * Math.PI / N; return [cx + Math.cos(a) * R * s, cy + Math.sin(a) * R * s]; };
       ctx.strokeStyle = C.line; ctx.lineWidth = 2;
       [0.25, 0.5, 0.75, 1].forEach(s => { ctx.beginPath(); keys.forEach((_, i) => { const [x, y] = pt(i, s); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.closePath(); ctx.stroke(); });
@@ -229,14 +230,14 @@ $('share-btn').addEventListener('click', () => {
       ctx.font = `600 30px ${FONT}`; ctx.fillStyle = C.ink; ctx.textAlign = 'center';
       keys.forEach((k, i) => { const [x, y] = pt(i, 1.3); ctx.fillText(DIM_LABELS[k], x, y + 10); });
       // 分項
-      let y = cy + R + 120;
-      ctx.font = `600 34px ${FONT}`;
+      let y = cy + R + 100;
+      ctx.font = `600 32px ${FONT}`;
       keys.forEach(k => {
         ctx.textAlign = 'left'; ctx.fillStyle = C.ink2; ctx.fillText(DIM_LABELS[k], box.x, y);
-        ctx.fillStyle = C.paper2; ctx.fillRect(box.x + 290, y - 26, box.w - 400, 22);
-        ctx.fillStyle = C.matcha; ctx.fillRect(box.x + 290, y - 26, (box.w - 400) * r.dims[k] / 100, 22);
+        ctx.fillStyle = C.paper2; ctx.fillRect(box.x + 290, y - 24, box.w - 400, 20);
+        ctx.fillStyle = C.matcha; ctx.fillRect(box.x + 290, y - 24, (box.w - 400) * r.dims[k] / 100, 20);
         ctx.textAlign = 'right'; ctx.fillStyle = C.ink; ctx.fillText(String(Math.round(r.dims[k])), box.x + box.w, y);
-        y += 64;
+        y += 52;
       });
       ctx.textAlign = 'left';
     },
