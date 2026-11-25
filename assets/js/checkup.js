@@ -69,7 +69,7 @@ function render() {
   if (j.health?.weakestTip) {
     out.push(`<section class="card tint"><h2>${t('最值得先處理嘅 1 件事', 'The one thing worth tackling first')}</h2>
       <p class="mt0"><b>${esc(DIM[j.health.weakest] || '')}${t('：', ': ')}</b>${esc(j.health.weakestTip)}</p>
-      <p class="muted" style="font-size:13px;margin:0">${t('以上係一般性建議，冇考慮你嘅全部個人情況，亦唔涉及任何產品。', 'This is general guidance. It does not consider your full personal situation and does not involve any product.')}</p></section>`);
+      <p class="muted" style="font-size:13px;margin:0">${t('以上建議只係根據你答嘅 10 條題，你嘅實際情況可能仲有其他要考慮；內容唔涉及任何產品。', 'These suggestions are based only on your answers to the 10 questions, and your situation may involve more to think about. They do not involve any product.')}</p></section>`);
   }
 
   if (missing.length) {
