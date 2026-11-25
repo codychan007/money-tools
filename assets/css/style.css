@@ -449,6 +449,8 @@ details.faq summary::-webkit-details-marker { display: none; }
 details.faq summary::before { content: "＋"; color: var(--shu); flex-shrink: 0; }
 details.faq[open] summary::before { content: "－"; }
 details.faq p { margin: 0 0 12px; color: var(--ink-2); }
+details.faq .faq-body { margin: 0 0 12px; }
+details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 
 /* ---------- 保障資訊 ---------- */
 .policy-item { border-left: 3px solid var(--shu); padding-left: 12px; margin: 14px 0; }

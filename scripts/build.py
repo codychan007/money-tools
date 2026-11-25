@@ -354,7 +354,9 @@ def faq_html_and_ld(key, lang):
     name = "faq.json" if lang == "zh" else "faq.en.json"
     items = json.loads(fill((ROOT / "content" / name).read_text(encoding="utf-8"), lang))[key]
     body = "".join(
-        f'<details class="faq"><summary>{e(q["q"])}</summary><p>{q["a"]}</p></details>' for q in items)
+        f'<details class="faq"><summary>{e(q["q"])}</summary>'
+        + (f'<div class="faq-body">{q["a"]}</div>' if q["a"].lstrip().startswith("<") else f'<p>{q["a"]}</p>')
+        + '</details>' for q in items)
     title = "常見問題" if lang == "zh" else "Frequently asked questions"
     section = f'<section class="card"><h2>{title}</h2>{body}</section>'
     ld = {"@type": "FAQPage", "mainEntity": [
