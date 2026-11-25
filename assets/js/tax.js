@@ -100,13 +100,13 @@ function planHtml(Y, p, r) {
   return `<div>
           <div class="q-step">${t('扣稅三寶', 'The three tax deductions')}</div>
           <p class="muted mt0" style="font-size:14px">${t('「扣稅三寶」即係自願醫保保費、TVC（強積金可扣稅自願性供款）同 QDAP（合資格延期年金），交咗就可以扣稅。照你嘅數，用盡可以慳幾多：', 'The three tax deductions are VHIS premiums, TVC (MPF tax-deductible voluntary contributions) and QDAP (qualifying deferred annuities). Based on your figures, here is what using them could save:')}</p>
-          <h3>${zero ? t('最少要多扣幾多，稅款先會歸零？', 'The least extra you need for zero tax') : t('最多可以慳幾多？', 'The most you could save')}</h3>
-          <div class="big-result">${money(j.need)}</div>
+          <h3>${zero ? t('最多可以慳幾多稅？（稅款可以減到 $0）', 'The most tax you could save (down to $0)') : t('最多可以慳幾多稅？', 'The most tax you could save')}</h3>
+          <div class="big-result">${money(j.saving)}</div>
           <p>${zero
-            ? t(`只要多 ${money(j.need)} 嘅自願醫保保費或者 TVC／QDAP 供款，稅款就由 <b>${money(r.tax)}</b> 減到 <b>$0</b>，慳 <b>${money(j.saving)}</b>。唔使買到上限，多過呢個數都唔會再慳到稅。`,
-                `Just ${money(j.need)} more in VHIS premiums or TVC / QDAP contributions takes your tax from <b>${money(r.tax)}</b> to <b>$0</b>, saving <b>${money(j.saving)}</b>. You don’t need to go up to the limits; anything above this saves no more tax.`)
-            : t(`就算用盡上限，稅款都只可以由 <b>${money(r.tax)}</b> 減到 <b>${money(j.floor)}</b>，慳 <b>${money(j.saving)}</b>。要做到呢個效果，要多扣 ${money(j.need)}。`,
-                `Even at the full limits, your tax only falls from <b>${money(r.tax)}</b> to <b>${money(j.floor)}</b>, saving <b>${money(j.saving)}</b>. That takes ${money(j.need)} more in deductions.`)}</p>
+            ? t(`只要多 <b>${money(j.need)}</b> 嘅自願醫保保費或者 TVC／QDAP 供款，稅款就由 <b>${money(r.tax)}</b> 減到 <b>$0</b>。唔使買到上限，多過呢個數都唔會再慳到稅。`,
+                `Just <b>${money(j.need)}</b> more in VHIS premiums or TVC / QDAP contributions takes your tax from <b>${money(r.tax)}</b> to <b>$0</b>. You don’t need to go up to the limits; anything above this saves no more tax.`)
+            : t(`要用盡上限，即係多扣 <b>${money(j.need)}</b>，稅款由 <b>${money(r.tax)}</b> 減到 <b>${money(j.floor)}</b>。`,
+                `Using the full limits means <b>${money(j.need)}</b> more in deductions, taking your tax from <b>${money(r.tax)}</b> to <b>${money(j.floor)}</b>.`)}</p>
           <ul class="tips">${opts.join('')}</ul>
           ${had}
           <div class="callout" style="font-size:14px">
