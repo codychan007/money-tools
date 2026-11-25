@@ -106,7 +106,9 @@ main { padding: 24px 0 48px; }
   .brand > span:not(.seal) { display: block; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   html[lang="en"] .brand { font-size: 12.5px; }
   .head-tools { grid-area: tools; flex-shrink: 0; gap: 2px; margin-left: 0; }
-  .head-tools .nav-book-bar { font-size: 13px; padding: 0 8px; min-height: 34px; }
+  /* 三個掣嘅 flex gap 一樣係 2px，但漢堡圖示居中喺 40px 掣入面，
+     語言掣到圖示嘅可見空隙約 12px。預約掣再加 10px，先同右邊嗰段齊，組仍然靠右。 */
+  .head-tools .nav-book-bar { font-size: 13px; padding: 0 8px; min-height: 34px; margin-right: 10px; }
   .head-tools .lang-switch { padding: 0 8px; min-height: 34px; }
   .menu-btn { width: 40px; margin-right: -6px; }
   .nav { grid-column: 1 / -1; }
@@ -119,6 +121,9 @@ main { padding: 24px 0 48px; }
 }
 @media (max-width: 370px) {
   html[lang="en"] .brand { font-size: 11.5px; }
+  /* 窄屏英文品牌名原本剛好顯示晒。預約掣多咗 10px 空隙，兩邊內距各收 2px 補返。 */
+  html[lang="en"] .head-tools .nav-book-bar,
+  html[lang="en"] .head-tools .lang-switch { padding-left: 4px; padding-right: 4px; }
 }
 .head-tools { order: 2; }
 .nav { display: none; padding: 4px 0 12px; flex-basis: 100%; order: 3; }   /* 手機：選單喺語言掣同關閉掣下面 */
