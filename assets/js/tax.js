@@ -98,6 +98,8 @@ function planHtml(Y, p, r) {
     `<li><b>${t('兩樣夾埋：', 'A mix of both: ')}</b>${t(`合共多扣 ${money(j.need)} 就得，喺各自上限之內點分都得，例如自願醫保 ${money(a)}${b > 0 ? ` ＋ TVC／QDAP ${money(b)}` : ''}`, `${money(j.need)} more in total, split any way within each cap, e.g. VHIS ${money(a)}${b > 0 ? ` + TVC / QDAP ${money(b)}` : ''}`)}</li>`,
   ];
   return `<div>
+          <div class="q-step">${t('扣稅三寶', 'The three tax deductions')}</div>
+          <p class="muted mt0" style="font-size:14px">${t('「扣稅三寶」即係自願醫保保費、TVC（強積金可扣稅自願性供款）同 QDAP（合資格延期年金），交咗就可以扣稅。照你嘅數，用盡可以慳幾多：', 'The three tax deductions are VHIS premiums, TVC (MPF tax-deductible voluntary contributions) and QDAP (qualifying deferred annuities). Based on your figures, here is what using them could save:')}</p>
           <h3>${zero ? t('最少要多扣幾多，稅款先會歸零？', 'The least extra you need for zero tax') : t('最多可以慳幾多？', 'The most you could save')}</h3>
           <div class="big-result">${money(j.need)}</div>
           <p>${zero
