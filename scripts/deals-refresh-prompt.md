@@ -4,7 +4,7 @@
 
 ## 目標
 
-更新 `data/deals.json`，為香港打工仔整理**目前有效、回贈較高**嘅信用卡及消費平台優惠，涵蓋五個類別：餐飲（dining）、網購（online）、交通（transport）、旅遊（travel）、超市（supermarket）。
+更新 `data/deals.json`，為香港社會人整理**目前有效、回贈較高**嘅信用卡及消費平台優惠，涵蓋五個類別：餐飲（dining）、網購（online）、交通（transport）、旅遊（travel）、超市（supermarket）。
 
 ## 步驟
 

@@ -17,8 +17,8 @@ PAPER, INK, INK2, SHU, CREAM = (243, 236, 221), (35, 31, 28), (86, 78, 70), (181
 
 # key: (印章字, 中文標題, 中文副題, 英文標題, 英文副題)；長標題用 | 手動斷行
 CARDS = {
-    "home": ("理", "香港打工仔|3 步理財體檢", "健康檢查・月薪分配・目標計算",
-             "A 3-step money check-up|for Hong Kong employees", "Health check · salary split · goal planner"),
+    "home": ("理", "香港社會人|3 步理財體檢", "健康檢查・月薪分配・目標計算",
+             "A 3-step money check-up|for HK working adults", "Health check · salary split · goal planner"),
     "salary": ("薪", "月薪扣強積金，|實際到手幾多？", "月薪分配計算器：50/30/20 即刻分好",
                "After MPF, what do|you actually take home?", "Salary split calculator: 50/30/20 in seconds"),
     "goal": ("標", "想儲 50 萬要幾耐？", "理財目標計算機：唔同回報率一次過比較",
