@@ -207,11 +207,11 @@ main { padding: 24px 0 48px; }
 .tool-card:active { transform: none; box-shadow: var(--shadow); }
 .tool-card .seal { margin-bottom: 10px; }
 .tool-card h3 { margin: 4px 0 4px; }
-/* 主頁「計完之後，仲可以睇」：精簡連結；桌面三個工具一行，最新市場解讀獨佔一行 */
+/* 主頁「計完之後，仲可以睇」：精簡連結；桌面兩個工具一行，最新市場解讀獨佔一行 */
 .quick-links .teaser { padding: 10px 14px; }
 .quick-links .teaser b { font-size: 1rem; }
 .quick-links #latest-update { display: grid; }
-@media (min-width: 760px) { .quick-links { grid-template-columns: repeat(3, 1fr); } .quick-links #latest-update { grid-column: 1 / -1; } }
+@media (min-width: 760px) { .quick-links { grid-template-columns: repeat(2, 1fr); } .quick-links #latest-update { grid-column: 1 / -1; } }
 .tool-card p { margin: 0; color: var(--ink-2); font-size: 15px; }
 .tool-card .go { color: var(--shu-dark); font-weight: 700; font-size: 14px; margin-top: 12px; display: inline-block; }
 
@@ -238,8 +238,8 @@ main { padding: 24px 0 48px; }
 .teaser b { font-family: var(--serif); font-size: 1.05rem; display: block; }
 .teaser span { color: var(--ink-2); font-size: 14px; }
 .teaser .arrow { margin-left: auto; color: var(--shu); font-weight: 700; flex-shrink: 0; }
-/* 印章字唔好跟 .teaser span 變細變灰：用返米白色同放大，紅底上面先睇得清 */
-.teaser .seal { color: #FBF3E4; font-size: 26px; }
+/* 印章字唔好跟 .teaser span 變細變灰：用返米白色，大細同其他細印章一樣（18px），唔好撐到印章邊 */
+.teaser .seal { color: #FBF3E4; font-size: 18px; }
 .section-title { margin-bottom: 4px; }
 .section-sub { color: var(--ink-2); margin-top: 0; }
 .about-strip { display: grid; gap: 20px; }
