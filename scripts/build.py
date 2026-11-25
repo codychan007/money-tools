@@ -476,7 +476,7 @@ UPD = {
 def post_card(p, lang):
     href = url_for(f"/updates/{p['id']}/", lang)
     return (f'<a class="card tool-card" href="{href}"><span class="badge">{e(p["date"])}</span>'
-            f'<h3>{e(L(p, "title", lang))}</h3><p>{e(L(p, "summary", lang))}</p><span class="go">{UPD[lang]["read"]}</span></a>')
+            f'<h3>{e(L(p, "title", lang))}</h3><span class="go">{UPD[lang]["read"]}</span></a>')   # 列表只顯示日期同標題；摘要入文章頁先睇
 
 
 def post_link(p, lang):

@@ -20,7 +20,7 @@ if (params.get('preview') === '1' && document.getElementById('posts')) {
     `<div class="sample-banner">${t('預覽模式：包括未發布嘅草稿。', 'Preview mode: includes unpublished drafts.')}</div>` + drafts.map(p => `
     <a class="card tool-card" href="${P}/updates/${encodeURIComponent(p.id)}/">
       <span class="badge">${esc(p.date)}</span> <span class="badge draft">${t('草稿', 'Draft')}</span>
-      <h3>${esc((EN && p.title_en) || p.title)}</h3><p>${esc((EN && p.summary_en) || p.summary)}</p><span class="go">${t('閱讀全文 →', 'Read more →')}</span>
+      <h3>${esc((EN && p.title_en) || p.title)}</h3><span class="go">${t('閱讀全文 →', 'Read more →')}</span>
     </a>`).join(''));
 }
 
