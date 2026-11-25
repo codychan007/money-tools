@@ -18,20 +18,12 @@ const LBL = { needs: t('必要開支', 'Needs'), wants: t('生活享受', 'Wants
 let donut, touched = false, last;
 
 function nextStepHtml() {
-  const j = readJourney();
   const yearSave = money(last.save * 12);
-  const actual = j.health?.saving;
-  const compare = actual != null && last.save > 0
-    ? (actual < last.save
-      ? t(`第 1 步你話每月實際儲 ${money(actual)}，比呢個分配少 ${money(last.save - actual)}。`,
-        `In step 1 you said you actually save ${money(actual)} a month, ${money(last.save - actual)} less than this split.`)
-      : t(`第 1 步你話每月實際儲 ${money(actual)}，已經做到呢個分配。`, `In step 1 you said you actually save ${money(actual)} a month, already in line with this split.`))
-    : '';
   return nextCard({
     eyebrow: t('第 2 步・下一步 3 / 3', 'Step 2 · Next: step 3 of 3'),
     title: t(`照 ${last.pct}% 儲蓄，你每月可以儲 ${money(last.save)}，一年 ${yearSave}。`,
       `Saving ${last.pct}%, you would put away ${money(last.save)} a month, ${yearSave} a year.`),
-    body: `${compare}${compare ? t('', ' ') : ''}${t('咁用呢個數，幾時先儲到你嘅目標？', 'So at this pace, when do you reach your goal?')}`,
+    body: t('用呢個儲法，幾時先儲到你嘅目標？', 'At this pace, when will you reach your goal?'),
     unlock: t('第 3 步會用你嘅數字預先填好，再話你知：遲 5 年先開始，每月要多儲幾多先追得返。',
       'Step 3 is pre-filled with your numbers, and shows how much more a month you would need if you started 5 years later.'),
     href: `${stepUrl('goal')}?from=checkup`,
