@@ -215,7 +215,9 @@ FOOTER_LEGAL = {
 
 def footer(lang):
     S = SITE[lang]
-    links = "".join(f'<a href="{url_for(h, lang)}">{e(zh if lang == "zh" else en)}</a>' for h, zh, en in FOOTER_LINKS)
+    # 中文頁尾唔放「市場指數」；頁首「實用資訊欄」同英文頁尾保留
+    items = [item for item in FOOTER_LINKS if not (lang == "zh" and item[0] == "/market/")]
+    links = "".join(f'<a href="{url_for(h, lang)}">{e(zh if lang == "zh" else en)}</a>' for h, zh, en in items)
     return f"""
 <footer class="site-footer">
   <div class="wrap wide">
