@@ -1,6 +1,5 @@
 import { mountLayout, money, ym, readNum, moneyInput } from './layout.js';
 import { futureValue, monthsToGoal, monthlyNeeded, delayComparison, delayGapAt } from './finance.js';
-import { buildCard, shareCanvas } from './sharecard.js';
 import { t, locale, P as PREFIX } from './i18n.js';
 import { saveStep, readJourney, nextCard } from './journey.js';
 
@@ -191,41 +190,3 @@ $('next-step').innerHTML = nextStepHtml();
 
 // 撳「睇總結」都當完成咗呢步
 $('next-step').addEventListener('click', e => { if (e.target.closest('a')) saveGoal(); });
-
-// ---------- 分享卡 ----------
-$('share-btn').addEventListener('click', () => {
-  if (!last) return;
-  const showAmt = $('show-amounts').checked;
-  const L = last;
-  const title = showAmt ? t(`目標 ${money(L.T)}（已有 ${money(L.S)}）`, `Goal ${money(L.T)} (have ${money(L.S)})`) : t('我嘅儲錢目標計劃', 'My savings goal plan');
-  let big, bigSub, rows, delayLine;
-  if (L.mode === 'time') {
-    big = isFinite(L.n) && L.n <= MAX_MONTHS ? ym(L.n) : t('50 年+', '50 yrs+');
-    bigSub = t(`假設年回報 ${pctLabel(L.fr)}・每月投入 ${money(L.P)}`, `Assumed return ${pctLabel(L.fr)} · ${money(L.P)} a month`);
-    rows = L.rs.map((r, i) => [t(`假設 ${pctLabel(r)}`, `At ${pctLabel(r)}`), isFinite(L.ns[i]) && L.ns[i] <= MAX_MONTHS ? ym(L.ns[i]) : t('50 年+', '50 yrs+')]);
-    delayLine = L.gap ? t(`遲 5 年先開始，到時會少咗約 ${money(L.gap.gap)}`, `Start 5 years later: about ${money(L.gap.gap)} less`) : '';
-  } else {
-    big = t(`${money(L.dc.now)}/月`, `${money(L.dc.now)}/mo`);
-    bigSub = t(`${L.Y} 年計劃・假設年回報 ${pctLabel(L.fr)}`, `${L.Y}-year plan · assumed return ${pctLabel(L.fr)}`);
-    rows = L.rs.map((r, i) => [t(`假設 ${pctLabel(r)}`, `At ${pctLabel(r)}`), t(`${money(L.ps[i])}/月`, `${money(L.ps[i])}/mo`)]);
-    delayLine = L.dc.monthsLeft > 0 ? t(`遲 5 年先開始，每月要多供 ${money(L.dc.extra)}`, `Start 5 years later: ${money(L.dc.extra)} more a month`) : '';
-  }
-  const cv = buildCard({
-    kicker: t('理財目標計算機', 'Goal planner'), title, big, bigSub,
-    draw(ctx, box, { C, FONT }) {
-      let y = box.y + 40;
-      ctx.font = `600 40px ${FONT}`;
-      rows.forEach(([k, v]) => {
-        ctx.fillStyle = C.ink2; ctx.textAlign = 'left'; ctx.fillText(k, box.x, y);
-        ctx.fillStyle = C.ink; ctx.textAlign = 'right'; ctx.fillText(v, box.x + box.w, y);
-        y += 26; ctx.fillStyle = C.line; ctx.fillRect(box.x, y, box.w, 2); y += 64;
-      });
-      ctx.textAlign = 'left';
-      if (delayLine) {
-        ctx.fillStyle = C.ochre50; ctx.fillRect(box.x - 20, y, box.w + 40, 110);
-        ctx.fillStyle = '#6B4A0E'; ctx.font = `700 36px ${FONT}`; ctx.fillText(delayLine, box.x, y + 68);
-      }
-    },
-  });
-  shareCanvas(cv, 'my-goal.png', $('share-preview'));
-});
