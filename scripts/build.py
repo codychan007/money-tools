@@ -177,12 +177,18 @@ def header(path):
     sublinks = "".join(
         f'<a href="{url_for(h, lang)}"{current if on(h) else ""}><b>{e(pick(zh, en))}</b><small>{e(pick(dzh, den))}</small></a>'
         for h, zh, en, dzh, den in items)
+    book_current = current if on("/book/") else ""
+    book_label = e(pick("預約傾談", "Book a chat"))
+    book_href = url_for("/book/", lang)
+    # 手機頂欄要見到同一個預約掣。選單入面嗰個喺窄屏收起，闊屏先用返選單嗰個。
+    nav_book = f'<a href="{book_href}"{book_current} class="nav-book">{book_label}</a>'
+    bar_book = f'<a href="{book_href}"{book_current} class="nav-book nav-book-bar">{book_label}</a>'
     links = (
         f'<a href="{url_for("/health/", lang)}"{current if on("/health/") else ""}>{e(pick("理財體檢", "Check-up"))}</a>'
         f'<div class="nav-group{" is-current" if group_on else ""}">'
         f'<button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-sub">{e(pick(gname_zh, gname_en))}<span class="caret" aria-hidden="true"></span></button>'
         f'<div class="nav-sub" id="nav-sub">{sublinks}</div></div>'
-        f'<a href="{url_for("/book/", lang)}"{current if on("/book/") else ""} class="nav-book">{e(pick("預約傾談", "Book a chat"))}</a>')
+        f'{nav_book}')
     return f"""
 <header class="site-header">
   <div class="wrap wide">
@@ -193,6 +199,7 @@ def header(path):
       </a>
       <nav class="nav" id="site-nav">{links}</nav>
       <div class="head-tools">
+        {bar_book}
         <a class="lang-switch" href="{url_for(base, other)}" hreflang="{SITE[other]['html']}" lang="{SITE[other]['html']}" aria-label="{e(S['switch_label'])}">{e(S["switch"])}</a>
         <button class="menu-btn" aria-label="{e(S['menu'])}" aria-expanded="false" aria-controls="site-nav">☰</button>
       </div>
@@ -215,7 +222,9 @@ FOOTER_LEGAL = {
 
 def footer(lang):
     S = SITE[lang]
-    links = "".join(f'<a href="{url_for(h, lang)}">{e(zh if lang == "zh" else en)}</a>' for h, zh, en in FOOTER_LINKS)
+    # 中文頁尾唔放「市場指數」；頁首「實用資訊欄」同英文頁尾保留
+    items = [item for item in FOOTER_LINKS if not (lang == "zh" and item[0] == "/market/")]
+    links = "".join(f'<a href="{url_for(h, lang)}">{e(zh if lang == "zh" else en)}</a>' for h, zh, en in items)
     return f"""
 <footer class="site-footer">
   <div class="wrap wide">
