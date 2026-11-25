@@ -19,7 +19,7 @@ export function mountLayout() {
   });
 }
 
-/** 「實用資訊欄」：撳開彈出 4 個選項；撳外面或者按 Esc 收埋 */
+/** 「實用資訊欄」：撳開彈出資訊頁；撳外面或者按 Esc 收埋 */
 function mountNavGroup() {
   const group = document.querySelector('.nav-group');
   const btn = group?.querySelector('.nav-group-btn');

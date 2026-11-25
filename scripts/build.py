@@ -45,7 +45,8 @@ BRAND = SITE["zh"]["brand"]
 
 # 導覽列（路徑唔包括 /en 前綴）。次序同「理財體檢」3 步一樣。
 # 3 個計算工具唔放喺目錄欄（首頁同「理財體檢」已經帶得到），避免太多掣分心
-# 目錄欄：理財體檢｜實用資訊欄（撳開先見 4 個資訊頁）｜預約傾談
+# 目錄欄：理財體檢｜實用資訊欄（撳開先見資訊頁）｜預約傾談
+# 中文頁首同頁尾唔放「市場指數」；英文頁首同頁尾保留。/market/ 頁、數據同更新程式留低。
 NAV_GROUP = ("實用資訊欄", "Useful info", [
     ("/tax/", "慳稅規劃", "Tax saver", "薪俸稅估算、扣稅三寶", "Salaries tax and top deductions"),
     ("/updates/", "市場解讀", "Market notes", "每兩星期講清楚市場", "Markets explained every two weeks"),
@@ -173,6 +174,9 @@ def header(path):
     on = lambda h: (h == "/health/" and base in CHECKUP_PAGES) or h == base or (h != "/" and base.startswith(h))  # 文章頁都標示「市場解讀」
     pick = lambda zh, en: zh if lang == "zh" else en
     gname_zh, gname_en, items = NAV_GROUP
+    # 中文「實用資訊欄」唔放「市場指數」（桌面下拉同手機選單同一個 HTML）；英文保留
+    if lang == "zh":
+        items = [item for item in items if item[0] != "/market/"]
     group_on = any(on(h) for h, *_ in items)
     sublinks = "".join(
         f'<a href="{url_for(h, lang)}"{current if on(h) else ""}><b>{e(pick(zh, en))}</b><small>{e(pick(dzh, den))}</small></a>'
@@ -222,7 +226,7 @@ FOOTER_LEGAL = {
 
 def footer(lang):
     S = SITE[lang]
-    # 中文頁尾唔放「市場指數」；頁首「實用資訊欄」同英文頁尾保留
+    # 中文頁尾唔放「市場指數」；英文頁尾保留
     items = [item for item in FOOTER_LINKS if not (lang == "zh" and item[0] == "/market/")]
     links = "".join(f'<a href="{url_for(h, lang)}">{e(zh if lang == "zh" else en)}</a>' for h, zh, en in items)
     return f"""
