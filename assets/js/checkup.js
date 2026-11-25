@@ -49,9 +49,9 @@ function render() {
     const actual = j.health?.saving;
     out.push(`<section class="card"><h2>${t('2. 月薪分配', '2. Salary split')}</h2>
       ${row(t('扣強積金後到手', 'Take-home after MPF'), money(s.takeHome))}
-      ${row(t(`儲蓄（${s.pct}%）`, `Savings (${s.pct}%)`), t(`${money(s.save)}／月`, `${money(s.save)}/month`), t(`一年 ${money(s.save * 12)}`, `${money(s.save * 12)} a year`))}
+      ${row(t(`建議每月儲（${s.pct}%）`, `Suggested monthly saving (${s.pct}%)`), t(`${money(s.save)}／月`, `${money(s.save)}/month`), t(`一年 ${money(s.save * 12)}`, `${money(s.save * 12)} a year`))}
       ${actual != null ? row(t('你而家實際每月儲', 'What you actually save now'), money(actual),
-        actual < s.save ? t(`差 ${money(s.save - actual)}／月`, `${money(s.save - actual)}/month short`) : t('已經做到', 'On track')) : ''}
+        actual < s.save ? t(`比建議少 ${money(s.save - actual)}`, `${money(s.save - actual)} less than suggested`) : actual > s.save ? t(`比建議多 ${money(actual - s.save)}`, `${money(actual - s.save)} more than suggested`) : t('啱啱好同建議一樣', 'Exactly as suggested')) : ''}
     </section>`);
   }
   if (j.goal) {
