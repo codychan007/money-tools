@@ -86,6 +86,23 @@ main { padding: 24px 0 48px; }
   background: transparent; border: 0; color: var(--ink); width: var(--tap); height: var(--tap);
   font-size: 22px; cursor: pointer; margin-right: -12px;
 }
+/* 窄屏：預約掣留喺頂欄，唔好只收埋喺漢堡選單 */
+.head-tools .nav-book-bar {
+  display: inline-flex; align-items: center; flex-shrink: 0; white-space: nowrap;
+  min-height: 36px; padding: 0 10px; border-radius: 4px;
+  background: var(--shu); color: #FBF3E4; text-decoration: none; font-weight: 700; font-size: 14px; line-height: 1;
+}
+.nav > a.nav-book { display: none; }
+@media (max-width: 1099px) {
+  .site-header .bar { flex-wrap: nowrap; gap: 6px; }
+  .brand { min-width: 0; gap: 6px; }
+  .brand > span { white-space: nowrap; }
+  html[lang="en"] .brand { font-size: 12.5px; }
+  .head-tools { flex-shrink: 0; gap: 2px; }
+  .head-tools .nav-book-bar { font-size: 13px; padding: 0 8px; min-height: 34px; }
+  .head-tools .lang-switch { padding: 0 8px; min-height: 34px; }
+  .menu-btn { width: 40px; margin-right: -6px; }
+}
 .head-tools { order: 2; }
 .nav { display: none; padding: 4px 0 12px; flex-basis: 100%; order: 3; }   /* 手機：選單喺語言掣同關閉掣下面 */
 .nav.open { display: block; }
@@ -111,6 +128,8 @@ main { padding: 24px 0 48px; }
 .nav-sub a[aria-current="page"] b { color: var(--shu); }
 @media (min-width: 1100px) {
   .menu-btn { display: none; }
+  .head-tools .nav-book-bar { display: none; }
+  .nav > a.nav-book { display: block; }
   .site-header .bar { gap: 16px; flex-wrap: nowrap; }
   .nav { display: flex !important; align-items: center; padding: 0; gap: 4px; flex-basis: auto; order: 2; margin-left: auto; }   /* 靠右，貼住語言掣 */
   .head-tools { order: 3; margin-left: 0; }
