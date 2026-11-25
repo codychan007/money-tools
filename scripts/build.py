@@ -257,13 +257,13 @@ TOOL_DISCLAIMER = {
 CTA = {
     "zh": """<div data-cta><div class="cta-seal">
   <p class="cta-lead">計完，想有人同你一齊睇清楚？</p>
-  <p class="cta-sub">免費・大約 30 分鐘・網上或面談。傾下你嘅目標同疑問，冇購買責任。</p>
+  <p class="cta-sub">免費・大約 30 分鐘・網上或面談。傾下你嘅目標同疑問。</p>
   <a class="cta-btn" href="/book/">預約 1 對 1 理財傾談 <span class="arrow">→</span></a>
   <p class="cta-fine">WhatsApp・電話・Google 日曆，揀你方便嘅</p>
 </div></div>""",
     "en": """<div data-cta><div class="cta-seal">
   <p class="cta-lead">Want someone to go through the numbers with you?</p>
-  <p class="cta-sub">Free, about 30 minutes, online or in person. Talk through your goals and questions. No obligation to buy anything.</p>
+  <p class="cta-sub">Free, about 30 minutes, online or in person. Talk through your goals and questions.</p>
   <a class="cta-btn" href="/en/book/">Book a 1-on-1 money chat <span class="arrow">→</span></a>
   <p class="cta-fine">WhatsApp, phone or Google Calendar, whichever suits you</p>
 </div></div>""",
@@ -272,8 +272,8 @@ CTA = {
 
 def journey_bar(current, lang):
     head = {"zh": ("理財體檢 3 步", "完成 0 / 3"), "en": ("3-step money check-up", "0 of 3 done")}[lang]
-    hint = {"zh": "跟住次序做，每步接住上一步，最後拼成一頁總結。",
-            "en": "Go in order: each step builds on the one before, and they come together in a one-page summary."}[lang]
+    hint = {"zh": "每步接住上一步，最後拼成一頁總結。",
+            "en": "Each step builds on the one before, and they come together in a one-page summary."}[lang]
     steps = []
     for n, (key, ch, zh, en) in enumerate(JOURNEY, 1):
         cur = ' aria-current="step"' if key == current else ""
