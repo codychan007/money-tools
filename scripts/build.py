@@ -150,6 +150,9 @@ def tokens(lang):
         "EX_WANTS": money(take * 0.3),
         "EX_SAVE": money(take * 0.2),
         "EX_SAVE_YEAR": money(take * 0.2 * 12),
+        # 常見問題用（會放入 JSON 字串，所以要 escape）
+        "MPF_ASOF": json.dumps(mpf["asOf" if lang == "zh" else "asOf_en"], ensure_ascii=False)[1:-1],
+        "MPF_NOTE": json.dumps(mpf.get("note" if lang == "zh" else "note_en", ""), ensure_ascii=False)[1:-1],
     }
     rows = []
     for r in (0.02, 0.04, 0.06, 0.08):

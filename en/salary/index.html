@@ -32,8 +32,6 @@
         <div class="stat"><b class="num" id="ee"></b><span>Your MPF contribution (5%)</span></div>
         <div class="stat"><b class="num" id="er"></b><span>Your employer's contribution (5%)</span></div>
       </div>
-      <p class="muted" id="mpf-note" style="font-size:14px;margin:12px 0 0"></p>
-      <div id="mpf-source"></div>
     </section>
 
     <section class="card">
@@ -61,25 +59,6 @@
       <b>Set money aside for tax:</b> salaries tax is paid once a year, not deducted from your monthly pay. Many employees only discover a big bill a year later, so it is worth reserving a monthly amount within "needs".
     </section>
 
-    <section class="card article">
-      <h2>How are MPF and take-home pay calculated?</h2>
-      <p>Monthly-paid employees contribute {{MPF_RATE}} of their relevant income to MPF, and the employer contributes another {{MPF_RATE}}. Relevant income means basic pay plus commission, bonuses and so on, within these limits:</p>
-      <ul>
-        <li>Earning under ${{MPF_MIN}} a month: you don't contribute, but your employer still pays {{MPF_RATE}}</li>
-        <li>Earning ${{MPF_MIN}} to ${{MPF_MAX}}: contribution = monthly income × {{MPF_RATE}}</li>
-        <li>Earning over ${{MPF_MAX}}: contributions are based on ${{MPF_MAX}}, so each side pays at most ${{MPF_CAP}} a month</li>
-      </ul>
-      <h3>Example: a ${{EX_SAL}} monthly salary</h3>
-      <div class="table-scroll"><table class="data">
-        <tr><th>Item</th><th>Monthly</th></tr>
-        <tr><td>Your MPF contribution ({{MPF_RATE}})</td><td>{{EX_EE}}</td></tr>
-        <tr><td>Take-home pay</td><td><b>{{EX_TAKE}}</b></td></tr>
-        <tr><td>Needs (50%)</td><td>{{EX_NEEDS}}</td></tr>
-        <tr><td>Wants (30%)</td><td>{{EX_WANTS}}</td></tr>
-        <tr class="focus"><td>Savings (20%)</td><td>{{EX_SAVE}} ({{EX_SAVE_YEAR}} a year)</td></tr>
-      </table></div>
-      <div class="source">MPF rules source: <a href="https://www.mpfa.org.hk/en/mpf-system/mandatory-contributions/employees" target="_blank" rel="noopener">MPFA: Mandatory contributions for employees</a></div>
-    </section>
 
     <!--FAQ-->
 

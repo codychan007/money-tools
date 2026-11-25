@@ -12,9 +12,6 @@ let MPF = { employeeRate: 0.05, employerRate: 0.05, minRelevantIncome: 7100, max
 try {
   const s = await loadJSON('/data/statutory.json');
   MPF = s.mpf;
-  const m = EN ? { ...s.mpf, source: s.mpf.source_en || s.mpf.source, sourceUrl: s.mpf.sourceUrl_en || s.mpf.sourceUrl, asOf: s.mpf.asOf_en || s.mpf.asOf } : s.mpf;
-  const note = EN ? s.mpf.note_en : s.mpf.note;
-  $('mpf-source').innerHTML = sourceLine(m) + (note ? `<div class="source">${note}</div>` : '');
 } catch { /* 用預設值 */ }
 
 const LBL = { needs: t('必要開支', 'Needs'), wants: t('生活享受', 'Wants'), save: t('儲蓄投資', 'Savings') };
@@ -56,13 +53,6 @@ function update(changed) {
   $('take-home').textContent = money(th);
   $('ee').textContent = money(ee); $('er').textContent = money(er);
   const min = MPF.minRelevantIncome.toLocaleString(), max = MPF.maxRelevantIncome.toLocaleString();
-  $('mpf-note').textContent = sal < MPF.minRelevantIncome
-    ? t(`月入少過 $${min}，你自己唔使供強積金，但老闆仍然要幫你供 5%。`, `Earning under $${min} a month, you don't contribute to MPF, but your employer still pays 5%.`)
-    : sal > MPF.maxRelevantIncome
-      ? t(`月入超過 $${max}，強制性供款以 $${max} 計，所以每方每月最多供 ${money(MPF.maxRelevantIncome * MPF.employeeRate)}。`,
-        `Earning over $${max} a month, mandatory contributions are based on $${max}, so each side pays at most ${money(MPF.maxRelevantIncome * MPF.employeeRate)} a month.`)
-      : t('強積金供款 = 月薪 × 5%。老闆嗰份唔會入你袋，但會入你嘅強積金戶口。',
-        "MPF contribution = monthly salary × 5%. Your employer's share doesn't reach your pocket, but it goes into your MPF account.");
 
   const a = allocate(th, needs, wants, save);
   $('alloc').innerHTML = `<tr><th>${t('類別', 'Category')}</th><th>${t('比例', 'Share')}</th><th>${t('每月', 'Monthly')}</th><th>${t('一年', 'Yearly')}</th></tr>
