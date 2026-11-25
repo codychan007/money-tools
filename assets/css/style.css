@@ -94,14 +94,31 @@ main { padding: 24px 0 48px; }
 }
 .nav > a.nav-book { display: none; }
 @media (max-width: 1099px) {
-  .site-header .bar { flex-wrap: nowrap; gap: 6px; }
-  .brand { min-width: 0; gap: 6px; }
-  .brand > span { white-space: nowrap; }
+  /* 頂欄維持一行（品牌可縮）。選單打開先佔滿下一行，唔好同頂欄擠喺同一行。 */
+  .site-header .bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "brand tools";
+    align-items: center;
+    gap: 6px;
+  }
+  .brand { grid-area: brand; min-width: 0; gap: 6px; }
+  .brand > span:not(.seal) { display: block; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
   html[lang="en"] .brand { font-size: 12.5px; }
-  .head-tools { flex-shrink: 0; gap: 2px; }
+  .head-tools { grid-area: tools; flex-shrink: 0; gap: 2px; margin-left: 0; }
   .head-tools .nav-book-bar { font-size: 13px; padding: 0 8px; min-height: 34px; }
   .head-tools .lang-switch { padding: 0 8px; min-height: 34px; }
   .menu-btn { width: 40px; margin-right: -6px; }
+  .nav { grid-column: 1 / -1; }
+}
+/* 英文品牌名較長。窄過約 400px 先收細預約掣同字級，避免「HK Money Compass」被省略號截斷後疊上預約掣。 */
+@media (max-width: 400px) {
+  html[lang="en"] .brand { font-size: 12px; }
+  html[lang="en"] .head-tools .nav-book-bar { font-size: 12px; padding: 0 6px; }
+  html[lang="en"] .head-tools .lang-switch { padding: 0 6px; }
+}
+@media (max-width: 370px) {
+  html[lang="en"] .brand { font-size: 11.5px; }
 }
 .head-tools { order: 2; }
 .nav { display: none; padding: 4px 0 12px; flex-basis: 100%; order: 3; }   /* 手機：選單喺語言掣同關閉掣下面 */
