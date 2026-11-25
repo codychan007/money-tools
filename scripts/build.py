@@ -287,15 +287,18 @@ def journey_bar(current, lang):
             f'<p class="journey-hint" data-journey-hint>{e(hint)}</p></nav>')
 
 
-def avatar(lang):
+def avatar(lang, hero=False):
     """首頁頭像：印章框，撳落去開 IG。未放相就用「我」字印章頂住。"""
     found = next((n for n in AVATAR_NAMES if (ROOT / "assets" / n).exists()), None)
     alt = "Cody Chan" + ("（IG @codychan813）" if lang == "zh" else " (IG @codychan813)")
-    inner = (f'<img src="/assets/{found}" alt="{e(alt)}" width="320" height="320" loading="lazy">' if found
+    inner = (f'<img src="/assets/{found}" alt="{e(alt)}" width="320" height="320" loading="{"eager" if hero else "lazy"}">' if found
              else '<span class="avatar-fallback" aria-hidden="true">我</span>')
     if not found:
         print("⚠️ 未有 assets/avatar.jpg，首頁「關於我」暫時用印章代替頭像")
     cap = "IG @codychan813"
+    if hero:   # 頁頂版：相下面寫埋名同身份
+        who = "Cody Chan・香港保險理財顧問" if lang == "zh" else "Cody Chan · insurance and financial planning consultant"
+        cap = f'{e(who)}<br><span class="cap-ig">IG @codychan813</span>'
     return (f'<a class="avatar-seal" href="{IG_URL}" target="_blank" rel="noopener" aria-label="{e(alt)}">'
             f'<span class="frame">{inner}</span><span class="cap">{cap}</span></a>')
 
@@ -384,6 +387,8 @@ def finish_page(src, path, extra_ld=None, noindex=False):
     src = src.replace("<div data-cta></div>", CTA[lang])
     if "<div data-avatar></div>" in src:
         src = src.replace("<div data-avatar></div>", avatar(lang))
+    if "<div data-avatar-hero></div>" in src:
+        src = src.replace("<div data-avatar-hero></div>", f'<div class="hero-photo">{avatar(lang, hero=True)}</div>')
     src = re.sub(r'<div data-journey="(\w*)"></div>', lambda mm: journey_bar(mm.group(1), lang), src)
     src = re.sub(r'<span data-seal="(.)"></span>', lambda mm: seal(mm.group(1), "sm"), src)
     src = re.sub(r'<meta name="theme-color" content="[^"]*">', '<meta name="theme-color" content="#F3ECDD">', src)
