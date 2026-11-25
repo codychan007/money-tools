@@ -1,6 +1,6 @@
 // 理財體檢總結：將 3 步嘅結果（只喺訪客瀏覽器）放埋一頁
 import { mountLayout, money, ym, esc } from './layout.js';
-import { t } from './i18n.js';
+import { t, P } from './i18n.js';
 import { buildCard, shareCanvas } from './sharecard.js';
 import { readJourney, clearJourney, STEPS, stepName, stepUrl, doneCount, chatCard, hideBottomCta } from './journey.js';
 
@@ -90,6 +90,13 @@ function render() {
       <label class="toggle"><input type="checkbox" id="show-amounts"> ${t('喺圖入面顯示目標金額', 'Show my goal amount in the image')}</label>
       <button class="btn block" id="share-btn">${t('生成「3 步完成」分享圖', 'Create my "3 steps done" image')}</button>
       <div class="share-preview" id="share-preview"></div></section>`);
+    // 做晒先推介其他工具（首頁同樣做晒先出）
+    const link = (href, ch, label) => `<a class="teaser" href="${P}${href}"><span class="seal" aria-hidden="true">${ch}</span><div><b>${label}</b></div><span class="arrow">→</span></a>`;
+    out.push(`<section><h2 class="section-title"><span class="brush">${t('下一步可以睇', 'What to look at next')}</span></h2>
+      <div class="teasers quick-links">
+        ${link('/tax/', '稅', t('慳稅規劃：用盡扣稅三寶慳幾多', 'Tax saver: what the three tax deductions save you'))}
+        ${link('/deals/', '惠', t('優惠福利：有冇錯過政府福利', 'Deals and benefits: any government help you missed?'))}
+      </div></section>`);
   }
 
   $('report').innerHTML = out.join('');
