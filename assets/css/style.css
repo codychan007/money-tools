@@ -439,7 +439,7 @@ ol.tips li, ul.tips li { margin-bottom: 10px; }
 .article li { margin-bottom: 6px; }
 
 /* ---------- 常見問題 ---------- */
-details.faq { border-top: 1px solid var(--line); }
+details.faq { border-top: 1px solid var(--line); scroll-margin-top: 84px; }
 details.faq:first-of-type { border-top: 0; }
 details.faq summary {
   cursor: pointer; font-weight: 700; min-height: var(--tap); display: flex; align-items: center;

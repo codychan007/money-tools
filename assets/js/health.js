@@ -245,4 +245,13 @@ $('share-btn').addEventListener('click', () => {
   shareCanvas(cv, 'my-money-health.png', $('share-preview'));
 });
 
+// 「點樣評分？」：打開常見問題第一條（理財健康分數係點計），再捲過去
+document.getElementById('score-how-link')?.addEventListener('click', e => {
+  const faq = document.querySelector('details.faq');
+  if (!faq) return;
+  e.preventDefault();
+  faq.open = true;
+  faq.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
 renderQ();
