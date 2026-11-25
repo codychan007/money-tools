@@ -1,0 +1,63 @@
+{
+ "_說明": "2023/24 課稅年度（2023-04-01 至 2024-03-31）薪俸稅數字，已對稅務局《免稅額、扣除及稅率表》（PAM 61）同 GovHK 稅率頁。年度已完結，只作翻查舊評稅同申請更正錯漏用。",
+ "year": "2023/24",
+ "allowances": {
+  "basic": 132000,
+  "married": 264000,
+  "singleParent": 132000,
+  "child": 130000,
+  "childNewborn": 130000,
+  "newbornYears": 1,
+  "parent60": 50000,
+  "parent60Live": 50000,
+  "parent55": 25000,
+  "parent55Live": 25000
+ },
+ "elderlyCare": 100000,
+ "reduction": {
+  "pct": 1.0,
+  "cap": 3000
+ },
+ "bands": [
+  [
+   50000,
+   0.02
+  ],
+  [
+   50000,
+   0.06
+  ],
+  [
+   50000,
+   0.1
+  ],
+  [
+   50000,
+   0.14
+  ],
+  [
+   null,
+   0.17
+  ]
+ ],
+ "standard": [
+  [
+   null,
+   0.15
+  ]
+ ],
+ "deductions": {
+  "mpf": 18000,
+  "vhisPerInsured": 8000,
+  "tvcQdap": 60000,
+  "rent": 100000,
+  "rentWithChild": 0,
+  "homeLoan": 100000,
+  "homeLoanWithChild": 0,
+  "education": 100000,
+  "donationPct": 0.35
+ },
+ "sourceUrl": "https://www.ird.gov.hk/eng/pdf/pam61e.pdf",
+ "budgetUrl": "https://www.gov.hk/en/residents/taxes/taxfiling/taxrates/salariesrates.htm",
+ "verifiedOn": "2026-11-25"
+}

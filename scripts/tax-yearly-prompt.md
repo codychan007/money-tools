@@ -25,7 +25,7 @@
    - `year` 改新年度；`reduction` 設 `{"pct": 0, "cap": 0}`（新年度嘅寬減要等下年預算案先知）。
    - `_說明` 寫明「草擬：YYYY-MM-DD 財政預算案建議，未刊憲」同改咗邊幾項。
    - `verifiedOn` 填今日；`budgetUrl`、`sourceUrl` 用官方連結。
-5. `index.json`：將新年度加喺 `years` **最前面**；`default` **暫時唔好改**（等刊憲先轉）；`years` 最多保留 3 個年度，多出嘅刪走最舊嗰個（連同佢嘅 JSON 檔）。
+5. `index.json`：將新年度加喺 `years` **最前面**；`default` **暫時唔好改**（等刊憲先轉）；`years` 保留所有仲可以申請更正錯漏嘅年度（《稅務條例》第 70A 條：課稅年度完結後 6 年內，例如 2020/21 喺 2027-03-31 之前仲保留）；過咗呢個期限嘅年度刪走（連同佢嘅 JSON 檔），其他舊年度唔好刪。
 6. 執行 `python3 scripts/validate_tax.py`（必須見到 ✅）同 `python3 scripts/build.py`（必須成功）。
 
 ## 6 月 1 日（核實刊憲）

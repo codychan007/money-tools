@@ -14,6 +14,20 @@ const DEFAULT = YEARS[IDX.default] ? IDX.default : IDX.years[0].year;
 const Yof = a => YEARS[a.year] || YEARS[DEFAULT];
 const nf = new Intl.NumberFormat('en-HK');
 const cap = v => '$' + nf.format(v);
+// 課稅年度已經完結（3 月 31 日後）：唔可以再補供款，只可以翻查／申請更正
+const yearEnded = y => new Date() > new Date(Number(y.slice(0, 4)) + 1, 2, 31, 23, 59, 59);
+const pastYearNote = y => `<div class="callout">
+  <h3 class="mt0">${t(`${y} 年度已經完結`, `${y} has already ended`)}</h3>
+  <p class="mt0">${t('過咗年度就唔可以再補交自願醫保或者 TVC／QDAP 嚟扣稅。呢個計算適合用嚟對返稅務局嘅評稅通知書。',
+    'You can’t add VHIS or TVC / QDAP for a year that has ended. Use this to check the figures on your notice of assessment.')}</p>
+  <ul class="tips">
+    <li>${t('<b>評稅唔啱：</b>要喺評稅通知書發出日期後 1 個月內書面反對。', '<b>Assessment looks wrong:</b> object in writing within 1 month of the date of the notice of assessment.')}</li>
+    <li>${t('<b>報稅時漏報扣除或免稅額：</b>可以喺課稅年度完結後 6 年內（或評稅通知書送達後 6 個月內，以較遲者為準）書面申請更正（《稅務條例》第 70A 條）。',
+      '<b>Missed a deduction or allowance on your return:</b> you can ask in writing for a correction within 6 years after the end of the year (or 6 months after the notice was served, whichever is later), under section 70A of the Inland Revenue Ordinance.')}</li>
+  </ul>
+  <p class="muted" style="font-size:13px;margin:0">${t('詳情請睇稅務局或 GovHK「反對及上訴」頁，或者直接問稅務局。', 'See the IRD or GovHK objections and appeals page, or ask the IRD.')}
+    <a href="${t('https://www.gov.hk/tc/residents/taxes/taxfiling/object/objections.htm', 'https://www.gov.hk/en/residents/taxes/taxfiling/object/objections.htm')}" target="_blank" rel="noopener">${t('GovHK：反對及上訴 →', 'GovHK: objections and appeals →')}</a></p>
+</div>`;
 const yearLabel = y => { const s = Number(y.slice(0, 4)); return t(`${y}（${s} 年 4 月至 ${s + 1} 年 3 月）`, `${y} (Apr ${s} – Mar ${s + 1})`); };
 // 理財資訊通嘅 statutory.json 欄位名唔同，喺度轉一轉
 const MPF = { rate: STAT.mpf.employeeRate, minIncome: STAT.mpf.minRelevantIncome, maxIncome: STAT.mpf.maxRelevantIncome };
@@ -36,7 +50,9 @@ const Q = [
     opts: [['rent', t('租嘅（自己交租）', 'Rented (you pay rent)')], ['own', t('自己供緊樓', 'Owned with a mortgage')], ['none', t('都唔係（例如同屋企人住）', 'Neither (e.g. living with family)')]] },
   { key: 'housingAmt', when: a => a.housing !== 'none', type: 'money', min: 0,
     q: a => (a.housing === 'own' ? t('全年居所貸款利息係幾多？', 'Home loan interest for the year?') : t('全年住宅租金係幾多？', 'Rent paid for the year?')),
-    help: a => { const D = Yof(a).deductions, own = a.housing === 'own', base = own ? D.homeLoan : D.rent, extra = own ? D.homeLoanWithChild : D.rentWithChild; return t(`有子女同住上限 ${cap(base + extra)}，否則 ${cap(base)}`, `Cap ${cap(base + extra)} if living with your child, otherwise ${cap(base)}`); } },
+    help: a => { const D = Yof(a).deductions, own = a.housing === 'own', base = own ? D.homeLoan : D.rent, extra = own ? D.homeLoanWithChild : D.rentWithChild;
+      if (!base) return t(`${a.year || DEFAULT} 年度未有住宅租金扣除（2022/23 起先有），呢項唔會扣到。`, `${a.year || DEFAULT} has no domestic rent deduction (it started in 2022/23), so this won’t be deducted.`);
+      return extra ? t(`有子女同住上限 ${cap(base + extra)}，否則 ${cap(base)}`, `Cap ${cap(base + extra)} if living with your child, otherwise ${cap(base)}`) : t(`上限 ${cap(base)}`, `Cap ${cap(base)}`); } },
   { key: 'mpf', q: t('全年強積金強制性供款（你自己嗰份）', 'Your mandatory MPF contributions for the year (your part)'), type: 'money', min: 0,
     def: a => mpfEmployeeAnnual(a.income || 0, MPF), help: a => t(`已按你入息估算，可以改；上限 ${cap(Yof(a).deductions.mpf)}`, `Estimated from your income, edit if needed; cap ${cap(Yof(a).deductions.mpf)}`) },
   { key: 'vhisPersons', q: t('你有冇幫自己或家人交自願醫保保費？', 'Do you pay VHIS premiums for yourself or family?'), type: 'options',
@@ -130,7 +146,7 @@ function result(a, api) {
           ${row(t('標準稅率計', 'Standard rate'), money(r.std))}
           <p class="muted" style="font-size:14px">${r.useStd ? t('標準稅率計出嚟較少，所以用標準稅率。', 'The standard rate gives less tax, so it applies.') : t('兩種計法取較低者：今次用累進稅率。', 'The lower of the two applies: progressive rates here.')}</p>
         </div>
-        ${planHtml(Y, p, r)}
+        ${yearEnded(year) ? pastYearNote(year) : planHtml(Y, p, r)}
         ${p.marital === 'marriedBoth' ? `<p class="callout">${t('雙方都有收入：呢度只計你一個（分開評稅），子女同父母免稅額當你申索。夫婦可以比較「合併評稅」，有時會更少稅。', 'Both earn income: this shows your separate assessment only, with child and parent allowances claimed by you. Couples can compare joint assessment, which sometimes lowers tax.')}</p>` : ''}
         <p class="muted" style="font-size:13px">${t(`只計薪俸稅；個人入息課稅、合併評稅只作提示。數字來源：稅務局／GovHK（核對日期 ${esc(Y.verifiedOn)}）。實際稅款以稅務局評稅為準。`, `Salaries tax only; personal assessment and joint assessment are mentioned for reference. Figures from IRD / GovHK (checked ${esc(Y.verifiedOn)}). Your actual tax is set by the IRD assessment.`)}
           <a href="${esc(Y.budgetUrl)}" target="_blank" rel="noopener">${t('稅務局預算案措施', 'IRD budget measures')}</a></p>

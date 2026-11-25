@@ -14,6 +14,8 @@ DIR = Path(__file__).resolve().parent.parent / "data" / "tax"
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 YEAR = re.compile(r"^(\d{4})/(\d{2})$")
 ALLOW = ("basic", "married", "singleParent", "child", "childNewborn", "parent60", "parent60Live", "parent55", "parent55Live")
+# 住宅租金扣除 2022/23 先有；有子女同住嘅額外上限 2024/25 先有
+ZERO_OK = ("rent", "rentWithChild", "homeLoanWithChild")
 DED = ("mpf", "vhisPerInsured", "tvcQdap", "rent", "rentWithChild", "homeLoan", "homeLoanWithChild", "education", "donationPct")
 
 
@@ -76,8 +78,9 @@ def main():
             err(f"{w}：allowances.newbornYears 要係 1–3")
         D = d.get("deductions", {})
         for k in DED:
-            if not isinstance(D.get(k), (int, float)) or D[k] <= 0:
-                err(f"{w}：deductions.{k} 要係正數")
+            zero_ok = k in ZERO_OK   # 舊年度未有呢項扣除，可以填 0
+            if not isinstance(D.get(k), (int, float)) or D[k] < 0 or (D[k] == 0 and not zero_ok):
+                err(f"{w}：deductions.{k} 要係{'0 或以上' if zero_ok else '正數'}")
         if not 0 < D.get("donationPct", 0) <= 1:
             err(f"{w}：donationPct 要係 0–1（例如 0.35）")
         if not isinstance(d.get("elderlyCare"), (int, float)) or d["elderlyCare"] <= 0:

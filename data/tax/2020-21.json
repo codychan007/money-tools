@@ -1,0 +1,63 @@
+{
+ "_說明": "2020/21 課稅年度（2020-04-01 至 2021-03-31）薪俸稅數字，已對稅務局《免稅額、扣除及稅率表》（PAM 61）同 GovHK 稅率頁。年度已完結，只作翻查舊評稅同申請更正錯漏用。呢年未有住宅租金扣除（2022/23 起先有），rent 填 0。",
+ "year": "2020/21",
+ "allowances": {
+  "basic": 132000,
+  "married": 264000,
+  "singleParent": 132000,
+  "child": 120000,
+  "childNewborn": 120000,
+  "newbornYears": 1,
+  "parent60": 50000,
+  "parent60Live": 50000,
+  "parent55": 25000,
+  "parent55Live": 25000
+ },
+ "elderlyCare": 100000,
+ "reduction": {
+  "pct": 1.0,
+  "cap": 10000
+ },
+ "bands": [
+  [
+   50000,
+   0.02
+  ],
+  [
+   50000,
+   0.06
+  ],
+  [
+   50000,
+   0.1
+  ],
+  [
+   50000,
+   0.14
+  ],
+  [
+   null,
+   0.17
+  ]
+ ],
+ "standard": [
+  [
+   null,
+   0.15
+  ]
+ ],
+ "deductions": {
+  "mpf": 18000,
+  "vhisPerInsured": 8000,
+  "tvcQdap": 60000,
+  "rent": 0,
+  "rentWithChild": 0,
+  "homeLoan": 100000,
+  "homeLoanWithChild": 0,
+  "education": 100000,
+  "donationPct": 0.35
+ },
+ "sourceUrl": "https://www.ird.gov.hk/eng/pdf/pam61e.pdf",
+ "budgetUrl": "https://www.gov.hk/en/residents/taxes/taxfiling/taxrates/salariesrates.htm",
+ "verifiedOn": "2026-11-25"
+}
