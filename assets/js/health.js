@@ -160,8 +160,6 @@ function nextStepHtml(r, a) {
     title,
     body: t('第 2 步用月薪分配計算器，睇下扣埋強積金之後，你份人工每月應該儲幾多，同你而家實際儲嘅差幾遠。',
       'Step 2 uses the salary split calculator to show how much your pay should be saving after MPF, and how far that is from what you save now.'),
-    unlock: t('做完第 2 步，第 3 步會話你：照呢個儲法，幾時先儲到你嘅目標；遲 5 年先開始又會差幾遠。',
-      'After step 2, step 3 shows when that pace gets you to your goal, and what starting 5 years later would cost you.'),
     href: stepUrl('salary'),
     button: t('去第 2 步：月薪分配 →', 'Go to step 2: Salary split →'),
   });
