@@ -103,10 +103,11 @@ function planHtml(Y, p, r) {
           <h3>${zero ? t('最多可以慳幾多稅？（稅款可以減到 $0）', 'The most tax you could save (down to $0)') : t('最多可以慳幾多稅？', 'The most tax you could save')}</h3>
           <div class="big-result">${money(j.saving)}</div>
           <p>${zero
-            ? t(`只要多 <b>${money(j.need)}</b> 嘅自願醫保保費或者 TVC／QDAP 供款，稅款就由 <b>${money(r.tax)}</b> 減到 <b>$0</b>。唔使買到上限，多過呢個數都唔會再慳到稅。`,
-                `Just <b>${money(j.need)}</b> more in VHIS premiums or TVC / QDAP contributions takes your tax from <b>${money(r.tax)}</b> to <b>$0</b>. You don’t need to go up to the limits; anything above this saves no more tax.`)
-            : t(`要用盡上限，即係多扣 <b>${money(j.need)}</b>，稅款由 <b>${money(r.tax)}</b> 減到 <b>${money(j.floor)}</b>。`,
-                `Using the full limits means <b>${money(j.need)}</b> more in deductions, taking your tax from <b>${money(r.tax)}</b> to <b>${money(j.floor)}</b>.`)}</p>
+            ? t(`要多扣 <b>${money(j.need)}</b>（自願醫保保費或者 TVC／QDAP 供款），稅款先會由 <b>${money(r.tax)}</b> 減到 <b>$0</b>，即係每多扣 $100 慳大約 $${per}。多過呢個數都唔會再慳到稅。`,
+                `It takes <b>${money(j.need)}</b> more in VHIS premiums or TVC / QDAP contributions to bring your tax from <b>${money(r.tax)}</b> to <b>$0</b>, about $${per} saved per extra $100. Anything above this saves no more tax.`)
+            : t(`要用盡上限，即係多扣 <b>${money(j.need)}</b>，稅款由 <b>${money(r.tax)}</b> 減到 <b>${money(j.floor)}</b>，即係每多扣 $100 慳大約 $${per}。`,
+                `Using the full limits means <b>${money(j.need)}</b> more in deductions, taking your tax from <b>${money(r.tax)}</b> to <b>${money(j.floor)}</b>, about $${per} saved per extra $100.`)}</p>
+          ${Number(per) < 10 ? `<p class="callout">${t(`<b>慳稅效益唔大：</b>你嘅稅率偏低，要多扣 ${money(j.need)} 先慳到 ${money(j.saving)}。單為慳稅去買自願醫保或者供 TVC／QDAP 並唔抵；值唔值得，要睇你本身有冇保障或者退休儲蓄嘅需要。`, `<b>Not much tax to save:</b> your tax rate is low, so ${money(j.need)} more in deductions saves only ${money(j.saving)}. Buying VHIS or making TVC / QDAP contributions just to save tax isn't worth it; it only makes sense if you need the cover or the retirement savings anyway.`)}</p>` : ''}
           <ul class="tips">${opts.join('')}</ul>
           ${had}
           <div class="callout" style="font-size:14px">

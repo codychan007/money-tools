@@ -536,7 +536,7 @@ def update_page(p, lang):
     <article class="stack">
       <div><span class="badge">{e(p['date'])}</span> <span class="muted" style="font-size:13px">{period}{U['asof'].format(d=e(p.get('dataAsOf', p['date'])))}</span></div>
       <h1>{e(title)}</h1>
-      <p>{e(summary)}</p>
+      {'' if hl_html.strip() else '<p>' + e(summary) + '</p>'}
       {hl_html}
       {note}
       <div class="grid cols-2">
