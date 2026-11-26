@@ -547,3 +547,5 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 @media (min-width: 640px) { .post-nav { grid-template-columns: 1fr 1fr; } .post-nav .next { grid-column: 2; text-align: right; } }
 .post-nav a { display: block; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--card); text-decoration: none; color: var(--ink); font-family: var(--serif); font-weight: 700; }
 .post-nav a small { display: block; font-family: inherit; font-weight: 400; font-size: 13px; color: var(--shu-dark); margin-bottom: 2px; }
+/* 總結頁「追蹤 IG」：佔成行 */
+.quick-links .teaser.wide { grid-column: 1 / -1; }
