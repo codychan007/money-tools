@@ -166,8 +166,9 @@ function nextStepHtml(r, a) {
   return nextCard({
     eyebrow: t('第 1 步完成・下一步 2 / 3', 'Step 1 done · Next: step 2 of 3'),
     title,
-    body: t('第 2 步幫你計：扣埋強積金之後，份人工每月應該儲幾多。',
-      'Step 2 works out how much of your pay should go to savings after MPF.'),
+    body: t('扣埋強積金，你實際到手幾多？', 'After MPF, how much do you actually take home?'),
+    unlock: t('第 2 步會用你填過嘅人工預先填好，再幫你分「必要／享受／儲蓄」，計清楚每月應該儲幾多。',
+      'Step 2 is pre-filled with your pay, and splits it into needs, wants and savings so you know how much to save each month.'),
     href: stepUrl('salary'),
     button: t('去第 2 步：月薪分配 →', 'Go to step 2: Salary split →'),
   });
