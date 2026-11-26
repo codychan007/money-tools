@@ -160,7 +160,8 @@ export function personaliseCta(j = readJourney()) {
   if (!w || j.health.total >= 80) return;
   // 有自己主題嘅頁（慳稅、優惠）唔講體檢分數
   document.querySelectorAll('[data-cta]:not([data-cta-topic]) .cta-lead').forEach(el => {
-    el.textContent = t(`你最弱係「${w.name}」（${w.score} 分），想有人同你一齊睇清楚？`,
-      `Your weakest area is "${w.name}" (${w.score} points). Want someone to look at it with you?`);
+    // 講正面啲、唔出分數（唔好似老師打分）
+    el.textContent = t(`你最值得先改善嘅係「${w.name}」，想有人同你一齊諗下點做？`,
+      `The area most worth improving first: "${w.name}". Want someone to work it out with you?`);
   });
 }

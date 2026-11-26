@@ -17,7 +17,7 @@ const w = weakest(readJourney().health);
 if (w) {
   $('topics').innerHTML = [
     t('一齊睇你嘅理財體檢結果', 'Go through your money check-up results together'),
-    t(`針對你嘅「${w.name}」（${w.score} 分），計出具體做法`, `Work out concrete steps for your "${w.name}" (${w.score} points)`),
+    t(`針對你最值得先改善嘅「${w.name}」，計出具體做法`, `Work out concrete steps for "${w.name}", the area most worth improving first`),
     t('答你儲蓄、保障或者扣稅嘅問題', 'Answer your questions on saving, protection or tax'),
   ].map(x => `<li>${x}</li>`).join('');
 }
