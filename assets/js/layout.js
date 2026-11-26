@@ -250,10 +250,19 @@ function mountAvatarEgg() {
     const show = () => {
       bubble.textContent = pickHello();
       bubble.style.removeProperty('--shift');
+      bubble.style.removeProperty('max-width');
+      bubble.classList.remove('tight');
       bubble.classList.add('on');
-      // 唔好出咗畫面：太右就向左移返入嚟
-      const r = bubble.getBoundingClientRect(), over = r.right - (document.documentElement.clientWidth - 8);
-      if (over > 0) bubble.style.setProperty('--shift', `${-over}px`);
+      // 右邊位唔夠：先收窄（向上疊多幾行），唔好向左移去遮塊面；真係太窄先向左移
+      const vw = document.documentElement.clientWidth - 8;
+      let r = bubble.getBoundingClientRect();
+      if (r.right > vw) {
+        const room = vw - r.left;
+        bubble.classList.add('tight');
+        bubble.style.maxWidth = `${Math.max(room, 96)}px`;
+        r = bubble.getBoundingClientRect();
+        if (r.right > vw) bubble.style.setProperty('--shift', `${vw - r.right}px`);
+      }
     };
     const hide = () => bubble.classList.remove('on');
     // 用滑鼠：擺上去就揮手講嘢，移開就收（CSS :hover 負責換相）
