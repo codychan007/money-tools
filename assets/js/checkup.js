@@ -94,7 +94,7 @@ function render() {
     const link = (href, ch, label) => `<a class="teaser" href="${P}${href}"><span class="seal" aria-hidden="true">${ch}</span><div><b>${label}</b></div><span class="arrow">→</span></a>`;
     out.push(`<section><h2 class="section-title"><span class="brush">${t('下一步可以睇', 'What to look at next')}</span></h2>
       <div class="teasers quick-links">
-        ${link('/tax/', '稅', t('慳稅規劃：睇下今年可以少交幾多稅', 'Tax saver: see how much less tax you could pay this year'))}
+        ${link('/tax/', '稅', t('慳稅規劃：今年少交幾多稅', 'Tax saver: how much less tax this year'))}
         ${link('/deals/', '惠', t('優惠福利：有冇錯過政府福利', 'Deals and benefits: any government help you missed?'))}
       </div></section>`);
   }
