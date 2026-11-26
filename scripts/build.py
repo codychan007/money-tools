@@ -190,6 +190,8 @@ def header(path):
     nav_book = f'<a href="{book_href}"{book_current} class="nav-book">{book_label}</a>'
     bar_book = f'<a href="{book_href}"{book_current} class="nav-book nav-book-bar">{book_label}</a>'
     links = (
+        # 由計算機連結直接入嚟嘅人都知道有個主頁
+        f'<a href="{url_for("/", lang)}"{current if base == "/" else ""}>{e(pick("首頁", "Home"))}</a>'
         f'<a href="{url_for("/health/", lang)}"{current if on("/health/") else ""}>{e(pick("理財體檢", "Check-up"))}</a>'
         f'<div class="nav-group{" is-current" if group_on else ""}">'
         f'<button class="nav-group-btn" type="button" aria-expanded="false" aria-controls="nav-sub">{e(pick(gname_zh, gname_en))}<span class="caret" aria-hidden="true"></span></button>'
