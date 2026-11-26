@@ -83,7 +83,7 @@ const DIM_NAMES = {
 };
 const waWith = text => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(text)}`;
 
-function weakest(h) {
+export function weakest(h) {
   const [k, v] = Object.entries(h?.dims || {}).sort((a, b) => a[1] - b[1])[0] || [];
   return k ? { k, name: t(...DIM_NAMES[k]), score: Math.round(v) } : null;
 }
