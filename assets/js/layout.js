@@ -4,7 +4,7 @@
 // （改導覽列：改 build.py 入面嘅 NAV）。呢度只負責手機選單開關同理財體檢進度。
 // ============================================================
 import { t } from './i18n.js';
-import { paintJourney } from './journey.js';
+import { paintJourney, doneCount } from './journey.js';
 import { showPendingUnlock } from './unlock.js';
 
 export function mountLayout() {
@@ -225,14 +225,46 @@ export function sourceLine(item) {
 
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-/** 頭像彩蛋：撳一下相（手機／iPad），揮手 2 秒後變返；電腦滑鼠擺上去由 CSS 處理 */
+/** 頭像彩蛋：電腦滑鼠擺上去／手機撳一下 → 揮手（CSS）+ 對話泡泡隨機講一句 */
+const HELLO = [
+  ['Hi！我係 Cody 👋', 'Hi! I’m Cody 👋'],
+  ['嗨～有咩理財問題，隨時搵我傾 👋', 'Hey! Any money questions, come and chat 👋'],
+  ['俾你發現咗 😆 Hi，我係 Cody！', 'You found me 😆 Hi, I’m Cody!'],
+  ['你做晒理財體檢未呀？未就做埋先啦 😉', 'Done the money check-up yet? Give it a go 😉', 'checkup'],
+];
+let lastHello = -1;
+function pickHello() {
+  // 做晒 3 步嘅人就唔再叫佢做體檢
+  const done = doneCount() >= 3;
+  const pool = HELLO.map((h, i) => i).filter(i => i !== lastHello && !(done && HELLO[i][2] === 'checkup'));
+  lastHello = pool[Math.floor(Math.random() * pool.length)];
+  return t(HELLO[lastHello][0], HELLO[lastHello][1]);
+}
+
 function mountAvatarEgg() {
+  const canHover = matchMedia('(hover: hover)').matches;
   document.querySelectorAll('.frame[data-egg]').forEach(f => {
+    const bubble = document.createElement('span');
+    bubble.className = 'hello-bubble'; bubble.setAttribute('role', 'status');
+    f.appendChild(bubble);
     let timer;
+    const show = () => {
+      bubble.textContent = pickHello();
+      bubble.style.removeProperty('--shift');
+      bubble.classList.add('on');
+      // 唔好出咗畫面：太右就向左移返入嚟
+      const r = bubble.getBoundingClientRect(), over = r.right - (document.documentElement.clientWidth - 8);
+      if (over > 0) bubble.style.setProperty('--shift', `${-over}px`);
+    };
+    const hide = () => bubble.classList.remove('on');
+    if (canHover) {
+      f.addEventListener('mouseenter', show);
+      f.addEventListener('mouseleave', hide);
+    }
     f.addEventListener('click', () => {
       clearTimeout(timer);
-      f.classList.add('hi');
-      timer = setTimeout(() => f.classList.remove('hi'), 2000);
+      f.classList.add('hi'); show();
+      timer = setTimeout(() => { f.classList.remove('hi'); if (!canHover || !f.matches(':hover')) hide(); }, 2000);
     });
   });
 }

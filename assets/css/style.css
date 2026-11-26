@@ -583,4 +583,20 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
   .unlock-pop.show .unlock-lock, .unlock-pop.show .unlock-lock .shackle { animation: none; }
   .unlock-pop.show .unlock-lock .shackle { transform: translateY(-7px) rotate(28deg); }
 }
+/* 頭像彩蛋對話泡泡：喺相嘅右上角，向右伸出相框外，唔會伸去相上面嘅內容 */
+.hello-bubble {
+  position: absolute; z-index: 3; top: 8%; left: 72%; width: max-content; max-width: 140px;
+  padding: 8px 12px; border-radius: 12px; background: var(--shu); color: #FBF3E4;
+  font-size: 13.5px; font-weight: 700; line-height: 1.45; text-align: left; pointer-events: none;
+  box-shadow: 2px 2px 0 rgba(35, 31, 28, .18);
+  opacity: 0; transform: translateX(var(--shift, 0px)) scale(.85); transform-origin: 0 100%;
+  transition: opacity .25s ease, transform .25s ease;
+}
+.hello-bubble::after {   /* 小尖角指住個頭 */
+  content: ""; position: absolute; left: 14px; bottom: -7px; width: 14px; height: 14px;
+  background: var(--shu); transform: rotate(45deg); border-radius: 2px;
+}
+.hello-bubble.on { opacity: 1; transform: translateX(var(--shift, 0px)) scale(1); }
+@media (min-width: 760px) { .hello-bubble { max-width: 190px; font-size: 14px; } }
+@media (prefers-reduced-motion: reduce) { .hello-bubble { transition: opacity .2s; } }
 
