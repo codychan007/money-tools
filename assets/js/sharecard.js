@@ -90,9 +90,11 @@ export function buildCard(opts) {
   ctx.fillText(t(`你又計下？IG 搵 @${SITE.ig}`, `Try it yourself: IG @${SITE.ig}`), W / 2, 1700);
   ctx.fillStyle = C.ink2; ctx.font = `400 30px ${FONT}`;
   ctx.fillText(t(SITE.name, SITE.nameEn), W / 2, 1752);
+  ctx.font = `400 26px ${FONT}`;
+  ctx.fillText(t('資料只喺你部機計，唔會上傳', 'Calculated on your device, never uploaded'), W / 2, 1800);
   ctx.fillStyle = 'rgba(35,31,28,.55)'; ctx.font = `400 24px ${FONT}`;
   ctx.fillText(t('結果僅供參考，不構成投資或保險建議；回報率為假設，並非保證。',
-    'For reference only. Not investment or insurance advice. Returns are assumptions, not guarantees.'), W / 2, 1830);
+    'For reference only. Not investment or insurance advice. Returns are assumptions, not guarantees.'), W / 2, 1850);
   ctx.textAlign = 'left';
   return cv;
 }

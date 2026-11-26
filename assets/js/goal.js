@@ -23,8 +23,22 @@ let touched = false;
 (function prefill() {
   const j = readJourney();
   const fromCheckup = new URLSearchParams(location.search).get('from') === 'checkup';
-  if (!(fromCheckup || (j.salary && !j.goal))) return;
   const fmt = v => Math.round(v).toLocaleString(locale);
+  if (j.goal && !fromCheckup) {          // 做過第 3 步：填返上次嘅數字
+    const g = j.goal;
+    if (g.target > 0) els.target.value = fmt(g.target);
+    if (g.savings >= 0) els.savings.value = fmt(g.savings || 0);
+    if (g.mode === 'amount') {
+      mode = 'amount';
+      if (g.years) els.years.value = g.years;
+      document.querySelectorAll('.seg button').forEach(x => x.setAttribute('aria-selected', String(x.dataset.mode === 'amount')));
+      $('f-monthly').classList.add('hidden'); $('f-years').classList.remove('hidden');
+    } else if (g.monthly > 0) els.monthly.value = fmt(g.monthly);
+    const i = [...document.querySelectorAll('.rate')].findIndex(r => Math.abs(parseFloat(r.value) / 100 - g.rate) < 1e-9);
+    if (i >= 0) focusIdx = i;
+    return;
+  }
+  if (!(fromCheckup || j.salary)) return;
   const used = [];
   if (j.salary?.save > 0) { els.monthly.value = fmt(j.salary.save); used.push(t('每月可以投入（第 2 步）', 'monthly amount (step 2)')); }
   if (j.health?.cash > 0) { els.savings.value = fmt(j.health.cash); used.push(t('而家已有儲蓄（第 1 步）', 'current savings (step 1)')); }

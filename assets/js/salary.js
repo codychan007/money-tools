@@ -84,4 +84,12 @@ $('presets').addEventListener('click', e => {
 });
 // 撳「去第 3 步」都當完成咗呢步（就算冇改過預設數字）
 $('next-step').addEventListener('click', e => { if (e.target.closest('a') && last?.takeHome > 0) saveStep('salary', last); });
+// 做過第 2 步：填返上次嘅月薪同比例
+(function restore() {
+  const s = readJourney().salary;
+  if (!(s?.salary > 0)) return;
+  $('salary').value = Math.round(s.salary).toLocaleString('en-US');
+  if (s.needs != null) $('needs').value = s.needs;
+  if (s.wants != null) $('wants').value = s.wants;
+})();
 update();

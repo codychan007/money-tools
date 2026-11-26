@@ -94,7 +94,7 @@ function render() {
     const link = (href, ch, label) => `<a class="teaser" href="${P}${href}"><span class="seal" aria-hidden="true">${ch}</span><div><b>${label}</b></div><span class="arrow">→</span></a>`;
     out.push(`<section><h2 class="section-title"><span class="brush">${t('下一步可以睇', 'What to look at next')}</span></h2>
       <div class="teasers quick-links">
-        ${link('/tax/', '稅', t('慳稅規劃：用盡扣稅三寶慳幾多', 'Tax saver: what the three tax deductions save you'))}
+        ${link('/tax/', '稅', t('慳稅規劃：睇下今年可以少交幾多稅', 'Tax saver: see how much less tax you could pay this year'))}
         ${link('/deals/', '惠', t('優惠福利：有冇錯過政府福利', 'Deals and benefits: any government help you missed?'))}
       </div></section>`);
   }
@@ -127,17 +127,14 @@ $('report').addEventListener('click', e => {
     title: t('我做完 3 步理財體檢！', 'I finished the 3-step check-up!'),
     big: `${h.total}`, bigSub: t(`理財健康分數・${GRADE[h.tone] || ''}`, `Money health score · ${GRADE[h.tone] || ''}`),
     draw(ctx, box, { C, FONT, stamp }) {
-      let y = box.y + 40;
+      let y = box.y + 70;
       rows.forEach(([ch, label, value], i) => {
         stamp(ctx, box.x, y, 92, ch);
         ctx.fillStyle = C.ink2; ctx.font = `500 30px ${FONT}`; ctx.fillText(`${i + 1}. ${label}`, box.x + 126, y + 36);
         ctx.fillStyle = C.ink; ctx.font = `700 40px ${FONT}`; ctx.fillText(value, box.x + 126, y + 88);
-        y += 150;
-        if (i < rows.length - 1) { ctx.fillStyle = C.line; ctx.fillRect(box.x, y - 26, box.w, 2); }
+        y += 175;
+        if (i < rows.length - 1) { ctx.fillStyle = C.line; ctx.fillRect(box.x, y - 38, box.w, 2); }
       });
-      ctx.fillStyle = C.ochre50; ctx.fillRect(box.x - 20, y + 10, box.w + 40, 96);
-      ctx.fillStyle = '#6B4A0E'; ctx.font = `700 34px ${FONT}`; ctx.textAlign = 'center';
-      ctx.fillText(t('3 步大約 5 分鐘，資料唔會上傳', '3 steps, about 5 minutes, nothing uploaded'), box.x + box.w / 2, y + 70);
       ctx.textAlign = 'left';
     },
   });

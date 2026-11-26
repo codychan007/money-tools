@@ -2,7 +2,7 @@ import { mountLayout, money, readNum, moneyInput } from './layout.js';
 import { healthScores, healthGrade } from './finance.js';
 import { buildCard, shareCanvas } from './sharecard.js';
 import { t, locale } from './i18n.js';
-import { saveStep, nextCard, stepUrl, hideBottomCta } from './journey.js';
+import { saveStep, readJourney, nextCard, stepUrl, hideBottomCta } from './journey.js';
 
 mountLayout();
 const $ = id => document.getElementById(id);
@@ -166,7 +166,7 @@ function nextStepHtml(r, a) {
 }
 
 let radar;
-function showResult() {
+function showResult({ restore = false } = {}) {
   const r = healthScores(answers);
   const g = healthGrade(r.total);
   const label = t(g.label, GRADE_EN[g.tone]);
@@ -184,6 +184,7 @@ function showResult() {
     total: r.total, tone: g.tone, dims: r.dims, saveRate: r.saveRate, efMonths: r.efMonths,
     income: answers.income || 0, expenses: answers.expenses || 0, cash: answers.cash || 0, saving: answers.saving || 0,
     weakest: tips[0]?.k, weakestTip: tips[0]?.text,
+    answers: { ...answers },   // 入返嚟可以直接顯示返結果；撳「重新做一次」會用返呢啲答案預先填好
   };
   saveStep('health', saved);
   // 第 1 步做完唔好咁快叫人 WhatsApp：「WhatsApp 我」卡只喺做晒 3 步嘅總結頁先出
@@ -205,7 +206,7 @@ function showResult() {
       },
     });
   }
-  $('result').scrollIntoView({ behavior: 'smooth' });
+  if (!restore) $('result').scrollIntoView({ behavior: 'smooth' });
 }
 
 // ---------- 分享卡（只顯示分數）----------
@@ -252,4 +253,10 @@ document.getElementById('score-how-link')?.addEventListener('click', e => {
   faq.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
-renderQ();
+// 做過第 1 步：直接顯示上次嘅結果（想改可以撳「重新做一次」）
+const prev = readJourney().health;
+if (prev?.answers) {
+  Object.assign(answers, prev.answers);
+  idx = QUESTIONS.length - 1;
+  showResult({ restore: true });
+} else renderQ();
