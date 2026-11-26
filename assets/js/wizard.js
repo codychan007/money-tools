@@ -23,8 +23,16 @@ export function wizard(box, Q, onDone, init = {}) {
   const nextIndex = from => { let k = from; while (k < Q.length && !visible(k)) k++; return k; };
   const total = () => Q.filter((_, k) => visible(k)).length;
 
-  const go = k => { hist.push(i); i = nextIndex(k); render(); box.scrollIntoView({ block: 'start', behavior: 'smooth' }); };
-  const back = () => { i = hist.pop() ?? 0; render(); };
+  // 金額／數字題：聚焦輸入框，等 layout.js 跟住鍵盤將個欄位留喺可見區。
+  // scrollIntoView(block:start) 會將成張卡捲去版面頂，鍵盤一開就蓋住輸入框。
+  const showQuestion = () => {
+    if (i >= Q.length) { box.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
+    const field = box.querySelector('#wz-in, input[data-count]');
+    if (field) { setTimeout(() => field.focus({ preventScroll: true }), 30); return; }
+    box.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  };
+  const go = k => { hist.push(i); i = nextIndex(k); render(); showQuestion(); };
+  const back = () => { i = hist.pop() ?? 0; render(); showQuestion(); };
 
   function render() {
     if (i >= Q.length) return onDone({ ...ans }, api);
@@ -109,8 +117,8 @@ export function wizard(box, Q, onDone, init = {}) {
 
   const api = {
     ans,
-    edit: () => { i = hist.pop() ?? 0; render(); },
-    restart: () => { for (const k in ans) delete ans[k]; Object.assign(ans, init); hist = []; i = nextIndex(0); render(); },
+    edit: () => { i = hist.pop() ?? 0; render(); showQuestion(); },
+    restart: () => { for (const k in ans) delete ans[k]; Object.assign(ans, init); hist = []; i = nextIndex(0); render(); showQuestion(); },
   };
   i = nextIndex(0);
   render();

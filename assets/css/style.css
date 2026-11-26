@@ -37,7 +37,9 @@ body {
   background: var(--paper) var(--paper-grain);
   line-height: 1.65;
   font-size: 16px;
-  overflow-x: hidden;
+  /* clip 唔會造出捲動容器。hidden 會令 overflow-y 變成 auto，
+     手機鍵盤就無法把聚焦中嘅輸入框捲出鍵盤上面。 */
+  overflow-x: clip;
 }
 img, svg, canvas { max-width: 100%; }
 a { color: var(--shu-dark); text-underline-offset: 3px; }
@@ -317,6 +319,7 @@ input[type="text"], input[type="number"], select {
   width: 100%; min-height: var(--tap); font-size: 18px; font-family: inherit;
   border: 1.5px solid var(--line); border-radius: var(--radius-sm); padding: 10px 14px; background: #FFFDF8; color: var(--ink);
   -webkit-appearance: none; appearance: none;
+  scroll-margin-block: 12px;
 }
 .input-money input { padding-left: 30px; }
 input:focus, select:focus { outline: none; border-color: var(--ink); box-shadow: 0 0 0 3px rgba(35, 31, 28, .12); }
@@ -504,7 +507,7 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 .wizard { scroll-margin-top: 80px; }
 .wizard .q-step { font-size: 13px; color: var(--ink-2); margin-bottom: 4px; }
 .wizard h3 { font-size: 1.15rem; margin-bottom: 12px; line-height: 1.45; }
-.wizard input[type="text"], .wizard input[type="number"] { width: 100%; min-height: var(--tap); font: inherit; font-size: 1.1rem; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: #FFFDF8; color: var(--ink); }
+.wizard input[type="text"], .wizard input[type="number"] { width: 100%; min-height: var(--tap); font: inherit; font-size: 1.1rem; padding: 10px 12px; border: 1.5px solid var(--line); border-radius: var(--radius-sm); background: #FFFDF8; color: var(--ink); scroll-margin-block: 12px; }
 .wizard .input-money input { padding-left: 30px; }
 .year-switch { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 14px; }
 

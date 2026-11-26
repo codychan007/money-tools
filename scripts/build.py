@@ -402,6 +402,11 @@ def finish_page(src, path, extra_ld=None, noindex=False):
     src = re.sub(r'<div data-journey="(\w*)"></div>', lambda mm: journey_bar(mm.group(1), lang), src)
     src = re.sub(r'<span data-seal="(.)"></span>', lambda mm: seal(mm.group(1), "sm"), src)
     src = re.sub(r'<meta name="theme-color" content="[^"]*">', '<meta name="theme-color" content="#F3ECDD">', src)
+    # 鍵盤彈出時縮版面視窗，聚焦嘅輸入框先可以被捲到鍵盤上面（Chrome / Samsung Internet）
+    src = re.sub(
+        r'<meta name="viewport" content="[^"]*">',
+        '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">',
+        src, count=1)
     og_key = PAGE_OG.get(base, "updates" if base.startswith("/updates/") else "home")
     src = src.replace('<link rel="stylesheet" href="/assets/css/style.css">',
                       '<link rel="stylesheet" href="/assets/css/style.css">\n  ' +
@@ -595,7 +600,7 @@ def update_page(p, lang, older=None, newer=None):
 <html lang="{S['html']}">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
   <title>{e(title)}{sep}{e(S['brand'])}</title>
   <meta name="description" content="{e(summary)}">
   <meta name="theme-color" content="#F3ECDD">
