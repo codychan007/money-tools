@@ -127,13 +127,13 @@ $('report').addEventListener('click', e => {
     title: t('我做完 3 步理財體檢！', 'I finished the 3-step check-up!'),
     big: `${h.total}`, bigSub: t(`理財健康分數・${GRADE[h.tone] || ''}`, `Money health score · ${GRADE[h.tone] || ''}`),
     draw(ctx, box, { C, FONT, stamp }) {
-      let y = box.y + 70;
+      let y = box.y + 100;
       rows.forEach(([ch, label, value], i) => {
         stamp(ctx, box.x, y, 92, ch);
         ctx.fillStyle = C.ink2; ctx.font = `500 30px ${FONT}`; ctx.fillText(`${i + 1}. ${label}`, box.x + 126, y + 36);
         ctx.fillStyle = C.ink; ctx.font = `700 40px ${FONT}`; ctx.fillText(value, box.x + 126, y + 88);
-        y += 175;
-        if (i < rows.length - 1) { ctx.fillStyle = C.line; ctx.fillRect(box.x, y - 38, box.w, 2); }
+        y += 205;
+        if (i < rows.length - 1) { ctx.fillStyle = C.line; ctx.fillRect(box.x, y - 55, box.w, 2); }
       });
       ctx.textAlign = 'left';
     },
