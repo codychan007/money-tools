@@ -260,7 +260,7 @@ main { padding: 24px 0 48px; }
 .avatar-seal .frame[data-egg] { cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .avatar-seal .frame img.wave { position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); opacity: 0; transition: opacity .35s ease; }
 /* 彩蛋：電腦滑鼠擺上去／手機撳一下（.hi）→ 相框打直 + 揮手 */
-@media (hover: hover) { .avatar-seal .frame:hover { transform: rotate(0); } .avatar-seal .frame:hover img.wave { opacity: 1; } }
+@media (hover: hover) { .avatar-seal .frame:not(.touch):hover { transform: rotate(0); } .avatar-seal .frame:not(.touch):hover img.wave { opacity: 1; } }
 .avatar-seal .frame.hi { transform: rotate(0); }
 .avatar-seal .frame.hi img.wave { opacity: 1; }
 .avatar-seal .cap a { color: var(--shu-dark); text-decoration: none; }

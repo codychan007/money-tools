@@ -242,12 +242,11 @@ function pickHello() {
 }
 
 function mountAvatarEgg() {
-  const canHover = matchMedia('(hover: hover)').matches;
   document.querySelectorAll('.frame[data-egg]').forEach(f => {
     const bubble = document.createElement('span');
     bubble.className = 'hello-bubble'; bubble.setAttribute('role', 'status');
     f.appendChild(bubble);
-    let timer;
+    let timer, touch = false;
     const show = () => {
       bubble.textContent = pickHello();
       bubble.style.removeProperty('--shift');
@@ -257,14 +256,21 @@ function mountAvatarEgg() {
       if (over > 0) bubble.style.setProperty('--shift', `${-over}px`);
     };
     const hide = () => bubble.classList.remove('on');
-    if (canHover) {
-      f.addEventListener('mouseenter', show);
-      f.addEventListener('mouseleave', hide);
-    }
+    // 用滑鼠：擺上去就揮手講嘢，移開就收（CSS :hover 負責換相）
+    f.addEventListener('pointerenter', e => {
+      if (e.pointerType !== 'mouse') return;
+      touch = false; f.classList.remove('touch'); show();
+    });
+    f.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') hide(); });
+    // 用手指／筆撳：揮手 2 秒，之後一定自己變返（.touch 會停用 :hover，免得部分手機「黐住」hover）
+    f.addEventListener('pointerdown', e => {
+      if (e.pointerType === 'mouse') return;
+      touch = true; f.classList.add('touch');
+    });
     f.addEventListener('click', () => {
       clearTimeout(timer);
       f.classList.add('hi'); show();
-      timer = setTimeout(() => { f.classList.remove('hi'); if (!canHover || !f.matches(':hover')) hide(); }, 2000);
+      timer = setTimeout(() => { f.classList.remove('hi'); if (touch || !f.matches(':hover')) hide(); }, 2000);
     });
   });
 }
