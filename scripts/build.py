@@ -317,19 +317,27 @@ def journey_bar(current, lang):
 
 
 def avatar(lang, hero=False):
-    """首頁頭像：印章框，撳落去開 IG。未放相就用「我」字印章頂住。"""
+    """頭像：印章框。相本身唔係連結，淨係下面「IG @codychan813」撳得。
+    彩蛋：滑鼠擺上去（或者手機撳一下）相框打直，換做揮手相（assets/avatar-wave.jpg）。"""
     found = next((n for n in AVATAR_NAMES if (ROOT / "assets" / n).exists()), None)
-    alt = "Cody Chan" + ("（IG @codychan813）" if lang == "zh" else " (IG @codychan813)")
-    inner = (f'<img src="/assets/{found}" alt="{e(alt)}" width="320" height="320" loading="{"eager" if hero else "lazy"}">' if found
-             else '<span class="avatar-fallback" aria-hidden="true">我</span>')
-    if not found:
+    alt = "Cody Chan"
+    load = "eager" if hero else "lazy"
+    wave = (ROOT / "assets" / "avatar-wave.jpg").exists()
+    if found:
+        inner = f'<img src="/assets/{found}" alt="{e(alt)}" width="320" height="320" loading="{load}">'
+        if wave:
+            inner += (f'<img class="wave" src="/assets/avatar-wave.jpg" alt="" aria-hidden="true" '
+                      f'width="320" height="320" loading="{load}">')
+    else:
+        inner = '<span class="avatar-fallback" aria-hidden="true">我</span>'
         print("⚠️ 未有 assets/avatar.jpg，首頁「關於我」暫時用印章代替頭像")
-    cap = "IG @codychan813"
+    ig = f'<a class="cap-ig" href="{IG_URL}" target="_blank" rel="noopener">IG @codychan813</a>'
+    cap = ig
     if hero:   # 頁頂版：相下面寫埋名同身份
         who = "Cody Chan・香港保險理財顧問" if lang == "zh" else "Cody Chan · insurance and financial planning consultant"
-        cap = f'{e(who)}<br><span class="cap-ig">IG @codychan813</span>'
-    return (f'<a class="avatar-seal" href="{IG_URL}" target="_blank" rel="noopener" aria-label="{e(alt)}">'
-            f'<span class="frame">{inner}</span><span class="cap">{cap}</span></a>')
+        cap = f'{e(who)}<br>{ig}'
+    egg = ' data-egg' if found and wave else ''
+    return (f'<div class="avatar-seal"><span class="frame"{egg}>{inner}</span><span class="cap">{cap}</span></div>')
 
 
 def person_ld(lang="zh"):

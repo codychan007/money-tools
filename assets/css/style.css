@@ -253,10 +253,18 @@ main { padding: 24px 0 48px; }
 .avatar-seal .frame {
   display: block; width: 168px; aspect-ratio: 1; padding: 9px; border-radius: 6px; background: var(--shu);
   box-shadow: inset 0 0 0 4px var(--shu), inset 0 0 0 5.5px rgba(251, 243, 228, .9), 4px 4px 0 rgba(35, 31, 28, .15);
-  transform: rotate(-2deg); transition: transform .15s;
+  transform: rotate(-2deg); transition: transform .3s ease;
 }
 @media (min-width: 760px) { .avatar-seal .frame { width: 220px; } }
-.avatar-seal:hover .frame { transform: rotate(0); }
+.avatar-seal .frame { position: relative; }
+.avatar-seal .frame[data-egg] { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.avatar-seal .frame img.wave { position: absolute; inset: 9px; width: calc(100% - 18px); height: calc(100% - 18px); opacity: 0; transition: opacity .35s ease; }
+/* 彩蛋：電腦滑鼠擺上去／手機撳一下（.hi）→ 相框打直 + 揮手 */
+@media (hover: hover) { .avatar-seal .frame:hover { transform: rotate(0); } .avatar-seal .frame:hover img.wave { opacity: 1; } }
+.avatar-seal .frame.hi { transform: rotate(0); }
+.avatar-seal .frame.hi img.wave { opacity: 1; }
+.avatar-seal .cap a { color: var(--shu-dark); text-decoration: none; }
+.avatar-seal .cap a:hover { text-decoration: underline; }
 .avatar-seal img, .avatar-fallback { display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 3px; }
 .avatar-fallback { display: grid; place-items: center; background: var(--shu); color: #FBF3E4; font-family: var(--serif); font-weight: 700; font-size: 72px; }
 .avatar-seal .cap { font-size: 13px; font-weight: 700; color: var(--shu-dark); }

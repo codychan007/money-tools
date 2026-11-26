@@ -11,6 +11,7 @@ export function mountLayout() {
   paintJourney();
   showPendingUnlock();
   mountNavGroup();
+  mountAvatarEgg();
   keepFocusedFieldVisible();
   const btn = document.querySelector('.menu-btn');
   const nav = document.getElementById('site-nav');
@@ -223,3 +224,15 @@ export function sourceLine(item) {
 }
 
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+/** 頭像彩蛋：撳一下相（手機／iPad），揮手 2 秒後變返；電腦滑鼠擺上去由 CSS 處理 */
+function mountAvatarEgg() {
+  document.querySelectorAll('.frame[data-egg]').forEach(f => {
+    let timer;
+    f.addEventListener('click', () => {
+      clearTimeout(timer);
+      f.classList.add('hi');
+      timer = setTimeout(() => f.classList.remove('hi'), 2000);
+    });
+  });
+}
