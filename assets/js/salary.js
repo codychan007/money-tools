@@ -86,8 +86,20 @@ $('presets').addEventListener('click', e => {
 $('next-step').addEventListener('click', e => { if (e.target.closest('a') && last?.takeHome > 0) saveStep('salary', last); });
 // 做過第 2 步：填返上次嘅月薪同比例
 (function restore() {
-  const s = readJourney().salary;
-  if (!(s?.salary > 0)) return;
+  const j = readJourney(), s = j.salary;
+  if (!(s?.salary > 0)) {
+    // 未做過第 2 步：用第 1 步嘅「每月收入（扣完強積金）」倒推返未扣強積金嘅月薪
+    const th = j.health?.income;
+    if (!(th > 0)) return;
+    const lo = MPF.minRelevantIncome, hi = MPF.maxRelevantIncome, r = MPF.employeeRate;
+    const gross = th < lo ? th : th <= hi * (1 - r) ? th / (1 - r) : th + hi * r;
+    $('salary').value = Math.round(gross).toLocaleString('en-US');
+    const note = $('prefill-note');
+    note.textContent = t(`已經用第 1 步填嘅每月收入（扣完強積金 ${money(th)}）推算返月薪，唔啱可以自己改。`,
+      `Worked out from the monthly income you gave in step 1 (${money(th)} after MPF). Change it if it's not right.`);
+    note.classList.remove('hidden');
+    return;
+  }
   $('salary').value = Math.round(s.salary).toLocaleString('en-US');
   if (s.needs != null) $('needs').value = s.needs;
   if (s.wants != null) $('wants').value = s.wants;
