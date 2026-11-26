@@ -251,14 +251,9 @@ def footer(lang):
 
 TOOL_DISCLAIMER = {
     "zh": """<div class="disclaimer" data-disclaimer="tool">
-  <strong>重要提示：</strong>本工具嘅計算結果僅供參考，不構成任何投資、保險或財務建議。
-  所用回報率純屬假設，並非保證回報；投資涉及風險，資產價值可升可跌。
-  你輸入嘅資料只會喺你部手機／電腦內計算，<strong>唔會上傳</strong>。為咗「理財體檢」可以接住上一步，部分結果只會儲存喺你自己嘅瀏覽器，隨時可以喺<a href="/checkup/">總結頁</a>清除。</div>""",
+  <strong>重要提示：</strong>計算結果只供參考，唔構成投資、保險或財務建議。</div>""",
     "en": """<div class="disclaimer" data-disclaimer="tool">
-  <strong>Important:</strong> Results from this tool are for reference only and are not investment, insurance or financial advice.
-  Rates of return are assumptions, not guarantees; investment involves risk and values can go down as well as up.
-  What you enter is calculated on your own phone or computer and is <strong>never uploaded</strong>. So the check-up can carry on from the last step,
-  some results are saved in your own browser only, and you can erase them any time on the <a href="/en/checkup/">summary page</a>.</div>""",
+  <strong>Important:</strong> Results are for reference only and are not investment, insurance or financial advice.</div>""",
 }
 
 CTA = {
