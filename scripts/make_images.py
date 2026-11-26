@@ -27,7 +27,7 @@ CARDS = {
                "A 2-minute check-up|for your finances", "Money health check: 10 quick questions"),
     "insurance": ("保", "睇病要幾錢？|醫療費升緊幾多？", "公立醫院收費・醫療通脹・癌症數字",
                   "What does getting|sick cost in Hong Kong?", "Hospital fees · medical inflation · cancer facts"),
-    "updates": ("讀", "雙週市場速遞", "每兩星期講清楚市場發生緊咩事",
+    "updates": ("讀", "雙週市場快訊", "每兩星期講清楚市場發生緊咩事",
                 "Fortnightly market notes", "What moved markets, in plain language"),
     "market": ("市", "今日市場點？", "恒指・美股・HIBOR・匯率 每日更新",
                "How are markets today?", "Hang Seng · US stocks · HIBOR · FX, daily"),
