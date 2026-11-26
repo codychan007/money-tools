@@ -2,6 +2,9 @@
    理財資訊通 – 全站樣式（手機優先，375px 起）
    風格：和紙底、墨色字、毛筆線、朱紅印章
    ============================================================ */
+/* 英文彎引號（’ ‘ “ ”）：中文字型會當全形字畫，令「I’m」中間有大空位；呢幾個符號改用系統英文字型 */
+@font-face { font-family: "Latin Quotes"; src: local("Segoe UI"), local("Helvetica Neue"), local("Helvetica"), local("Roboto"), local("Arial"); unicode-range: U+2018-201F; }
+@font-face { font-family: "Latin Quotes Serif"; src: local("Georgia"), local("Times New Roman"), local("Noto Serif"), local("Times"); unicode-range: U+2018-201F; }
 :root {
   --paper:     #F3ECDD;   /* 和紙底色 */
   --paper-2:   #EAE0CB;   /* 深一級，用嚟分段 */
@@ -22,8 +25,8 @@
   --radius-sm: 6px;
   --shadow:    3px 3px 0 rgba(35, 31, 28, .08);
   --tap:       48px;
-  --font: "Noto Sans HK", -apple-system, BlinkMacSystemFont, "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", "Segoe UI", sans-serif;
-  --serif: "Noto Serif HK", "Noto Serif TC", "Songti TC", "PMingLiU", Georgia, serif;
+  --font: "Latin Quotes", "Noto Sans HK", -apple-system, BlinkMacSystemFont, "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", "Segoe UI", sans-serif;
+  --serif: "Latin Quotes Serif", "Noto Serif HK", "Noto Serif TC", "Songti TC", "PMingLiU", Georgia, serif;
   --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
   --brush: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 14' preserveAspectRatio='none'%3E%3Cpath d='M2 9 C40 4 90 5 140 6 S240 8 298 4 L297 8 C240 12 160 11 110 11 S30 12 3 12 Z' fill='%23231F1C'/%3E%3C/svg%3E");
 }
