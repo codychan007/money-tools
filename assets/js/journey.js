@@ -125,10 +125,17 @@ export function chatCard(h, { detail = false } = {}) {
   const btn = strong
     ? t('WhatsApp 我，幫我睇下一步', 'WhatsApp me about the next step')
     : t(`WhatsApp 我，幫我睇「${w.name}」`, `WhatsApp me about "${w.name}"`);
+  const GAIN = {
+    emergency: t('備用金要儲幾多先夠、每月放幾多、放喺邊度先隨時攞得返。', 'how much emergency fund is enough, how much to put aside each month, and where to keep it so it stays easy to reach.'),
+    protection: t('你而家有咩保障、有冇缺口、要補嘅話大約要幾錢。', "what cover you have now, whether there are gaps, and roughly what filling them would cost."),
+    cashflow: t('你啲錢流咗去邊、點樣每月穩定儲多啲。', 'where your money goes and how to save more every month, steadily.'),
+    debt: t('先還邊筆最慳利息、大約幾耐可以還清。', 'which debt to pay off first to save the most interest, and roughly how long until you are clear.'),
+    habits: t('除咗強積金，點樣開始為長遠目標定期儲錢。', 'how to start saving regularly for long-term goals, beyond MPF.'),
+  };
+  const gain = strong ? t('你下一步可以點樣再推高。', 'what your next step could be to push it higher.') : GAIN[w.k];
   return `<section class="card tint chat-card">
     <h2>${title}</h2>
-    <p class="mt0">${t('WhatsApp 我，我幫你睇你最弱嗰項，再話你知可以點做。免費，冇購買責任。',
-      "Message me on WhatsApp and I'll go through your weakest area with you and what you can do about it. Free, no obligation to buy.")}</p>
+    <p class="mt0">${t(`免費 30 分鐘，同你一齊計清楚：${gain}`, `In a free 30-minute chat, we work out together ${gain}`)}</p>
     <a class="btn block" href="${waWith(scoreMessage(h, detail))}" target="_blank" rel="noopener">${btn}</a>
     <p class="muted" style="font-size:13px;margin:10px 0 0">${t(
       `訊息會預先寫好你嘅分數，你撳「傳送」先會發出，唔想講可以刪走。撳即表示同意<a href="${P}/book/#pics">個人資料收集聲明</a>。想直接約時間？<a href="${P}/book/">預約 30 分鐘傾談 →</a>`,
