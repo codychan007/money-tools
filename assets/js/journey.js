@@ -103,8 +103,8 @@ export function scoreMessage(h, detail = false) {
       ` I save about ${Math.round((h.saveRate || 0) * 100)}% and my emergency fund covers about ${(h.efMonths || 0).toFixed(1)} months.`)
     : '';
   return t(
-    `你好 Cody，我啱啱喺網站做咗理財體檢：總分 ${h.total}/100，最弱係「${w.name}」（${w.score} 分）。${extra}想你幫我睇下。`,
-    `Hi Cody, I just did the money check-up on your website: ${h.total}/100 overall, weakest area "${w.name}" (${w.score} points).${extra} Could you take a look with me?`);
+    `你好 Cody，我啱啱喺網站做咗理財體檢，最需要改善嘅係「${w.name}」。${extra}想你幫我睇下。`,
+    `Hi Cody, I just did the money check-up on your website. The area I most need to improve is "${w.name}".${extra} Could you take a look with me?`);
 }
 
 const HOOK = {
@@ -144,8 +144,8 @@ export function chatCard(h, { detail = false } = {}) {
     <p class="mt0">${t(`免費 30 分鐘，同你一齊計清楚：${gain}`, `In a free 30-minute chat, we work out together ${gain}`)}</p>
     <a class="btn block" href="${waWith(scoreMessage(h, detail))}" target="_blank" rel="noopener">${btn}</a>
     <p class="muted" style="font-size:13px;margin:10px 0 0">${t(
-      `訊息會預先寫好你嘅分數，你撳「傳送」先會發出，唔想講可以刪走。撳即表示同意<a href="${P}/book/#pics">個人資料收集聲明</a>。想直接約時間？<a href="${P}/book/">預約 30 分鐘傾談 →</a>`,
-      `The message is pre-filled with your score and only goes out when you press send; delete anything you'd rather not share. Tapping means you agree to the <a href="${P}/book/#pics">personal information collection statement</a>. Prefer to pick a time? <a href="${P}/book/">Book a 30-minute chat →</a>`)}</p>
+      `訊息會預先寫好你嘅體檢結果，你撳「傳送」先會發出，唔想講可以刪走。撳即表示同意<a href="${P}/book/#pics">個人資料收集聲明</a>。想直接約時間？<a href="${P}/book/">預約 30 分鐘傾談 →</a>`,
+      `The message is pre-filled with your check-up result and only goes out when you press send; delete anything you'd rather not share. Tapping means you agree to the <a href="${P}/book/#pics">personal information collection statement</a>. Prefer to pick a time? <a href="${P}/book/">Book a 30-minute chat →</a>`)}</p>
   </section>`;
 }
 
