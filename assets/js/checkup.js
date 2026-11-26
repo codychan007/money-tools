@@ -147,3 +147,6 @@ $('clear').addEventListener('click', () => {
   $('cleared').classList.remove('hidden');
 });
 render();
+if (location.hash === '#clear-box' && !$('clear-box').classList.contains('hidden')) {
+  $('clear-box').scrollIntoView({ block: 'start' });
+}

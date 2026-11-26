@@ -521,3 +521,4 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 .benefit-facts { display: grid; gap: 8px; margin: 0; font-size: 14.5px; }
 .benefit-facts dt { font-weight: 700; color: var(--ink-2); font-size: 13px; }
 .benefit-facts dd { margin: 0; }
+#clear-box { scroll-margin-top: 84px; }

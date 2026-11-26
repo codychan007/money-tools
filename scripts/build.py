@@ -231,6 +231,8 @@ def footer(lang):
     # 中英頁尾都唔放「市場指數」／Market indices
     items = [item for item in FOOTER_LINKS if item[0] != "/market/"]
     links = "".join(f'<a href="{url_for(h, lang)}">{e(zh if lang == "zh" else en)}</a>' for h, zh, en in items)
+    # 理財體檢記錄只存喺訪客部機：頁尾畀個位清除（去總結頁嘅清除掣）
+    links += f'<a href="{url_for("/checkup/", lang)}#clear-box">{"清除我嘅資料" if lang == "zh" else "Clear my data"}</a>'
     return f"""
 <footer class="site-footer">
   <div class="wrap wide">
