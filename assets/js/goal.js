@@ -63,7 +63,6 @@ function nextStepHtml() {
     title: t('3 步做完！將你嘅結果放埋一齊睇。', 'All 3 steps done! See your results together.'),
     body: t('總結會將健康分數、每月儲蓄同達標時間放喺同一頁，再話你知最值得先處理嘅 1 件事。',
       'The summary puts your health score, monthly savings and time to goal on one page, plus the one thing worth tackling first.'),
-    unlock: t('總結只喺你部機度生成，唔會上傳。', 'The summary is created on your device only and never uploaded.'),
     href: `${PREFIX}/checkup/`,
     button: t('睇我嘅理財體檢總結 →', 'See my check-up summary →'),
   });
