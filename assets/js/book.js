@@ -62,8 +62,8 @@ function refresh() {
     $('wa').href = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(baseMsg + extra)}`;
     $('prebook-hint').classList.remove('nudge');
     $('cal-note').hidden = false;
-    $('cal-note').textContent = t('用 Google 日曆預約：撳掣時會幫你複製答案，喺預約表「諮詢主題」一欄貼上就得。',
-      'Booking with Google Calendar: your answers are copied when you tap, so just paste them into the "topic" box on the form.');
+    $('cal-note').textContent = t('用 Google 日曆預約：撳掣之後會教你將答案貼入預約表。',
+      'Booking with Google Calendar: after you tap, we\'ll show you how to paste your answers into the form.');
   } else {
     $('wa').removeAttribute('href');
     $('cal-note').hidden = true;
@@ -79,13 +79,48 @@ function refresh() {
     return;
   }
   if (id === 'cal') {
-    const a = answers();
-    const text = t(`想傾：${a.topic}｜方便時間：${a.time}`, `Topic: ${a.topic} | Times: ${a.time}`);
-    try { navigator.clipboard?.writeText(text); } catch { /* 唔俾複製就算 */ }
-    $('cal-note').textContent = t(`已複製：「${text}」，喺預約表「諮詢主題」一欄貼上就得。`,
-      `Copied: "${text}". Paste it into the "topic" box on the booking form.`);
+    // 唔即刻開日曆：先彈提示卡，講清楚已複製咗咩、去到要貼喺邊
+    e.preventDefault();
+    showCalGuide();
   }
 }, true));
+
+const copyText = async text => {
+  try { await navigator.clipboard.writeText(text); return true; } catch { return false; }
+};
+async function showCalGuide() {
+  const a = answers();
+  const text = t(`想傾：${a.topic}｜方便時間：${a.time}`, `Topic: ${a.topic} | Times: ${a.time}`);
+  const ok = await copyText(text);
+  document.querySelector('.cal-guide')?.remove();
+  const el = document.createElement('div');
+  el.className = 'cal-guide';
+  el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
+  el.innerHTML = `<div class="cal-guide-card">
+      <p class="cal-guide-title">${ok ? t('✓ 已幫你複製咗你嘅答案', '✓ Your answers are copied') : t('記得抄低你嘅答案', 'Note down your answers')}</p>
+      <div class="cal-guide-text">${text.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))}</div>
+      <button type="button" class="link-btn cal-guide-copy">${t('再複製一次', 'Copy again')}</button>
+      <ol class="cal-guide-steps">
+        <li>${t('喺 Google 日曆揀好時間', 'Pick a time on Google Calendar')}</li>
+        <li>${t('喺預約表「<b>諮詢主題</b>」一欄<b>貼上</b>（手機長按 → 貼上；電腦按 Ctrl＋V）', 'In the <b>topic</b> box on the form, <b>paste</b> (phone: press and hold → Paste; computer: Ctrl+V)')}</li>
+        <li>${t('填埋聯絡資料，撳「預約」', 'Fill in your contact details and tap Book')}</li>
+      </ol>
+      <a class="btn shu lg block" href="${SITE.calendarUrl}" target="_blank" rel="noopener">${t('明白，去揀時間 →', 'Got it, pick a time →')}</a>
+      <button type="button" class="link-btn cal-guide-back">${t('返回', 'Back')}</button>
+    </div>`;
+  document.body.appendChild(el);
+  const close = () => { el.remove(); document.removeEventListener('keydown', esc); };
+  const esc = ev => { if (ev.key === 'Escape') close(); };
+  document.addEventListener('keydown', esc);
+  el.addEventListener('click', ev => { if (ev.target === el) close(); });
+  el.querySelector('.cal-guide-back').addEventListener('click', close);
+  el.querySelector('.btn').addEventListener('click', () => setTimeout(close, 300));
+  el.querySelector('.cal-guide-copy').addEventListener('click', async ev => {
+    const done = await copyText(text);
+    ev.target.textContent = done ? t('已複製 ✓', 'Copied ✓') : t('複製唔到，請自己抄低', "Couldn't copy, please note it down");
+  });
+  el.querySelector('.btn').focus();
+}
 refresh();
 
 // 做咗理財體檢：「傾咩」改成針對佢嘅結果同最弱嗰項
