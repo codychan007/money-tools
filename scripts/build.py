@@ -208,7 +208,7 @@ def header(path):
       <nav class="nav" id="site-nav">{links}</nav>
       <div class="head-tools">
         {bar_book}
-        <a class="lang-switch" href="{url_for(base, other)}" hreflang="{SITE[other]['html']}" lang="{SITE[other]['html']}" aria-label="{e(S['switch_label'])}">{e(S["switch"])}</a>
+        <a class="lang-switch" href="{url_for("/" if base == "/404.html" else base, other)}" hreflang="{SITE[other]['html']}" lang="{SITE[other]['html']}" aria-label="{e(S['switch_label'])}">{e(S["switch"])}</a>
         <button class="menu-btn" aria-label="{e(S['menu'])}" aria-expanded="false" aria-controls="site-nav">☰</button>
       </div>
     </div>

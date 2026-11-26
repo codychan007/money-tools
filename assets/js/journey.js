@@ -27,7 +27,11 @@ export function saveStep(step, data) {
 }
 
 export function clearJourney() {
-  try { localStorage.removeItem(KEY); } catch { /* 冇嘢要清 */ }
+  try {
+    localStorage.removeItem(KEY);
+    // 過關動畫記錄（unlock.js）都一併清
+    localStorage.removeItem('hkmc-unlock-seen'); localStorage.removeItem('hkmc-unlock-pending');
+  } catch { /* 冇嘢要清 */ }
   paintJourney();
 }
 
