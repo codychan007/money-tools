@@ -602,3 +602,5 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 @media (min-width: 760px) and (max-width: 900px) { .hello-bubble { max-width: 145px; font-size: 13.5px; } }
 @media (prefers-reduced-motion: reduce) { .hello-bubble { transition: opacity .2s; } }
 .hello-bubble.tight { font-size: 12.5px; padding: 7px 10px; }
+/* 英文首頁：標題上面嘅紅色細標籤 */
+.hero .hero-tag, .landing-hero .hero-tag { margin: 0 0 6px; color: var(--shu); font-weight: 700; font-size: 14px; letter-spacing: .04em; }
