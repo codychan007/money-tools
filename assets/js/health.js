@@ -1,5 +1,5 @@
-import { mountLayout, money, readNum, moneyInput } from './layout.js';
-import { healthScores, healthGrade } from './finance.js';
+import { mountLayout, money, readNum, moneyInput, loadJSON } from './layout.js';
+import { healthScores, healthGrade, takeHome } from './finance.js';
 import { buildCard, shareCanvas } from './sharecard.js';
 import { t, locale } from './i18n.js';
 import { saveStep, readJourney, nextCard, stepUrl, hideBottomCta } from './journey.js';
@@ -7,10 +7,14 @@ import { saveStep, readJourney, nextCard, stepUrl, hideBottomCta } from './journ
 mountLayout();
 const $ = id => document.getElementById(id);
 
+// 強積金規則（計到手用；讀唔到就用預設值）
+let MPF = { employeeRate: 0.05, employerRate: 0.05, minRelevantIncome: 7100, maxRelevantIncome: 30000 };
+try { MPF = (await loadJSON('/data/statutory.json')).mpf; } catch { /* 用預設值 */ }
+
 // 問題清單：type 'money' = 輸入金額；'choice' = 選擇題
 const QUESTIONS = [
-  { key: 'income', type: 'money', title: t('每月收入大約幾多？', 'Roughly how much do you earn each month?'),
-    hint: t('扣完強積金、實際入到銀行嗰個數。', 'After MPF, the amount that actually lands in your bank account.') },
+  { key: 'gross', type: 'money', title: t('每月人工大約幾多？', 'Roughly how much is your monthly salary?'),
+    hint: t('未扣強積金，即係合約上嗰個數。', 'Before MPF, the figure on your contract.') },
   { key: 'expenses', type: 'money', title: t('每月生活開支大約幾多？', 'Roughly how much do you spend each month?'),
     hint: t('租金、家用、食飯、交通、娛樂……唔計還債。', 'Rent, family, food, transport, fun… not counting loan repayments.') },
   { key: 'cash', type: 'money', title: t('而家手上有幾多現金存款？', 'How much cash savings do you have now?'),
@@ -35,7 +39,7 @@ const QUESTIONS = [
 
 const answers = {};
 const PLACEHOLDER = {
-  income: t('例如 20,000', 'e.g. 20,000'), expenses: t('例如 12,000', 'e.g. 12,000'), cash: t('例如 30,000', 'e.g. 30,000'),
+  gross: t('例如 20,000', 'e.g. 20,000'), expenses: t('例如 12,000', 'e.g. 12,000'), cash: t('例如 30,000', 'e.g. 30,000'),
   debt: t('冇就填 0', '0 if none'), saving: t('例如 3,000', 'e.g. 3,000'),
 };
 let idx = 0;
@@ -63,7 +67,11 @@ function renderQ() {
     $('q-body').innerHTML = `<div class="input-money"><input type="text" id="q-input" aria-label="${q.title}"
       placeholder="${PLACEHOLDER[q.key] || ''}" value="${v === '' ? '' : Number(v).toLocaleString(locale)}"></div>`;
     const inp = $('q-input'); moneyInput(inp);
-    const sync = () => { answers[q.key] = inp.value.trim() ? readNum(inp) : undefined; };
+    const sync = () => {
+      answers[q.key] = inp.value.trim() ? readNum(inp) : undefined;
+      // 月薪（未扣強積金）→ 自己計到手，分數同建議照用到手計
+      if (q.key === 'gross') answers.income = answers.gross > 0 ? takeHome(answers.gross, MPF) : undefined;
+    };
     inp.addEventListener('input', sync);
     inp.addEventListener('keydown', e => { if (e.key === 'Enter') next(); });
     sync();
@@ -184,6 +192,7 @@ function showResult({ restore = false } = {}) {
     total: r.total, tone: g.tone, dims: r.dims, saveRate: r.saveRate, efMonths: r.efMonths,
     income: answers.income || 0, expenses: answers.expenses || 0, cash: answers.cash || 0, saving: answers.saving || 0,
     weakest: tips[0]?.k, weakestTip: tips[0]?.text,
+    gross: answers.gross || 0,
     answers: { ...answers },   // 入返嚟可以直接顯示返結果；撳「重新做一次」會用返呢啲答案預先填好
   };
   saveStep('health', saved);

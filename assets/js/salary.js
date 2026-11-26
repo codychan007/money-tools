@@ -89,14 +89,20 @@ $('next-step').addEventListener('click', e => { if (e.target.closest('a') && las
   const j = readJourney(), s = j.salary;
   if (!(s?.salary > 0)) {
     // 未做過第 2 步：用第 1 步嘅「每月收入（扣完強積金）」倒推返未扣強積金嘅月薪
-    const th = j.health?.income;
-    if (!(th > 0)) return;
-    const lo = MPF.minRelevantIncome, hi = MPF.maxRelevantIncome, r = MPF.employeeRate;
-    const gross = th < lo ? th : th <= hi * (1 - r) ? th / (1 - r) : th + hi * r;
+    const h = j.health || {};
+    const th = h.income;
+    let gross = h.gross;
+    if (!(gross > 0)) {                    // 舊記錄：第 1 步當時問嘅係到手數，倒推返月薪
+      if (!(th > 0)) return;
+      const lo = MPF.minRelevantIncome, hi = MPF.maxRelevantIncome, r = MPF.employeeRate;
+      gross = th < lo ? th : th <= hi * (1 - r) ? th / (1 - r) : th + hi * r;
+    }
     $('salary').value = Math.round(gross).toLocaleString('en-US');
     const note = $('prefill-note');
-    note.textContent = t(`已經用第 1 步填嘅每月收入（扣完強積金 ${money(th)}）推算返月薪，唔啱可以自己改。`,
-      `Worked out from the monthly income you gave in step 1 (${money(th)} after MPF). Change it if it's not right.`);
+    note.textContent = h.gross > 0
+      ? t('已經用你喺第 1 步填嘅月薪預先填好，唔啱可以自己改。', 'Pre-filled with the salary you gave in step 1. Change it if needed.')
+      : t(`已經用第 1 步填嘅每月收入（扣完強積金 ${money(th)}）推算返月薪，唔啱可以自己改。`,
+        `Worked out from the monthly income you gave in step 1 (${money(th)} after MPF). Change it if it's not right.`);
     note.classList.remove('hidden');
     return;
   }
