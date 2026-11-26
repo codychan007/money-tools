@@ -28,7 +28,7 @@ function render() {
 
   if (!n) {
     $('report').innerHTML = `<div class="card center">
-      <p>${t('你未做任何一步。3 步大約 5 分鐘，做完呢度就會見到你嘅總結。', "You haven't done any steps yet. The 3 steps take about 5 minutes, and your summary will appear here.")}</p>
+      <p>${t('你未做任何一步。3 步大約 3 分鐘，做完呢度就會見到你嘅總結。', "You haven't done any steps yet. The 3 steps take about 3 minutes, and your summary will appear here.")}</p>
       <a class="btn shu lg" href="${stepUrl('health')}">${t('開始第 1 步：健康檢查 →', 'Start step 1: Health check →')}</a></div>`;
     $('clear-box').classList.add('hidden');
     hideBottomCta(false);
