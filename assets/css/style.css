@@ -216,7 +216,8 @@ main { padding: 24px 0 48px; }
 .tool-card .go { color: var(--shu-dark); font-weight: 700; font-size: 14px; margin-top: 12px; display: inline-block; }
 
 /* ---------- 首頁 ---------- */
-.landing-hero { padding: 18px 0 8px; }
+/* 頂欄同標題之間收窄少少。只改首頁；其他頁沿用 .hero 嘅間距。 */
+.landing-hero { padding: 6px 0 8px; }
 .landing-hero h1 { font-size: 2.1rem; line-height: 1.25; }
 .landing-hero .lead { font-size: 1.12rem; color: var(--ink); }
 .landing-hero .by { display: flex; align-items: center; gap: 10px; color: var(--ink-2); font-size: 14px; margin-top: 4px; }
@@ -420,6 +421,8 @@ ol.tips li, ul.tips li { margin-bottom: 10px; }
 .disclaimer strong { color: var(--ink); }
 
 /* ---------- 預約（朱紅印章掣）---------- */
+/* 作者樣式如果設咗 display，會蓋過 hidden 屬性；呢度確保未答完題時真係收埋 */
+[data-cta][hidden] { display: none; }
 .cta-seal { text-align: center; padding: 26px 0 6px; }
 .cta-seal .cta-lead { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; margin: 0 0 4px; color: var(--ink); }
 .cta-seal .cta-sub { color: var(--ink-2); font-size: 15px; margin: 0 0 16px; }

@@ -272,6 +272,14 @@ CTA = {
 }
 
 
+def apply_cta(src, lang):
+    """替換 <div data-cta>。屬性（例如 hidden）會保留，等工具頁答完題先打開。"""
+    def repl(m):
+        extra = m.group(1) or ""
+        return CTA[lang].replace("<div data-cta>", f"<div data-cta{extra}>", 1)
+    return re.sub(r"<div data-cta([^>]*)></div>", repl, src)
+
+
 def journey_bar(current, lang):
     head = {"zh": ("理財體檢 3 步", "完成 0 / 3"), "en": ("3-step money check-up", "0 of 3 done")}[lang]
     hint = {"zh": "每步接住上一步，最後拼成一頁總結。",
@@ -386,7 +394,7 @@ def finish_page(src, path, extra_ld=None, noindex=False):
         ld.append(faq_ld)
 
     src = src.replace('<div data-disclaimer="tool"></div>', TOOL_DISCLAIMER[lang])
-    src = src.replace("<div data-cta></div>", CTA[lang])
+    src = apply_cta(src, lang)
     if "<div data-avatar></div>" in src:
         src = src.replace("<div data-avatar></div>", avatar(lang))
     if "<div data-avatar-hero></div>" in src:
@@ -582,6 +590,7 @@ def update_page(p, lang, older=None, newer=None):
     if newer:
         links.append(f'<a class="next" href="{url_for(f"/updates/{newer['id']}/", lang)}"><small>{"下一期 →" if lang == "zh" else "Next →"}</small>{e(L(newer, "title", lang))}</a>')
     nav = f'<nav class="post-nav">{"".join(links)}</nav>' if links else ""
+    # 文章／PDF 頁唔放頁底預約掣。頂欄「預約傾談」同頁尾連結保留；PDF 同內文唔改。
     src = f"""<!doctype html>
 <html lang="{S['html']}">
 <head>
@@ -611,7 +620,6 @@ def update_page(p, lang, older=None, newer=None):
     </article>
     {nav}
     {U['disclaimer']}
-    <div data-cta></div>
   </div>
 </main>
 <script type="module" src="/assets/js/updates.js"></script>

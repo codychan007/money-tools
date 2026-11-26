@@ -5,6 +5,7 @@
 import { t } from './i18n.js';
 import { money, loadJSON, esc } from './layout.js';
 import { wizard } from './wizard.js';
+import { hideBottomCta } from './journey.js';
 import { salariesTax, maxOutThree, justEnough, mpfEmployeeAnnual } from './calc/tax.js';
 
 const box = document.getElementById('wizard');
@@ -120,6 +121,7 @@ function planHtml(Y, p, r) {
 }
 
 function result(a, api) {
+  hideBottomCta(false);   // 所有適用題目都答完，先顯示頁底預約
   const p = toParams(a);
   const draw = year => {
     const Y = YEARS[year];
@@ -157,8 +159,8 @@ function result(a, api) {
           <button type="button" class="btn secondary" data-restart>${t('重新答過', 'Start over')}</button></div>
       </div>`;
     box.querySelectorAll('[data-year]').forEach(b => b.addEventListener('click', () => draw(b.dataset.year)));
-    box.querySelector('[data-edit]').addEventListener('click', api.edit);
-    box.querySelector('[data-restart]').addEventListener('click', api.restart);
+    box.querySelector('[data-edit]').addEventListener('click', () => { hideBottomCta(true); api.edit(); });
+    box.querySelector('[data-restart]').addEventListener('click', () => { hideBottomCta(true); api.restart(); });
   };
   draw(a.year || DEFAULT);
 }
