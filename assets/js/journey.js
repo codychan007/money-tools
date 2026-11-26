@@ -4,7 +4,6 @@
 // 瀏覽器唔俾儲存（私隱模式等）都照用得，只係唔會記住進度。
 // ============================================================
 import { t, P } from './i18n.js';
-import { SITE } from './config.js';
 import { queueUnlock } from './unlock.js';
 
 const KEY = 'hkmc-checkup-v1';
@@ -87,7 +86,6 @@ const DIM_NAMES = {
   cashflow: ['現金流', 'Cash flow'], emergency: ['緊急備用金', 'Emergency fund'], debt: ['負債', 'Debt'],
   protection: ['基本保障', 'Protection'], habits: ['增值習慣', 'Money habits'],
 };
-const waWith = text => `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(text)}`;
 
 export function weakest(h) {
   const [k, v] = Object.entries(h?.dims || {}).sort((a, b) => a[1] - b[1])[0] || [];
@@ -129,8 +127,8 @@ export function chatCard(h, { detail = false } = {}) {
     ? t(`你 ${h.total} 分，底子唔錯。想知點樣再推高啲？`, `You scored ${h.total}. A solid base. Want to push it higher?`)
     : HOOK[w.k](w.score);
   const btn = strong
-    ? t('WhatsApp 我，幫我睇下一步', 'WhatsApp me about the next step')
-    : t(`WhatsApp 我，幫我睇「${w.name}」`, `WhatsApp me about "${w.name}"`);
+    ? t('預約傾談，幫我睇下一步 →', 'Book a chat about the next step →')
+    : t(`預約傾談，幫我睇「${w.name}」 →`, `Book a chat about "${w.name}" →`);
   const GAIN = {
     emergency: t('備用金要儲幾多先夠、每月放幾多、放喺邊度先隨時攞得返。', 'how much emergency fund is enough, how much to put aside each month, and where to keep it so it stays easy to reach.'),
     protection: t('你而家有咩保障、有冇缺口、要補嘅話大約要幾錢。', "what cover you have now, whether there are gaps, and roughly what filling them would cost."),
@@ -142,10 +140,10 @@ export function chatCard(h, { detail = false } = {}) {
   return `<section class="card tint chat-card">
     <h2>${title}</h2>
     <p class="mt0">${t(`免費 30 分鐘，同你一齊計清楚：${gain}`, `In a free 30-minute chat, we work out together ${gain}`)}</p>
-    <a class="btn block" href="${waWith(scoreMessage(h, detail))}" target="_blank" rel="noopener">${btn}</a>
+    <a class="btn block" href="${P}/book/#prebook">${btn}</a>
     <p class="muted" style="font-size:13px;margin:10px 0 0">${t(
-      `訊息會預先寫好你嘅體檢結果，你撳「傳送」先會發出，唔想講可以刪走。撳即表示同意<a href="${P}/book/#pics">個人資料收集聲明</a>。想直接約時間？<a href="${P}/book/">預約 30 分鐘傾談 →</a>`,
-      `The message is pre-filled with your check-up result and only goes out when you press send; delete anything you'd rather not share. Tapping means you agree to the <a href="${P}/book/#pics">personal information collection statement</a>. Prefer to pick a time? <a href="${P}/book/">Book a 30-minute chat →</a>`)}</p>
+      '下一頁揀好想傾嘅方向同方便時間，就可以用 WhatsApp 或者 Google 日曆預約；用 WhatsApp 嘅話，你嘅體檢結果會預先寫入訊息，你撳「傳送」先會發出。',
+      "On the next page, pick what you'd like to talk about and when suits you, then book by WhatsApp or Google Calendar. With WhatsApp, your check-up result is pre-filled in the message and only goes out when you press send.")}</p>
   </section>`;
 }
 

@@ -122,6 +122,8 @@ async function showCalGuide() {
   el.querySelector('.btn').focus();
 }
 refresh();
+// 由總結頁「預約傾談」過嚟（#prebook）：直接捲去兩條問題
+if (location.hash === '#prebook') requestAnimationFrame(() => $('prebook').scrollIntoView({ block: 'center' }));
 
 // 做咗理財體檢：「傾咩」改成針對佢嘅結果同最弱嗰項
 const w = weakest(readJourney().health);
