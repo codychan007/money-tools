@@ -625,3 +625,5 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 .cal-guide-copy { justify-self: start; font-size: 14px; }
 .cal-guide-steps { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 15px; color: var(--ink-2); }
 .cal-guide-back { justify-self: center; font-size: 14px; }
+/* 預約頁：兩個掣下面嘅細字，同掣之間、彼此之間間距一樣 */
+#channels > p.muted { margin: 12px 0 0; }
