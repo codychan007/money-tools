@@ -405,6 +405,26 @@ def faq_html_and_ld(key, lang):
     return section, ld
 
 
+# Cody 自己唔計入統計：開過 /?me=1 嘅機（記喺 localStorage），攔住 Cloudflare Web Analytics 嘅數據傳送。
+# 統計程式係 Cloudflare Pages 部署時自動加入，所以唔改 Cloudflare 設定，只喺瀏覽器攔截送去 cloudflareinsights 嘅請求。
+# 冇開過連結嘅訪客：呢段一開頭就 return，乜都唔做。?me=0 可以取消。
+NO_STATS = """<script>(function(){try{var k='hkmc-no-stats',q=location.search;
+if(/[?&]me=1(&|$)/.test(q))localStorage.setItem(k,'1');
+if(/[?&]me=0(&|$)/.test(q))localStorage.removeItem(k);
+if(localStorage.getItem(k)!=='1')return;
+var bad=function(u){u=String(u||'');return u.indexOf('cloudflareinsights.com')>-1||u.indexOf('/cdn-cgi/rum')>-1;};
+if(navigator.sendBeacon){var sb=navigator.sendBeacon.bind(navigator);navigator.sendBeacon=function(u,d){return bad(u)?true:sb(u,d);};}
+if(window.fetch){var f=window.fetch;window.fetch=function(i,o){var u=typeof i==='string'?i:(i&&i.url);return bad(u)?Promise.resolve(new Response(null,{status:204})):f.apply(this,arguments);};}
+var xo=XMLHttpRequest.prototype.open,xs=XMLHttpRequest.prototype.send;
+XMLHttpRequest.prototype.open=function(m,u){this._noStats=bad(u);return xo.apply(this,arguments);};
+XMLHttpRequest.prototype.send=function(){if(this._noStats)return;return xs.apply(this,arguments);};
+if(/[?&]me=1(&|$)/.test(q))document.addEventListener('DOMContentLoaded',function(){var d=document.createElement('div');
+d.textContent=document.documentElement.lang.indexOf('en')===0?'\\u2713 Visits from this device are not counted':'\\u2713 \\u5462\\u90e8\\u6a5f\\u5605\\u700f\\u89bd\\u5514\\u6703\\u8a08\\u5165\\u7d71\\u8a08';
+d.style.cssText='position:fixed;left:50%;bottom:16px;transform:translateX(-50%);z-index:2000;background:#4F6B3A;color:#fff;padding:8px 14px;border-radius:8px;font:700 14px/1.4 sans-serif;box-shadow:2px 2px 0 rgba(0,0,0,.2)';
+document.body.appendChild(d);setTimeout(function(){d.remove();},3000);});
+}catch(e){}})();</script>"""
+
+
 def finish_page(src, path, extra_ld=None, noindex=False):
     """將來源 HTML 變成完整靜態頁"""
     lang = lang_of(path)
@@ -436,7 +456,7 @@ def finish_page(src, path, extra_ld=None, noindex=False):
         src, count=1)
     og_key = PAGE_OG.get(base, "updates" if base.startswith("/updates/") else "home")
     src = src.replace('<link rel="stylesheet" href="/assets/css/style.css">',
-                      '<link rel="stylesheet" href="/assets/css/style.css">\n  ' +
+                      NO_STATS + '\n  <link rel="stylesheet" href="/assets/css/style.css">\n  ' +
                       head_extra(path, title, desc, og_key, ld, noindex or base in NOINDEX), 1)
     src = src.replace("<body>", "<body>" + header(path), 1)
     src = src.replace("</main>", "</main>" + footer(lang), 1)
