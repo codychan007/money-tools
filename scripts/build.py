@@ -488,6 +488,56 @@ def post_card(p, lang):
             f'<h3>{e(L(p, "title", lang))}</h3><span class="go">{UPD[lang]["read"]}</span></a>')   # 列表只顯示日期同標題；摘要入文章頁先睇
 
 
+MONTHS_EN = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+
+
+def post_row(p, lang):
+    """舊期：一行（日期＋標題）"""
+    y, m, d = (int(x) for x in p["date"].split("-"))
+    day = f"{m} 月 {d} 日" if lang == "zh" else f"{d} {MONTHS_EN[m - 1][:3]}"
+    href = url_for(f"/updates/{p['id']}/", lang)
+    return (f'<a class="post-row" href="{href}"><span class="d">{day}</span>'
+            f'<span class="t">{e(L(p, "title", lang))}</span><span class="arrow">→</span></a>')
+
+
+def month_groups(posts, lang):
+    out, cur = [], None
+    for p in posts:
+        y, m, _ = (int(x) for x in p["date"].split("-"))
+        key = f"{y} 年 {m} 月" if lang == "zh" else f"{MONTHS_EN[m - 1]} {y}"
+        if key != cur:
+            if cur is not None:
+                out.append("</div>")
+            out.append(f'<h3 class="post-month">{key}</h3><div class="post-rows">')
+            cur = key
+        out.append(post_row(p, lang))
+    if cur is not None:
+        out.append("</div>")
+    return "".join(out)
+
+
+def posts_list(published, lang, show=6):
+    """列表頁：最新一期做頭條（加 2 句重點）；其餘一行、按月份分組；最近 show 期之後收入「睇更多」"""
+    if not published:
+        return f'<div class="card center muted">{UPD[lang]["empty"]}</div>'
+    top = published[0]
+    pts = "".join(f"<li>{e(h)}</li>" for h in (L(top, "highlights", lang) or [])[:2])
+    href = url_for(f"/updates/{top['id']}/", lang)
+    head = (f'<a class="card tool-card" href="{href}"><span class="badge">{e(top["date"])}</span>'
+            f'<h3>{e(L(top, "title", lang))}</h3>' + (f'<ul class="tips">{pts}</ul>' if pts else "")
+            + f'<span class="go">{UPD[lang]["read"]}</span></a>')
+    rest = published[1:]
+    seen, more = rest[:show - 1], rest[show - 1:]
+    html = head
+    if seen:
+        html += f'<section class="card">{month_groups(seen, lang)}'
+        if more:
+            label = f"睇更多舊期（{len(more)} 期）" if lang == "zh" else f"Show older notes ({len(more)})"
+            html += f'<details class="more-posts"><summary>{label}</summary>{month_groups(more, lang)}</details>'
+        html += "</section>"
+    return html
+
+
 def post_link(p, lang):
     """主頁「計完之後，仲可以睇」：最新一期市場解讀，一行標題 + 日期"""
     href = url_for(f"/updates/{p['id']}/", lang)
@@ -508,7 +558,7 @@ def require_public_pdf(url):
         raise SystemExit(f"❌ 找不到市場解讀 PDF：{url}")
 
 
-def update_page(p, lang):
+def update_page(p, lang, older=None, newer=None):
     U = UPD[lang]
     S = SITE[lang]
     hl = "".join(f"<li>{e(h)}</li>" for h in (L(p, "highlights", lang) or []))
@@ -525,6 +575,13 @@ def update_page(p, lang):
     # 英文 PDF 上線後，唔可以再話呢期全文係中文。冇 file_en 嘅舊期維持原句。
     note = "" if lang == "en" and p.get("file_en") else U["pdf_note"]
     sep = "｜" if lang == "zh" else " | "
+    # 上一期（較舊）／下一期（較新）
+    links = []
+    if older:
+        links.append(f'<a class="prev" href="{url_for(f"/updates/{older['id']}/", lang)}"><small>{"← 上一期" if lang == "zh" else "← Previous"}</small>{e(L(older, "title", lang))}</a>')
+    if newer:
+        links.append(f'<a class="next" href="{url_for(f"/updates/{newer['id']}/", lang)}"><small>{"下一期 →" if lang == "zh" else "Next →"}</small>{e(L(newer, "title", lang))}</a>')
+    nav = f'<nav class="post-nav">{"".join(links)}</nav>' if links else ""
     src = f"""<!doctype html>
 <html lang="{S['html']}">
 <head>
@@ -552,6 +609,7 @@ def update_page(p, lang):
       </div>
       <div id="pdf-pages" class="stack" data-pdf="{e(pdf)}"><div class="card center muted">{U['loading']}</div></div>
     </article>
+    {nav}
     {U['disclaimer']}
     <div data-cta></div>
   </div>
@@ -610,8 +668,7 @@ def main():
             ld = [{"@type": "WebSite", "name": SITE[lang]["brand"], "url": SITE_URL + url_for("/", lang), "inLanguage": SITE[lang]["html"]},
                   person_ld(lang)]
         elif base == "/updates/":
-            cards = "".join(post_card(p, lang) for p in published) or f'<div class="card center muted">{UPD[lang]["empty"]}</div>'
-            src = src.replace("<!--POSTS-->", cards)
+            src = src.replace("<!--POSTS-->", posts_list(published, lang))
         elif base == "/about/":
             ld = [person_ld(lang)]
         f.write_text(finish_page(src, path, ld), encoding="utf-8")
@@ -619,10 +676,13 @@ def main():
             pages.append(path)
 
     for p in all_posts:
+        i = next((k for k, q in enumerate(published) if q["id"] == p["id"]), None)
+        older = published[i + 1] if i is not None and i + 1 < len(published) else None
+        newer = published[i - 1] if i is not None and i > 0 else None
         for lang in SITE:
             out = DIST / url_for(f"/updates/{p['id']}/", lang).strip("/") / "index.html"
             out.parent.mkdir(parents=True, exist_ok=True)
-            out.write_text(update_page(p, lang), encoding="utf-8")
+            out.write_text(update_page(p, lang, older, newer), encoding="utf-8")
 
     # 404（中英對照）
     nf = DIST / "404.html"
