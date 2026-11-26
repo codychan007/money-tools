@@ -526,3 +526,6 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 .delay-row { padding: 10px 0; border-bottom: 1px dashed var(--line); }
 .delay-row > span { display: block; font-size: 13px; color: var(--ink-2); }
 .delay-row b { display: block; font-size: 1.15rem; line-height: 1.5; }
+/* 似連結嘅按鈕（總結頁「清除我嘅資料」） */
+.link-btn { background: none; border: 0; padding: 0; font: inherit; color: var(--shu-dark); text-decoration: underline; cursor: pointer; }
+#start-note { color: var(--ink) !important; }

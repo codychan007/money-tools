@@ -66,11 +66,10 @@ function render() {
     out.push(`<section class="card"><h2>${t('3. 目標計算', '3. Goal planner')}</h2>${lines}</section>`);
   }
 
-  if (j.health?.weakestTip) {
-    out.push(`<section class="card tint"><h2>${t('最值得先處理嘅 1 件事', 'The one thing worth tackling first')}</h2>
+  const tipInner = j.health?.weakestTip ? `<h2>${t('最值得先處理嘅 1 件事', 'The one thing worth tackling first')}</h2>
       <p class="mt0"><b>${esc(DIM[j.health.weakest] || '')}${t('：', ': ')}</b>${esc(j.health.weakestTip)}</p>
-      <p class="muted" style="font-size:13px;margin:0">${t('以上建議只係根據你答嘅 10 條題，你嘅實際情況可能仲有其他要考慮；內容唔涉及任何產品。', 'These suggestions are based only on your answers to the 10 questions, and your situation may involve more to think about. They do not involve any product.')}</p></section>`);
-  }
+      <p class="muted" style="font-size:13px;margin:0">${t('以上建議只係根據你答嘅 10 條題，你嘅實際情況可能仲有其他要考慮；內容唔涉及任何產品。', 'These suggestions are based only on your answers to the 10 questions, and your situation may involve more to think about. They do not involve any product.')}</p>` : '';
+  if (tipInner && missing.length) out.push(`<section class="card tint">${tipInner}</section>`);
 
   if (missing.length) {
     out.push(`<section class="next-step"><div class="eyebrow">${t(`仲差 ${missing.length} 步`, `${missing.length} step${missing.length > 1 ? 's' : ''} to go`)}</div>
@@ -79,7 +78,11 @@ function render() {
   }
 
   // 「WhatsApp 我」放最尾，做晒 3 步先出；有咗佢就收埋頁底預約掣，免得叫兩次
-  const chat = missing.length ? '' : chatCard(j.health, { detail: true });
+  let chat = missing.length ? '' : chatCard(j.health, { detail: true });
+  if (chat && tipInner) {   // 做晒 3 步：建議同 WhatsApp 合埋一張卡，唔使講兩次最弱嗰項
+    chat = chat.replace('<section class="card tint chat-card">',
+      `<section class="card tint chat-card">${tipInner}<div style="border-top:1px solid var(--line);margin:16px 0"></div>`);
+  } else if (!chat && tipInner && !missing.length) out.push(`<section class="card tint">${tipInner}</section>`);
   out.push(chat);
   hideBottomCta(!!chat);
 

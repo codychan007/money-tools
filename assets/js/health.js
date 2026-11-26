@@ -166,8 +166,8 @@ function nextStepHtml(r, a) {
   return nextCard({
     eyebrow: t('第 1 步完成・下一步 2 / 3', 'Step 1 done · Next: step 2 of 3'),
     title,
-    body: t('第 2 步用月薪分配計算器，睇下扣埋強積金之後，你份人工每月應該儲幾多，同你而家實際儲嘅差幾遠。',
-      'Step 2 uses the salary split calculator to show how much your pay should be saving after MPF, and how far that is from what you save now.'),
+    body: t('第 2 步幫你計：扣埋強積金之後，份人工每月應該儲幾多。',
+      'Step 2 works out how much of your pay should go to savings after MPF.'),
     href: stepUrl('salary'),
     button: t('去第 2 步：月薪分配 →', 'Go to step 2: Salary split →'),
   });

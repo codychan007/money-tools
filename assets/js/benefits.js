@@ -260,7 +260,6 @@ async function init() {
   // ---------------- 開始畫面 ----------------
   box.innerHTML = `<h2 class="mt0">${t('2 分鐘，睇下有冇錯過咗政府福利', 'Two minutes to see which benefits you may be missing')}</h2>
     <p>${t(`答 ${Q.length} 題，做完即刻睇到政府及半官方福利嘅結果，附原因、大約金額同官方連結。任何問題都可以揀「不確定」。`, `Answer ${Q.length} questions and see your government and semi-official benefits straight away, with reasons, rough amounts and official links. You can answer "not sure" to anything.`)}</p>
-    <p class="muted" style="font-size:14px">${t('你嘅答案只會留喺呢部機計算，唔會儲存或上傳，閂咗網頁就清除。', 'Your answers stay on this device for the calculation only. Nothing is saved or uploaded, and closing the page clears them.')}</p>
     <button type="button" class="btn shu lg" data-start>${t('開始福利檢查 →', 'Start the benefits check →')}</button>`;
   box.querySelector('[data-start]').addEventListener('click', () => wizard(box, Q, result));
 }
