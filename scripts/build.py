@@ -266,13 +266,13 @@ CTA = {
   <p class="cta-lead">計完，想有人同你一齊睇清楚？</p>
   <p class="cta-sub">免費・大約 30 分鐘・網上或面談。傾下你嘅目標同疑問。</p>
   <a class="cta-btn" href="/book/">預約 1 對 1 理財傾談 <span class="arrow">→</span></a>
-  <p class="cta-fine">WhatsApp・電話・Google 日曆都得</p>
+  <p class="cta-fine">WhatsApp・Google 日曆都得</p>
 </div></div>""",
     "en": """<div data-cta><div class="cta-seal">
   <p class="cta-lead">Want someone to go through the numbers with you?</p>
   <p class="cta-sub">Free, about 30 minutes, online or in person. Talk through your goals and questions.</p>
   <a class="cta-btn" href="/en/book/">Book a 1-on-1 money chat <span class="arrow">→</span></a>
-  <p class="cta-fine">WhatsApp, phone or Google Calendar</p>
+  <p class="cta-fine">WhatsApp or Google Calendar</p>
 </div></div>""",
 }
 
