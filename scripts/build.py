@@ -56,7 +56,7 @@ NAV_GROUP = ("實用資訊欄", "Useful info", [
 CHECKUP_PAGES = ("/health/", "/salary/", "/goal/", "/checkup/")   # 呢幾頁都標示「理財體檢」
 FOOTER_LINKS = [
     # 第 2、3 步唔放喺頁尾：要由「理財體檢」逐步解鎖，避免跳步
-    ("/health/", "健康檢查", "Health check"),
+    ("/health/", "理財體檢", "Check-up"),
     ("/tax/", "慳稅規劃", "Tax saver"), ("/updates/", "市場解讀", "Market notes"), ("/market/", "市場指數", "Market indices"),
     ("/deals/", "優惠福利", "Deals & benefits"), ("/book/", "預約傾談", "Book a chat"),
     ("/about/", "關於我", "About me"), ("/disclaimer/", "免責聲明及私隱政策", "Disclaimer & privacy"),

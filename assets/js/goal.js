@@ -76,6 +76,12 @@ function rates() {
 }
 const pctLabel = r => `${+(r * 100).toFixed(2)}%`;
 
+/** 「遲 5 年先開始」：3 行對比，重點數字放大；假設條件放最底細字 */
+function delayRows(rows, note) {
+  return rows.map(([k, v]) => `<div class="delay-row"><span>${k}</span><b>${v}</b></div>`).join('')
+    + `<p class="muted" style="font-size:13px;margin:8px 0 0">${note}</p>`;
+}
+
 function renderChips(rs) {
   $('focus-chips').innerHTML = rs.map((r, i) =>
     `<button class="chip" data-i="${i}" aria-pressed="${i === focusIdx}">${pctLabel(r)}</button>`).join('');
@@ -119,14 +125,14 @@ function update() {
     else {
       const gap = delayGapAt(S, P, fr, n, 60);
       const dc = delayComparison(T, S, fr, n, 60);
-      txt = t(`用 ${pctLabel(fr)} 假設回報，今日開始大約 <span class="hl">${ym(n)}</span> 達標。<br>
-        如果遲 5 年先開始（每月一樣投入 ${money(P)}，而呢 5 年現有儲蓄冇投資），到同一日你會<span class="hl">少咗約 ${money(gap.gap)}</span>，要等多 5 年先達到。`,
-        `At an assumed ${pctLabel(fr)} return, starting today you get there in about <span class="hl">${ym(n)}</span>.<br>
-        If you started 5 years later (same ${money(P)} a month, and your current savings not invested for those 5 years), on the same date you would have <span class="hl">about ${money(gap.gap)} less</span> and need 5 more years.`);
-      txt += dc.monthsLeft > 0
-        ? t(`<br>想同一時間達標，遲 5 年先開始嘅話每月要投入 <span class="hl">${money(dc.late)}</span>（多 ${money(dc.extra)}）。`,
-          `<br>To still arrive on time after a 5-year delay, you would need <span class="hl">${money(dc.late)}</span> a month (${money(dc.extra)} more).`)
-        : t(`<br>你嘅目標 5 年內就達到，遲 5 年即係成個目標都要推遲。`, `<br>You reach this goal within 5 years, so a 5-year delay pushes back the whole goal.`);
+      txt = delayRows([
+        [t('今日開始', 'Start today'), t(`${ym(n)}達標`, `Reach it in ${ym(n)}`)],
+        [t('遲 5 年先開始', 'Start 5 years later'), t(`少咗 <span class="hl">${money(gap.gap)}</span>，要等多 5 年`, `<span class="hl">${money(gap.gap)}</span> less, 5 more years`)],
+        dc.monthsLeft > 0
+          ? [t('想同樣時間達標', 'To arrive on time'), t(`每月要多放 <span class="hl">${money(dc.extra)}</span>（即係 ${money(dc.late)}）`, `<span class="hl">${money(dc.extra)}</span> more a month (${money(dc.late)} in total)`)]
+          : [t('想同樣時間達標', 'To arrive on time'), t('目標 5 年內就達到，遲 5 年即係成個目標推遲', 'Your goal is within 5 years, so a delay pushes the whole goal back')],
+      ], t(`假設每月投入 ${money(P)}、年回報 ${pctLabel(fr)}；遲咗嗰 5 年，現有儲蓄冇拎去投資。`,
+        `Assumes ${money(P)} a month and a ${pctLabel(fr)} yearly return; current savings are not invested during the 5-year delay.`));
     }
     $('delay-text').innerHTML = txt;
 
@@ -146,10 +152,11 @@ function update() {
 
     const dc = delayComparison(T, S, fr, months, 60);
     $('delay-text').innerHTML = dc.monthsLeft > 0
-      ? t(`用 ${pctLabel(fr)} 假設回報，今日開始每月要投入 <span class="hl">${money(dc.now)}</span>。<br>
-         如果遲 5 年先開始（呢 5 年現有儲蓄冇投資），只剩 ${ym(dc.monthsLeft)}，每月就要 <span class="hl">${money(dc.late)}</span>——每月多 ${money(dc.extra)}。`,
-        `At an assumed ${pctLabel(fr)} return, starting today you need <span class="hl">${money(dc.now)}</span> a month.<br>
-         Start 5 years later (current savings not invested meanwhile) and only ${ym(dc.monthsLeft)} remain, so you would need <span class="hl">${money(dc.late)}</span> a month: ${money(dc.extra)} more.`)
+      ? delayRows([
+          [t('今日開始', 'Start today'), t(`每月投入 ${money(dc.now)}`, `${money(dc.now)} a month`)],
+          [t('遲 5 年先開始', 'Start 5 years later'), t(`只剩 ${ym(dc.monthsLeft)}，每月要 ${money(dc.late)}`, `Only ${ym(dc.monthsLeft)} left, ${money(dc.late)} a month`)],
+          [t('每月要多放', 'Extra each month'), `<span class="hl">${money(dc.extra)}</span>`],
+        ], t(`假設年回報 ${pctLabel(fr)}；遲咗嗰 5 年，現有儲蓄冇拎去投資。`, `Assumes a ${pctLabel(fr)} yearly return; current savings are not invested during the 5-year delay.`))
       : t(`你嘅目標年期係 ${Y} 年，遲 5 年先開始就連時間都唔夠。試下將年期設長過 5 年再比較。`, `Your timeframe is ${Y} years, so a 5-year delay leaves no time at all. Try a timeframe longer than 5 years.`);
 
     drawChart(rs, Y, T,
