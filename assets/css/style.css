@@ -224,7 +224,8 @@ main { padding: 24px 0 48px; }
 .landing-hero .lead { font-size: 1.12rem; color: var(--ink); }
 .landing-hero .by { display: flex; align-items: center; gap: 10px; color: var(--ink-2); font-size: 14px; margin-top: 4px; }
 .hero-actions { display: grid; gap: 10px; margin-top: 18px; }
-.gains { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 6px; font-size: 15px; color: var(--ink-2); }
+.gains-title { margin: 18px 0 0; font-size: 16px; font-weight: 700; color: var(--ink); }
+.gains { list-style: none; padding: 0; margin: 8px 0 0; display: grid; gap: 6px; font-size: 15px; color: var(--ink-2); }
 .gains[hidden] { display: none; }
 .gains li { display: flex; gap: 8px; }
 .gains li::before { content: "✓"; color: var(--shu); font-weight: 700; flex-shrink: 0; }
