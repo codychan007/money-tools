@@ -34,8 +34,20 @@
     </section>
 
     <section class="card stack" id="channels">
+      <div class="prebook" id="prebook">
+        <p class="prebook-hint" id="prebook-hint">預約前，請先揀好主要想傾嘅方向同幾時方便，再撳預約。</p>
+        <div class="prebook-q">
+          <p class="prebook-label">1. 主要想傾咩？（揀一項）</p>
+          <div class="chips" id="q-topic" role="radiogroup" aria-label="主要想傾咩"></div>
+        </div>
+        <div class="prebook-q">
+          <p class="prebook-label">2. 大約幾時方便？（可以揀多項）</p>
+          <div class="chips" id="q-time" role="group" aria-label="大約幾時方便"></div>
+        </div>
+      </div>
       <a class="btn shu lg block" id="cal" target="_blank" rel="noopener">揀時間預約（Google 日曆）</a>
       <a class="btn block" id="wa" target="_blank" rel="noopener">WhatsApp 我</a>
+      <p class="muted center mt0" id="cal-note" hidden style="font-size:13px"></p>
       <p class="muted center mt0" style="font-size:13px">撳任何一個聯絡方式，即表示你已閱讀並同意下面嘅<a href="#pics">個人資料收集聲明</a>。</p>
     </section>
 

@@ -607,3 +607,12 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 .hello-bubble.tight { font-size: 12.5px; padding: 7px 10px; }
 /* 英文首頁：標題上面嘅紅色細標籤 */
 .hero .hero-tag, .landing-hero .hero-tag { margin: 0 0 6px; color: var(--shu); font-weight: 700; font-size: 14px; letter-spacing: .04em; }
+/* 預約頁：預約前兩條必揀題 */
+.prebook { display: grid; gap: 14px; padding-bottom: 6px; border-bottom: 1px dashed var(--line); }
+.prebook-hint { margin: 0; font-weight: 700; color: var(--ink); }
+.prebook-hint.nudge { color: var(--shu); animation: prebook-nudge .4s; }
+@keyframes prebook-nudge { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.prebook-label { margin: 0 0 8px; font-size: 15px; color: var(--ink-2); }
+#channels .btn.locked { opacity: .45; cursor: not-allowed; }
+@media (prefers-reduced-motion: reduce) { .prebook-hint.nudge { animation: none; } }
+
