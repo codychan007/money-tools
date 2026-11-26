@@ -279,8 +279,8 @@ CTA_TOPIC = {
         "en": ("Are the three tax deductions worth it for you?", "Free, about 30 minutes. We'll look at whether VHIS or TVC / QDAP suits you, rather than buying just to save tax."),
     },
     "deals": {
-        "zh": ("想知仲有冇其他福利啱你？", "免費・大約 30 分鐘。同你對下有冇漏咗嘅政府福利，睇埋你嘅理財目標。"),
-        "en": ("Any other benefits that fit you?", "Free, about 30 minutes. We'll check for government help you may have missed, and look at your money goals as well."),
+        "zh": ("想知仲有冇其他福利啱你？", "免費・大約 30 分鐘。同你對下有冇漏咗嘅政府福利，瞭解埋你嘅理財目標。"),
+        "en": ("Any other benefits that fit you?", "Free, about 30 minutes. We'll check for government help you may have missed, and get to know your money goals too."),
     },
 }
 
