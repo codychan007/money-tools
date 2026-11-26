@@ -89,34 +89,27 @@ function planHtml(Y, p, r) {
   const per = (Math.round((j.saving / j.need) * 1000) / 10).toString();
   const hadParts = [j.curV > 0 ? t(`自願醫保 ${money(j.curV)}`, `VHIS ${money(j.curV)}`) : '', j.curT > 0 ? t(`TVC／QDAP ${money(j.curT)}`, `TVC / QDAP ${money(j.curT)}`) : ''].filter(Boolean);
   const had = hadParts.length ? `<p class="muted" style="font-size:14px">${t(`你已經有：${hadParts.join('、')}（已經扣咗，上面「估計應繳薪俸稅」已計入）。以上只係計仲要再加幾多。`, `You already have: ${hadParts.join(', ')} (already deducted in the estimated tax above). The figures above are only the extra amount needed.`)}</p>` : '';
-  const opts = [
-    `<li><b>${t('只用自願醫保：', 'VHIS only: ')}</b>${vOnly
-      ? t(`多交 ${money(j.need)} 保費就夠（${who}，每位上限 ${cap(capV)}）`, `${money(j.need)} more in premiums is enough (${who}, cap ${cap(capV)} each)`)
-      : t(`最多只可以多扣 ${money(j.roomV)}（${who}，每位上限 ${cap(capV)}），唔夠，要夾埋 TVC／QDAP`, `At most ${money(j.roomV)} more (${who}, cap ${cap(capV)} each), not enough on its own`)}</li>`,
-    `<li><b>${t('只用 TVC／QDAP：', 'TVC / QDAP only: ')}</b>${tOnly
-      ? t(`多供 ${money(j.need)} 就夠（兩樣合共上限 ${cap(capT)}）`, `${money(j.need)} more is enough (combined cap ${cap(capT)})`)
-      : t(`最多只可以多扣 ${money(j.roomT)}（兩樣合共上限 ${cap(capT)}），唔夠，要夾埋自願醫保`, `At most ${money(j.roomT)} more (combined cap ${cap(capT)}), not enough on its own`)}</li>`,
-    `<li><b>${t('兩樣夾埋：', 'A mix of both: ')}</b>${t(`合共多扣 ${money(j.need)} 就得，喺各自上限之內點分都得，例如自願醫保 ${money(a)}${b > 0 ? ` ＋ TVC／QDAP ${money(b)}` : ''}`, `${money(j.need)} more in total, split any way within each cap, e.g. VHIS ${money(a)}${b > 0 ? ` + TVC / QDAP ${money(b)}` : ''}`)}</li>`,
-  ];
+  // 點樣扣先夠：一行講晒
+  const how = vOnly && tOnly
+    ? t(`自願醫保或者 TVC／QDAP 合共 ${money(j.need)}，任揀`, `${money(j.need)} in VHIS or TVC / QDAP, either works`)
+    : vOnly ? t(`只用自願醫保 ${money(j.need)} 就夠`, `VHIS alone: ${money(j.need)}`)
+    : tOnly ? t(`只用 TVC／QDAP ${money(j.need)} 就夠`, `TVC / QDAP alone: ${money(j.need)}`)
+    : t(`自願醫保 ${money(a)} ＋ TVC／QDAP ${money(b)}`, `VHIS ${money(a)} + TVC / QDAP ${money(b)}`);
+  const howNote = !tOnly
+    ? `<span class="muted" style="display:block;font-weight:400;font-size:13px">${t(`自願醫保按${who}計，每位上限 ${cap(capV)}`, `VHIS: ${who}, cap ${cap(capV)} each`)}</span>` : '';
+  const row = (k, v) => `<div class="delay-row"><span>${k}</span><b>${v}</b></div>`;
   return `<div>
           <div class="q-step">${t('扣稅三寶', 'The three tax deductions')}</div>
           <p class="muted mt0" style="font-size:14px">${t('「扣稅三寶」即係自願醫保保費、TVC（強積金可扣稅自願性供款）同 QDAP（合資格延期年金），交咗就可以扣稅。照你嘅數，用盡可以慳幾多：', 'The three tax deductions are VHIS premiums, TVC (MPF tax-deductible voluntary contributions) and QDAP (qualifying deferred annuities). Based on your figures, here is what using them could save:')}</p>
-          <h3>${zero ? t('最多可以慳幾多稅？（稅款可以減到 $0）', 'The most tax you could save (down to $0)') : t('最多可以慳幾多稅？', 'The most tax you could save')}</h3>
+          <h3>${t('最多可以慳幾多稅？', 'The most tax you could save')}</h3>
           <div class="big-result">${money(j.saving)}</div>
-          <p>${zero
-            ? t(`要多扣 <b>${money(j.need)}</b>（自願醫保保費或者 TVC／QDAP 供款），稅款先會由 <b>${money(r.tax)}</b> 減到 <b>$0</b>，即係每多扣 $100 慳大約 $${per}。多過呢個數都唔會再慳到稅。`,
-                `It takes <b>${money(j.need)}</b> more in VHIS premiums or TVC / QDAP contributions to bring your tax from <b>${money(r.tax)}</b> to <b>$0</b>, about $${per} saved per extra $100. Anything above this saves no more tax.`)
-            : t(`要用盡上限，即係多扣 <b>${money(j.need)}</b>，稅款由 <b>${money(r.tax)}</b> 減到 <b>${money(j.floor)}</b>，即係每多扣 $100 慳大約 $${per}。`,
-                `Using the full limits means <b>${money(j.need)}</b> more in deductions, taking your tax from <b>${money(r.tax)}</b> to <b>${money(j.floor)}</b>, about $${per} saved per extra $100.`)}</p>
-          ${Number(per) < 10 ? `<p class="callout">${t(`<b>慳稅效益唔大：</b>你嘅稅率偏低，要多扣 ${money(j.need)} 先慳到 ${money(j.saving)}。單為慳稅去買自願醫保或者供 TVC／QDAP 並唔抵；值唔值得，要睇你本身有冇保障或者退休儲蓄嘅需要。`, `<b>Not much tax to save:</b> your tax rate is low, so ${money(j.need)} more in deductions saves only ${money(j.saving)}. Buying VHIS or making TVC / QDAP contributions just to save tax isn't worth it; it only makes sense if you need the cover or the retirement savings anyway.`)}</p>` : ''}
-          <ul class="tips">${opts.join('')}</ul>
+          ${row(t('而家估計要交', 'Estimated tax now'), money(r.tax))}
+          ${row(t('用盡扣稅三寶之後', 'After using the full limits'), zero ? t('$0（唔使交稅）', '$0 (no tax)') : money(j.floor))}
+          ${row(t('要多扣幾多', 'Extra deductions needed'), `${money(j.need)} <span class="muted" style="font-weight:400;font-size:14px">${t(`（每多扣 $100 慳大約 $${per}）`, `(about $${per} saved per $100)`)}</span>`)}
+          ${row(t('點樣扣先夠', 'How to get there'), how + howNote)}
+          ${Number(per) < 10 ? `<p class="callout">${t('<b>慳稅效益唔大：</b>單為慳稅去買並唔抵，要睇你本身有冇保障或者退休儲蓄嘅需要。', '<b>Not much tax to save:</b> not worth buying just for tax; it depends on whether you need the cover or the retirement savings anyway.')}</p>` : ''}
           ${had}
-          <div class="callout" style="font-size:14px">
-            <b>${t('點解要咁多？', 'Why so much?')}</b> ${t(`呢個數係將額外供款加入扣除，再由頭計一次估計應繳薪俸稅得出。你平均每多扣 $100 只慳大約 $${per}（即係你嘅稅款所落嘅稅率），所以要扣咁多先抵銷到 ${money(j.saving)} 稅款。`,
-              `This figure comes from adding the extra contributions as deductions and recalculating your estimated salaries tax from scratch. On average each extra $100 deducted saves only about $${per} (the tax rate your tax falls in), so this much is needed to cancel ${money(j.saving)} of tax.`)}
-          </div>
-          <div class="report-row"><span>${t(`多扣 ${money(j.need)} 之後，再計一次估計應繳薪俸稅`, `Estimated salaries tax recalculated after ${money(j.need)} more`)}</span><b>${money(j.after.tax)}</b></div>
-          <p class="muted" style="font-size:13px">${t('要真係交咗保費／供咗款先可以扣；呢啲係長期承擔，唔好單為慳稅而做。自願醫保要每位受保人有自己嘅保單先計得。', 'You can only deduct what you actually pay; these are long-term commitments, so don’t do it just for tax. VHIS needs a policy for each insured person.')}</p>
+          <p class="muted" style="font-size:13px">${t('計法：將額外扣除加入，再計一次稅。要真係交咗保費或者供咗款先扣得；自願醫保要每位受保人有自己嘅保單。', 'How this is worked out: the extra deductions are added and the tax recalculated. You can only deduct what you actually pay; VHIS needs a policy for each insured person.')}</p>
         </div>`;
 }
 
