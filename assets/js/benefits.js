@@ -7,6 +7,7 @@
 import { t, EN } from './i18n.js';
 import { loadJSON, money, esc } from './layout.js';
 import { wizard } from './wizard.js';
+import { hideBottomCta } from './journey.js';
 
 const box = document.getElementById('benefit-box');
 if (box) init();
@@ -235,6 +236,7 @@ async function init() {
   }
 
   function result(a, api) {
+    hideBottomCta(false);   // 所有適用題目都答完，先顯示頁底預約
     const R = rules(a);
     const list = D.items.filter(it => R[it.id]).map(it => ({ it, r: R[it.id] }));
     const pick = s => list.filter(x => x.r.status === s);
@@ -252,8 +254,8 @@ async function init() {
         <button type="button" class="btn secondary" data-restart>${t('重新答過', 'Start over')}</button></div>
       <p class="muted" style="font-size:13px">${t(`資料最後核對：${esc(D.reviewedOn)}（每 3 個月更新）。本工具與香港政府並無關連，你嘅答案唔會儲存或上傳。`, `Last checked: ${esc(D.reviewedOn)} (updated every 3 months). This tool is not connected with the Hong Kong Government; your answers are not saved or uploaded.`)}</p>
     </div>`;
-    box.querySelector('[data-edit]').addEventListener('click', api.edit);
-    box.querySelector('[data-restart]').addEventListener('click', api.restart);
+    box.querySelector('[data-edit]').addEventListener('click', () => { hideBottomCta(true); api.edit(); });
+    box.querySelector('[data-restart]').addEventListener('click', () => { hideBottomCta(true); api.restart(); });
     box.scrollIntoView({ block: 'start', behavior: 'smooth' });
   }
 
