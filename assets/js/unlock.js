@@ -64,6 +64,7 @@ function play() {
   document.body.appendChild(el);
   requestAnimationFrame(() => el.classList.add('show'));
   if (last) confetti(el);
+  chime(last);
 
   const close = () => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); document.removeEventListener('keydown', esc); };
   const esc = e => { if (e.key === 'Escape') close(); };
@@ -96,4 +97,38 @@ function confetti(host) {
     }
     requestAnimationFrame(frame);
   })(t0);
+}
+
+// ------------------------------------------------------------
+// 聲效：用瀏覽器即時合成（唔使聲效檔，唔佔容量），細聲、短。
+// 第 1、2 關：「叮叮」兩聲；第 3 關：四個音嘅過關小調。
+// 訪客未同頁面互動過（例如補播上一頁嘅動畫）瀏覽器唔俾出聲，就靜靜雞略過。
+// ------------------------------------------------------------
+let ac = null;
+function chime(final) {
+  try {
+    ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+    if (ac.state !== 'running') ac.resume();
+    // resume 要少少時間；唔得就算
+    setTimeout(() => { if (ac.state === 'running') notes(final); }, 30);
+  } catch { /* 唔支援就算 */ }
+}
+
+function notes(final) {
+  const t0 = ac.currentTime + .02;
+  // C 大調：E6 G6；最後一關 C5 E5 G5 C6
+  const seq = final ? [[523.25, 0], [659.25, .11], [783.99, .22], [1046.5, .34, .7]]
+                    : [[1318.5, 0], [1568.0, .12, .5]];
+  const master = ac.createGain(); master.gain.value = .12; master.connect(ac.destination);
+  for (const [f, at, len = .28] of seq) {
+    for (const [mult, vol, type] of [[1, 1, 'triangle'], [2, .25, 'sine']]) {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = type; o.frequency.value = f * mult;
+      g.gain.setValueAtTime(0, t0 + at);
+      g.gain.linearRampToValueAtTime(vol, t0 + at + .01);
+      g.gain.exponentialRampToValueAtTime(.0001, t0 + at + len);
+      o.connect(g).connect(master);
+      o.start(t0 + at); o.stop(t0 + at + len + .05);
+    }
+  }
 }
