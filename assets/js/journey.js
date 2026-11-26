@@ -154,7 +154,8 @@ export function hideBottomCta(hide = true) {
 export function personaliseCta(j = readJourney()) {
   const w = weakest(j.health);
   if (!w || j.health.total >= 80) return;
-  document.querySelectorAll('[data-cta] .cta-lead').forEach(el => {
+  // 有自己主題嘅頁（慳稅、優惠）唔講體檢分數
+  document.querySelectorAll('[data-cta]:not([data-cta-topic]) .cta-lead').forEach(el => {
     el.textContent = t(`你最弱係「${w.name}」（${w.score} 分），想有人同你一齊睇清楚？`,
       `Your weakest area is "${w.name}" (${w.score} points). Want someone to look at it with you?`);
   });

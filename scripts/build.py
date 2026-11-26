@@ -272,11 +272,30 @@ CTA = {
 }
 
 
+# 個別頁面嘅預約框字句（data-cta-topic="..."）：講返嗰頁本身嘅問題，唔講體檢分數
+CTA_TOPIC = {
+    "tax": {
+        "zh": ("想知扣稅三寶值唔值得做？", "免費・大約 30 分鐘。同你睇下自願醫保同 TVC／QDAP 啱唔啱你，唔使單為慳稅而買。"),
+        "en": ("Are the three tax deductions worth it for you?", "Free, about 30 minutes. We'll look at whether VHIS or TVC / QDAP suits you, rather than buying just to save tax."),
+    },
+    "deals": {
+        "zh": ("想知仲有冇其他福利啱你？", "免費・大約 30 分鐘。同你對下有冇漏咗嘅政府福利，順便睇下你嘅理財目標。"),
+        "en": ("Any other benefits that fit you?", "Free, about 30 minutes. We'll check for government help you may have missed, and look at your money goals too."),
+    },
+}
+
+
 def apply_cta(src, lang):
     """替換 <div data-cta>。屬性（例如 hidden）會保留，等工具頁答完題先打開。"""
     def repl(m):
         extra = m.group(1) or ""
-        return CTA[lang].replace("<div data-cta>", f"<div data-cta{extra}>", 1)
+        html = CTA[lang].replace("<div data-cta>", f"<div data-cta{extra}>", 1)
+        topic = re.search(r'data-cta-topic="(\w+)"', extra)
+        if topic:
+            lead, sub = CTA_TOPIC[topic.group(1)][lang]
+            html = re.sub(r'(<p class="cta-lead">).*?(</p>)', lambda x: x.group(1) + lead + x.group(2), html, count=1)
+            html = re.sub(r'(<p class="cta-sub">).*?(</p>)', lambda x: x.group(1) + sub + x.group(2), html, count=1)
+        return html
     return re.sub(r"<div data-cta([^>]*)></div>", repl, src)
 
 
