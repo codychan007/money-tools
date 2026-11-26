@@ -5,9 +5,11 @@
 // ============================================================
 import { t } from './i18n.js';
 import { paintJourney } from './journey.js';
+import { showPendingUnlock } from './unlock.js';
 
 export function mountLayout() {
   paintJourney();
+  showPendingUnlock();
   mountNavGroup();
   const btn = document.querySelector('.menu-btn');
   const nav = document.getElementById('site-nav');

@@ -5,6 +5,7 @@
 // ============================================================
 import { t, P } from './i18n.js';
 import { SITE } from './config.js';
+import { queueUnlock } from './unlock.js';
 
 const KEY = 'hkmc-checkup-v1';
 export const STEPS = ['health', 'salary', 'goal'];
@@ -22,6 +23,7 @@ export function saveStep(step, data) {
   j[step] = { ...data, at: new Date().toISOString() };
   try { localStorage.setItem(KEY, JSON.stringify(j)); } catch { /* 唔俾儲存就算 */ }
   paintJourney(first ? step : null);
+  if (first) queueUnlock(step);   // 第一次完成：彈「過關」動畫
 }
 
 export function clearJourney() {
