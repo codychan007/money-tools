@@ -4,6 +4,10 @@
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Frame-Options: DENY
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob:; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://cdnjs.cloudflare.com https://raw.githubusercontent.com https://api.hkma.gov.hk https://api.frankfurter.dev https://cloudflareinsights.com https://fonts.googleapis.com https://fonts.gstatic.com; worker-src 'self' blob: https://cdnjs.cloudflare.com; child-src 'self' blob: https://cdnjs.cloudflare.com; frame-src 'none'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'
+  # Pages 預設會加 Access-Control-Allow-Origin: *。拆走之後只准本站來源，其他網站唔可以讀呢個站嘅回應。
+  # 本站自己嘅頁面讀 /data 係 same-origin，唔使靠呢個 header；去金管局、Frankfurter、GitHub、字型、cdnjs 係對方嘅 CORS。
+  ! Access-Control-Allow-Origin
+  Access-Control-Allow-Origin: https://codychan813.pages.dev
 
 /data/*
   Cache-Control: public, max-age=300

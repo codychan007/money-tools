@@ -1,4 +1,4 @@
-import { mountLayout, money, readNum, moneyInput, loadJSON } from './layout.js';
+import { mountLayout, money, readNum, moneyInput, loadJSON, esc } from './layout.js';
 import { healthScores, healthGrade, takeHome } from './finance.js';
 import { buildCard, shareCanvas } from './sharecard.js';
 import { t, locale } from './i18n.js';
@@ -86,7 +86,7 @@ function renderQ() {
     inp.focus({ preventScroll: true });
   } else {
     $('q-body').innerHTML = `<div class="options">${q.options.map(([v, label]) =>
-      `<button class="option" data-v="${v}" aria-pressed="${String(answers[q.key]) === String(v)}">${label}</button>`).join('')}</div>`;
+      `<button class="option" data-v="${esc(v)}" aria-pressed="${String(answers[q.key]) === String(v)}">${esc(label)}</button>`).join('')}</div>`;
     $('q-body').querySelectorAll('.option').forEach(b => b.addEventListener('click', () => {
       const raw = b.dataset.v;
       answers[q.key] = /^\d+$/.test(raw) ? Number(raw) : raw;
@@ -200,10 +200,12 @@ function showResult({ restore = false } = {}) {
   $('result').classList.remove('hidden');
   $('total').textContent = `${r.total} / 100`;
   $('grade').textContent = label;
-  $('bars').innerHTML = Object.entries(r.dims).map(([k, v]) =>
-    `<div class="bar-row"><span>${DIM_LABELS[k]}</span><div class="progress"><i style="width:${v}%"></i></div><b class="num">${Math.round(v)}</b></div>`).join('');
+  $('bars').innerHTML = Object.entries(r.dims).map(([k, v]) => {
+    const width = Math.max(0, Math.min(100, Number(v) || 0));
+    return `<div class="bar-row"><span>${esc(DIM_LABELS[k] || '')}</span><div class="progress"><i style="width:${width}%"></i></div><b class="num">${Math.round(width)}</b></div>`;
+  }).join('');
   const tips = tipsFor(r, answers);
-  $('tips').innerHTML = tips.map(x => `<li><b>${DIM_LABELS[x.k]}${t('：', ': ')}</b>${x.text}</li>`).join('');
+  $('tips').innerHTML = tips.map(x => `<li><b>${esc(DIM_LABELS[x.k] || '')}${esc(t('：', ': '))}</b>${esc(x.text)}</li>`).join('');
   const saved = {
     total: r.total, tone: g.tone, dims: r.dims, saveRate: r.saveRate, efMonths: r.efMonths,
     income: answers.income || 0, expenses: answers.expenses || 0, cash: answers.cash || 0, saving: answers.saving || 0,

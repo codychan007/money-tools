@@ -716,6 +716,39 @@ def update_page(p, lang, older=None, newer=None):
     return finish_page(src, path, ld, noindex=draft)
 
 
+def include_drafts():
+    """正式站（Cloudflare Pages 嘅 main）唔發佈草稿。
+    預覽部署同本機 build 保留草稿，方便 /updates/?preview=1。"""
+    if os.environ.get("CF_PAGES") == "1":
+        return os.environ.get("CF_PAGES_BRANCH", "main") != "main"
+    return True
+
+
+def strip_unpublished(published, all_posts):
+    """正式部署唔好把草稿頁、草稿清單同只供草稿用嘅 PDF 放到 dist。"""
+    if include_drafts():
+        return published, all_posts
+    keep = set()
+    for p in published:
+        keep.add(p.get("file"))
+        if p.get("file_en"):
+            keep.add(p["file_en"])
+    for p in all_posts:
+        if p.get("status") == "published":
+            continue
+        for key in ("file", "file_en"):
+            url = p.get(key)
+            if url and url not in keep:
+                f = DIST / str(url).lstrip("/")
+                if f.is_file():
+                    f.unlink()
+    data_path = DIST / "data" / "updates.json"
+    data = json.loads(data_path.read_text(encoding="utf-8"))
+    data["posts"] = [p for p in data.get("posts", []) if p.get("status") == "published"]
+    data_path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return published, [p for p in all_posts if p.get("status") == "published"]
+
+
 def published_posts():
     posts = load("updates.json")["posts"]
     for p in posts:
@@ -742,7 +775,7 @@ def main():
         else:
             shutil.copy2(item, DIST / item.name)
 
-    published, all_posts = published_posts()
+    published, all_posts = strip_unpublished(*published_posts())
     pages = []
     for f in sorted(DIST.rglob("index.html")):
         rel = f.relative_to(DIST).parent.as_posix()

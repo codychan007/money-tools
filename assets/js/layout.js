@@ -6,6 +6,9 @@
 import { t } from './i18n.js';
 import { paintJourney, doneCount } from './journey.js';
 import { showPendingUnlock } from './unlock.js';
+import { esc, safeUrl } from './esc.js';
+
+export { esc, safeUrl };
 
 export function mountLayout() {
   paintJourney();
@@ -215,15 +218,13 @@ export function isStale(reviewBy) {
 
 /** 來源 + 資料日期 + 過期提示 */
 export function sourceLine(item) {
-  const src = item.sourceUrl
-    ? `<a href="${item.sourceUrl}" target="_blank" rel="noopener">${item.source}</a>`
-    : (item.source || '');
+  const href = safeUrl(item.sourceUrl);
+  const name = esc(item.source);
+  const src = href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${name}</a>` : name;
   const stale = isStale(item.reviewBy)
     ? ` <span class="badge stale">${t('資料或已過時，請以官方最新公布為準', 'May be out of date; the latest official figures prevail')}</span>` : '';
-  return `<div class="source">${t('來源：', 'Source: ')}${src}${item.asOf ? `${t('｜資料截至：', ' | Data as of: ')}${item.asOf}` : ''}${stale}</div>`;
+  return `<div class="source">${t('來源：', 'Source: ')}${src}${item.asOf ? `${t('｜資料截至：', ' | Data as of: ')}${esc(item.asOf)}` : ''}${stale}</div>`;
 }
-
-export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
 /** 頭像彩蛋：電腦滑鼠擺上去／手機撳一下 → 揮手（CSS）+ 對話泡泡隨機講一句 */
 const HELLO = [

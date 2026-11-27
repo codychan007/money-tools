@@ -18,7 +18,7 @@ const GRADE = {
 };
 const pct = r => `${+(r * 100).toFixed(2)}%`;
 const row = (label, value, note = '') =>
-  `<div class="report-row"><span>${label}${note ? `<br><small class="muted">${note}</small>` : ''}</span><b class="num">${value}</b></div>`;
+  `<div class="report-row"><span>${esc(label)}${note ? `<br><small class="muted">${esc(note)}</small>` : ''}</span><b class="num">${esc(value)}</b></div>`;
 
 function render() {
   const j = readJourney();
@@ -82,7 +82,7 @@ function render() {
   if (missing.length) {
     out.push(`<section class="next-step"><div class="eyebrow">${t(`仲差 ${missing.length} 步`, `${missing.length} step${missing.length > 1 ? 's' : ''} to go`)}</div>
       <h2>${t('做埋先睇到完整總結', 'Finish them to see the full picture')}</h2>
-      <div class="grid">${missing.map(s => `<a class="btn secondary block" href="${stepUrl(s)}">${t(`去做：${stepName(s)} →`, `Do it now: ${stepName(s)} →`)}</a>`).join('')}</div></section>`);
+      <div class="grid">${missing.map(s => `<a class="btn secondary block" href="${esc(stepUrl(s))}">${esc(t(`去做：${stepName(s)} →`, `Do it now: ${stepName(s)} →`))}</a>`).join('')}</div></section>`);
   }
 
   // 「3 步完成」分享圖放喺建議／預約卡上面：白色卡排埋一齊，綠色卡喺下面，顏色較統一
@@ -107,12 +107,12 @@ function render() {
     // 做晒先推介其他工具（首頁同樣做晒先出）
     // --chars：中文全形字數（IG 標題係中英夾雜，13.05 對應實測寬度）。英文唔加，窄屏樣式只食中文。
     const fit = chars => EN ? '' : ` style="--chars:${chars}"`;
-    const link = (href, ch, label, chars) => `<a class="teaser"${fit(chars)} href="${P}${href}"><span class="seal" aria-hidden="true">${ch}</span><div><b>${label}</b></div><span class="arrow">→</span></a>`;
+    const link = (href, ch, label, chars) => `<a class="teaser"${fit(chars)} href="${esc(P + href)}"><span class="seal" aria-hidden="true">${esc(ch)}</span><div><b>${esc(label)}</b></div><span class="arrow">→</span></a>`;
     out.push(`<section${EN ? '' : ' class="next-look"'}><h2 class="section-title"><span class="brush">${t('下一步可以睇', 'What to look at next')}</span></h2>
       <div class="teasers quick-links">
         ${link('/tax/', '稅', t('慳稅規劃：今年少交幾多稅', 'Tax saver: how much less tax this year'), 12)}
         ${link('/deals/', '惠', t('優惠福利：信用卡回贈、政府福利', 'Deals and benefits: card rebates, government help'), 15)}
-        <a class="teaser wide"${fit(13.05)} href="${igUrl}" target="_blank" rel="noopener"><span class="seal" aria-hidden="true">追</span><div><b>${t('追蹤我 IG：@codychan813', 'Follow me on IG: @codychan813')}</b><span>${t('淺白理財小貼士，有需要隨時搵得返我', 'Plain-language money tips, and an easy way to reach me whenever you need')}</span></div><span class="arrow">→</span></a>
+        <a class="teaser wide"${fit(13.05)} href="${esc(igUrl)}" target="_blank" rel="noopener"><span class="seal" aria-hidden="true">追</span><div><b>${esc(t('追蹤我 IG：@codychan813', 'Follow me on IG: @codychan813'))}</b><span>${esc(t('淺白理財小貼士，有需要隨時搵得返我', 'Plain-language money tips, and an easy way to reach me whenever you need'))}</span></div><span class="arrow">→</span></a>
       </div></section>`);
   }
 

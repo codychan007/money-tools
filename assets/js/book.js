@@ -1,6 +1,6 @@
 // 預約頁：聯絡掣直接用得（撳即表示同意個人資料收集聲明）；
 // 做咗理財體檢嘅話，WhatsApp 訊息預先寫好分數（訪客自己撳傳送先會發出）
-import { mountLayout } from './layout.js';
+import { mountLayout, esc } from './layout.js';
 import { SITE } from './config.js';
 import { EN, t } from './i18n.js';
 import { readJourney, scoreMessage, weakest } from './journey.js';
@@ -26,7 +26,7 @@ const TIMES = [
   ['週末晚上', 'Weekend evening'],
   ['時間彈性，邊個時間都得', 'Flexible, any time'],
 ];
-const chip = (label, i) => `<button type="button" class="chip" data-i="${i}" aria-pressed="false">${label}</button>`;
+const chip = (label, i) => `<button type="button" class="chip" data-i="${i}" aria-pressed="false">${esc(label)}</button>`;
 $('q-topic').innerHTML = TOPICS.map((x, i) => chip(t(...x), i)).join('');
 $('q-time').innerHTML = TIMES.map((x, i) => chip(t(...x), i)).join('');
 let topic = null; const times = new Set();
@@ -98,20 +98,20 @@ async function showCalGuide() {
   el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
   el.innerHTML = `<div class="cal-guide-card">
       <p class="cal-guide-title">${ok ? t('✓ 已幫你複製咗你嘅答案', '✓ Your answers are copied') : t('記得抄低你嘅答案', 'Note down your answers')}</p>
-      <div class="cal-guide-text">${text.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]))}</div>
+      <div class="cal-guide-text">${esc(text)}</div>
       <button type="button" class="link-btn cal-guide-copy">${t('再複製一次', 'Copy again')}</button>
       <ol class="cal-guide-steps">
         <li>${t('喺 Google 日曆揀好時間', 'Pick a time on Google Calendar')}</li>
         <li>${t('喺預約表「<b>諮詢主題</b>」一欄<b>貼上</b>（手機長按 → 貼上；電腦按 Ctrl＋V）', 'In the <b>topic</b> box on the form, <b>paste</b> (phone: press and hold → Paste; computer: Ctrl+V)')}</li>
         <li>${t('填埋聯絡資料，撳「預約」', 'Fill in your contact details and tap Book')}</li>
       </ol>
-      <a class="btn shu lg block" href="${SITE.calendarUrl}" target="_blank" rel="noopener">${t('明白，去揀時間 →', 'Got it, pick a time →')}</a>
+      <a class="btn shu lg block" href="${esc(SITE.calendarUrl)}" target="_blank" rel="noopener">${t('明白，去揀時間 →', 'Got it, pick a time →')}</a>
       <button type="button" class="link-btn cal-guide-back">${t('返回', 'Back')}</button>
     </div>`;
   document.body.appendChild(el);
-  const close = () => { el.remove(); document.removeEventListener('keydown', esc); };
-  const esc = ev => { if (ev.key === 'Escape') close(); };
-  document.addEventListener('keydown', esc);
+  const close = () => { el.remove(); document.removeEventListener('keydown', onEsc); };
+  const onEsc = ev => { if (ev.key === 'Escape') close(); };
+  document.addEventListener('keydown', onEsc);
   el.addEventListener('click', ev => { if (ev.target === el) close(); });
   el.querySelector('.cal-guide-back').addEventListener('click', close);
   el.querySelector('.btn').addEventListener('click', () => setTimeout(close, 300));
@@ -132,7 +132,7 @@ if (w) {
     t('一齊睇你嘅理財體檢結果', 'Go through your money check-up results together'),
     t(`針對你最值得先改善嘅「${w.name}」，計出具體做法`, `Work out concrete steps for "${w.name}", the area most worth improving first`),
     t('答你儲蓄、保障或者扣稅嘅問題', 'Answer your questions on saving, protection or tax'),
-  ].map(x => `<li>${x}</li>`).join('');
+  ].map(x => `<li>${esc(x)}</li>`).join('');
 }
 
 // 由其他頁撳「個人資料收集聲明」過嚟，就自動打開

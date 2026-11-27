@@ -4,6 +4,7 @@
 // ============================================================
 import { SITE } from './config.js';
 import { t } from './i18n.js';
+import { esc } from './esc.js';
 
 const W = 1080, H = 1920;
 const FONT = '"Noto Sans HK", "PingFang HK", "Noto Sans TC", "Microsoft JhengHei", sans-serif';
@@ -104,8 +105,8 @@ export async function shareCanvas(cv, filename, previewEl) {
   const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
   const url = URL.createObjectURL(blob);
   if (previewEl) {
-    previewEl.innerHTML = `<img src="${url}" alt="${t('分享卡預覽', 'Share card preview')}"><p class="muted" style="font-size:13px">${
-      t('如果冇彈出分享選單，長按圖片儲存，再上載到 IG Story。', "If the share menu doesn't appear, press and hold the image to save it, then post it to your IG Story.")}</p>`;
+    previewEl.innerHTML = `<img src="${esc(url)}" alt="${esc(t('分享卡預覽', 'Share card preview'))}"><p class="muted" style="font-size:13px">${
+      esc(t('如果冇彈出分享選單，長按圖片儲存，再上載到 IG Story。', "If the share menu doesn't appear, press and hold the image to save it, then post it to your IG Story."))}</p>`;
     previewEl.style.display = 'block';
   }
   const file = new File([blob], filename, { type: 'image/png' });
