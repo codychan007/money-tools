@@ -699,8 +699,8 @@ def update_page(p, lang, older=None, newer=None):
       </div>
       <div id="pdf-pages" class="stack" data-pdf="{e(pdf)}"><div class="card center muted">{U['loading']}</div></div>
     </article>
-    {checkup_teaser(lang, "market")}
     {nav}
+    {checkup_teaser(lang, "market")}
     {U['disclaimer']}
   </div>
 </main>
