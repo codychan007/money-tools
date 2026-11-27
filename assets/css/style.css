@@ -652,3 +652,12 @@ a[target="_blank"]:not(.btn):not(.cta-btn):not(.teaser):not(.tool-card)::after {
   50% { box-shadow: inset 0 0 0 4px var(--shu), inset 0 0 0 5.5px rgba(251, 243, 228, .9), 4px 4px 0 rgba(35, 31, 28, .15), 0 0 22px 6px rgba(181, 54, 31, .38); }
 }
 @media (prefers-reduced-motion: reduce) { .avatar-seal .frame { animation: none; } }
+/* 信用卡提示：避免最尾得一兩隻字自成一行 */
+.card-tip { text-wrap: pretty; }
+/* 目標計算表：手機收埋第三、四欄，改喺第二欄下面細字顯示 */
+#res-table .m-sub { display: none; }
+@media (max-width: 759px) {
+  #res-table th:nth-child(n+3), #res-table td:nth-child(n+3) { display: none; }
+  #res-table .m-sub { display: block; font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
+}
+

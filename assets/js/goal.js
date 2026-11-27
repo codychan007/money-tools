@@ -82,6 +82,9 @@ function delayRows(rows, note) {
     + `<p class="muted" style="font-size:13px;margin:8px 0 0">${note}</p>`;
 }
 
+// 手機：本金同回報收喺第二欄下面一行細字（第三、四欄收埋），成張表一眼睇晒
+const mSub = (principal, gain) => `<span class="m-sub">${t(`本金 ${money(principal)}・回報 ${money(gain)}`, `Put in ${money(principal)} · returns ${money(gain)}`)}</span>`;
+
 function renderChips(rs) {
   $('focus-chips').innerHTML = rs.map((r, i) =>
     `<button class="chip" data-i="${i}" aria-pressed="${i === focusIdx}">${pctLabel(r)}</button>`).join('');
@@ -114,7 +117,7 @@ function update() {
         const n = ns[i];
         if (!isFinite(n) || n > MAX_MONTHS) return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${pctLabel(r)}</td><td colspan="3">${t('50 年內都未達到，試下加多啲每月投入', 'Not reached within 50 years. Try putting in more each month')}</td></tr>`;
         const principal = S + P * n, fv = futureValue(S, P, r, n);
-        return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${pctLabel(r)}</td><td>${ym(n)}</td><td>${money(principal)}</td><td>${money(fv - principal)}</td></tr>`;
+        return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${pctLabel(r)}</td><td>${ym(n)}${mSub(principal, fv - principal)}</td><td>${money(principal)}</td><td>${money(fv - principal)}</td></tr>`;
       }).join('');
 
     // 遲 5 年
@@ -147,7 +150,7 @@ function update() {
     $('res-table').innerHTML = `<tr><th>${t('假設年回報', 'Assumed return')}</th><th>${t('每月要投入', 'Monthly needed')}</th><th>${t('你投入嘅本金', 'You put in')}</th><th>${t('回報部分', 'From returns')}</th></tr>` +
       rs.map((r, i) => {
         const principal = S + ps[i] * months;
-        return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${pctLabel(r)}</td><td>${money(ps[i])}</td><td>${money(principal)}</td><td>${money(Math.max(0, T - principal))}</td></tr>`;
+        return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${pctLabel(r)}</td><td>${money(ps[i])}${mSub(principal, Math.max(0, T - principal))}</td><td>${money(principal)}</td><td>${money(Math.max(0, T - principal))}</td></tr>`;
       }).join('');
 
     const dc = delayComparison(T, S, fr, months, 60);
