@@ -28,7 +28,8 @@ export function wizard(box, Q, onDone, init = {}) {
   const showQuestion = () => {
     if (i >= Q.length) { box.scrollIntoView({ block: 'start', behavior: 'smooth' }); return; }
     const field = box.querySelector('#wz-in, input[data-count]');
-    if (field) { setTimeout(() => field.focus({ preventScroll: true }), 30); return; }
+    // 同一下撳掣入面即刻聚焦：手機／iPad 鍵盤唔會收埋再彈
+    if (field) { field.focus({ preventScroll: true }); return; }
     box.scrollIntoView({ block: 'start', behavior: 'smooth' });
   };
   const go = k => { hist.push(i); i = nextIndex(k); render(); showQuestion(); };
@@ -46,7 +47,7 @@ export function wizard(box, Q, onDone, init = {}) {
       const cur = ans[q.key] ?? (q.def ? q.def(ans) : null);
       const val = cur == null ? '' : q.type === 'money' ? nf.format(cur) : cur;
       body = `<label class="field"><span class="sr-only">${qText}</span>
-        <div class="${q.type === 'money' ? 'input-money' : ''}"><input id="wz-in" type="text" inputmode="decimal" autocomplete="off" value="${esc(val)}" placeholder="${esc(q.placeholder || '')}"></div>
+        <div class="${q.type === 'money' ? 'input-money' : ''}"><input id="wz-in" type="text" inputmode="decimal" enterkeyhint="next" autocomplete="off" value="${esc(val)}" placeholder="${esc(q.placeholder || '')}"></div>
         ${q.unit ? `<small class="muted">${q.unit}</small>` : ''}</label>
         <p class="muted" id="wz-err" style="color:var(--danger);display:none;font-size:14px"></p>
         <button type="button" class="btn shu block" data-next>${t('下一步 →', 'Next →')}</button>
@@ -58,7 +59,7 @@ export function wizard(box, Q, onDone, init = {}) {
     } else if (q.type === 'counts') {
       body = `${q.fields.map(([k, l, max]) => `<div class="field"><span>${l}</span>
         <div class="stepper"><button type="button" class="btn secondary" data-step="${k}" data-d="-1" aria-label="${t('減一', 'Minus one')}">−</button>
-        <input type="number" min="0" max="${max ?? 9}" value="${ans[k] ?? 0}" data-count="${k}" inputmode="numeric" aria-label="${esc(l)}">
+        <input type="number" min="0" max="${max ?? 9}" value="${ans[k] ?? 0}" data-count="${k}" inputmode="numeric" enterkeyhint="next" aria-label="${esc(l)}">
         <button type="button" class="btn secondary" data-step="${k}" data-d="1" aria-label="${t('加一', 'Plus one')}">+</button></div></div>`).join('')}
         <button type="button" class="btn shu block" data-next>${t('下一步 →', 'Next →')}</button>`;
     }
@@ -86,6 +87,8 @@ export function wizard(box, Q, onDone, init = {}) {
       });
     }
     box.querySelector('[data-back]')?.addEventListener('click', back);
+    // 撳「下一步／返回」時唔好搶走輸入框焦點，鍵盤可以一直留住
+    box.querySelectorAll('[data-next], [data-back], [data-skip]').forEach(b => b.addEventListener('pointerdown', e => { if (document.activeElement?.matches?.('#wz-in, input[data-count]')) e.preventDefault(); }));
     const inp = box.querySelector('#wz-in');
     if (inp) {
       if (q.type === 'money') inp.addEventListener('input', () => { const v = parse(inp.value); inp.value = v == null ? '' : nf.format(Math.round(v)); });

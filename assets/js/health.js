@@ -64,18 +64,26 @@ function renderQ() {
         `Based on your answers, about ${money(left)} is left after spending and repayments, so we've filled that in. If you actually save less, change it (include transfers to savings and regular investing).`);
     }
     const v = answers[q.key] ?? '';
-    $('q-body').innerHTML = `<div class="input-money"><input type="text" id="q-input" aria-label="${q.title}"
-      placeholder="${PLACEHOLDER[q.key] || ''}" value="${v === '' ? '' : Number(v).toLocaleString(locale)}"></div>`;
-    const inp = $('q-input'); moneyInput(inp);
+    // 連續金額題用返同一個輸入框（唔拆走再整），手機／iPad 鍵盤由頭到尾都唔會收埋
+    let inp = $('q-input');
+    if (!inp) {
+      $('q-body').innerHTML = '<div class="input-money"><input type="text" id="q-input"></div>';
+      inp = $('q-input'); moneyInput(inp);
+    }
+    inp.setAttribute('aria-label', q.title);
+    inp.placeholder = PLACEHOLDER[q.key] || '';
+    inp.value = v === '' ? '' : Number(v).toLocaleString(locale);
     const sync = () => {
       answers[q.key] = inp.value.trim() ? readNum(inp) : undefined;
       // 月薪（未扣強積金）→ 自己計到手，分數同建議照用到手計
       if (q.key === 'gross') answers.income = answers.gross > 0 ? takeHome(answers.gross, MPF) : undefined;
     };
-    inp.addEventListener('input', sync);
-    inp.addEventListener('keydown', e => { if (e.key === 'Enter') next(); });
+    inp.oninput = sync;   // 用 on… 屬性：重用輸入框時會覆蓋舊題目嘅處理，唔會疊埋
+    inp.onkeydown = e => { if (e.key === 'Enter') next(); };
     sync();
-    setTimeout(() => inp.focus({ preventScroll: true }), 50);
+    inp.setAttribute('enterkeyhint', idx === QUESTIONS.length - 1 ? 'done' : 'next');
+    // 同一下撳掣入面即刻聚焦：手機／iPad 鍵盤唔會收埋再彈
+    inp.focus({ preventScroll: true });
   } else {
     $('q-body').innerHTML = `<div class="options">${q.options.map(([v, label]) =>
       `<button class="option" data-v="${v}" aria-pressed="${String(answers[q.key]) === String(v)}">${label}</button>`).join('')}</div>`;
@@ -99,6 +107,8 @@ function next() {
   if (idx < QUESTIONS.length - 1) { idx++; renderQ(); } else showResult();
 }
 $('next').addEventListener('click', next);
+// 撳「上一題／下一題」時唔好搶走輸入框焦點，鍵盤可以一直留住
+['next', 'prev'].forEach(id => $(id).addEventListener('pointerdown', e => { if (document.activeElement?.id === 'q-input') e.preventDefault(); }));
 $('prev').addEventListener('click', () => { if (idx > 0) { idx--; renderQ(); } });
 $('restart').addEventListener('click', () => {
   idx = 0; $('result').classList.add('hidden'); $('quiz').classList.remove('hidden'); hideBottomCta(false); renderQ();
