@@ -5,7 +5,7 @@
 // 答案唔會儲存，亦唔會上傳
 // ============================================================
 import { t, EN } from './i18n.js';
-import { loadJSON, money, esc } from './layout.js';
+import { loadJSON, money, esc, safeUrl } from './layout.js';
 import { wizard } from './wizard.js';
 import { hideBottomCta } from './journey.js';
 
@@ -220,11 +220,16 @@ async function init() {
   const ICON = { true: '✓', false: '✗', null: '?' };
   const LABEL = { likely: t('很可能符合', 'Likely eligible'), maybe: t('可能符合', 'Possibly eligible'), no: t('不符合', 'Not eligible') };
   function card(it, r) {
-    return `<article class="card benefit ${r.status}">
-      <div class="benefit-head"><span class="badge status-${r.status}">${LABEL[r.status]}</span><span class="badge">${esc(L(D.groups[it.group]))}</span></div>
+    const status = r.status === 'likely' || r.status === 'maybe' || r.status === 'no' ? r.status : 'maybe';
+    const href = safeUrl(L(it.url));
+    return `<article class="card benefit ${status}">
+      <div class="benefit-head"><span class="badge status-${status}">${esc(LABEL[r.status] || '')}</span><span class="badge">${esc(L(D.groups[it.group]))}</span></div>
       <h3>${esc(L(it.name))}</h3>
       <p class="mt0">${esc(L(it.summary))}</p>
-      <ul class="reasons">${r.reasons.map(x => `<li class="r-${x.ok}"><span aria-hidden="true">${ICON[x.ok]}</span>${esc(x.text)}</li>`).join('')}</ul>
+      <ul class="reasons">${r.reasons.map(x => {
+        const ok = x.ok === true ? 'true' : x.ok === false ? 'false' : 'null';
+        return `<li class="r-${ok}"><span aria-hidden="true">${ICON[x.ok] || ''}</span>${esc(x.text)}</li>`;
+      }).join('')}</ul>
       <details class="benefit-more">
         <summary>${t('睇大約金額同點樣申請', 'See rough amount and how to apply')}</summary>
         <dl class="benefit-facts">
@@ -232,7 +237,7 @@ async function init() {
           <div><dt>${t('點樣申請', 'How to apply')}</dt><dd>${esc(L(it.apply))}</dd></div>
           ${it.notes ? `<div><dt>${t('注意', 'Note')}</dt><dd>${esc(L(it.notes))}</dd></div>` : ''}
         </dl>
-        <div class="source"><a href="${esc(L(it.url))}" target="_blank" rel="noopener">${t('官方網頁', 'Official page')}</a>
+        <div class="source">${href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${t('官方網頁', 'Official page')}</a>` : esc(t('官方網頁', 'Official page'))}
           ${t('｜資料來源：', ' | Source: ')}${esc(L(it.source))}${t('｜核對日期：', ' | Checked: ')}${esc(it.asOf)}</div>
       </details>
     </article>`;

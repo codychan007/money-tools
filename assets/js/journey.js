@@ -4,6 +4,7 @@
 // 瀏覽器唔俾儲存（私隱模式等）都照用得，只係唔會記住進度。
 // ============================================================
 import { t, P } from './i18n.js';
+import { esc } from './esc.js';
 import { queueUnlock } from './unlock.js';
 
 const KEY = 'hkmc-checkup-v1';
@@ -70,11 +71,11 @@ export function paintJourney(justDone) {
  */
 export function nextCard({ eyebrow, title, body, unlock, href, button }) {
   return `<section class="next-step">
-    <div class="eyebrow">${eyebrow}</div>
-    <h2>${title}</h2>
-    ${body ? `<p>${body}</p>` : ''}
-    ${unlock ? `<div class="teaser-line">${unlock}</div>` : ''}
-    <a class="btn shu lg block" href="${href}">${button}</a>
+    <div class="eyebrow">${esc(eyebrow)}</div>
+    <h2>${esc(title)}</h2>
+    ${body ? `<p>${esc(body)}</p>` : ''}
+    ${unlock ? `<div class="teaser-line">${esc(unlock)}</div>` : ''}
+    <a class="btn shu lg block" href="${esc(href)}">${esc(button)}</a>
   </section>`;
 }
 
@@ -138,12 +139,12 @@ export function chatCard(h, { detail = false } = {}) {
   };
   const gain = strong ? t('你下一步可以點樣再推高。', 'what your next step could be to push it higher.') : GAIN[w.k];
   return `<section class="card tint chat-card">
-    <h2>${title}</h2>
-    <p class="mt0">${t(`免費 30 分鐘，同你一齊計清楚：${gain}`, `In a free 30-minute chat, we work out together ${gain}`)}</p>
-    <a class="btn block" href="${P}/book/#prebook">${btn}</a>
-    <p class="muted" style="font-size:13px;margin:10px 0 0">${t(
+    <h2>${esc(title)}</h2>
+    <p class="mt0">${esc(t(`免費 30 分鐘，同你一齊計清楚：${gain}`, `In a free 30-minute chat, we work out together ${gain}`))}</p>
+    <a class="btn block" href="${esc(`${P}/book/#prebook`)}">${esc(btn)}</a>
+    <p class="muted" style="font-size:13px;margin:10px 0 0">${esc(t(
       '下一頁揀好想傾嘅方向同方便時間，就可以用 WhatsApp 或者 Google 日曆預約；用 WhatsApp 嘅話，你嘅體檢結果會預先寫入訊息，你撳「傳送」先會發出。',
-      "On the next page, pick what you'd like to talk about and when suits you, then book by WhatsApp or Google Calendar. With WhatsApp, your check-up result is pre-filled in the message and only goes out when you press send.")}</p>
+      "On the next page, pick what you'd like to talk about and when suits you, then book by WhatsApp or Google Calendar. With WhatsApp, your check-up result is pre-filled in the message and only goes out when you press send."))}</p>
   </section>`;
 }
 

@@ -42,32 +42,33 @@ export function wizard(box, Q, onDone, init = {}) {
     const n = hist.length + 1, N = Math.max(n, total());
     let body = '';
     if (q.type === 'options') {
-      body = `<div class="options">${q.opts.map(([v, l]) => `<button type="button" class="option" data-v="${esc(v)}" aria-pressed="${ans[q.key] === v}">${l}</button>`).join('')}</div>`;
+      body = `<div class="options">${q.opts.map(([v, l]) => `<button type="button" class="option" data-v="${esc(v)}" aria-pressed="${ans[q.key] === v}">${esc(l)}</button>`).join('')}</div>`;
     } else if (q.type === 'money' || q.type === 'number') {
       const cur = ans[q.key] ?? (q.def ? q.def(ans) : null);
       const val = cur == null ? '' : q.type === 'money' ? nf.format(cur) : cur;
-      body = `<label class="field"><span class="sr-only">${qText}</span>
+      body = `<label class="field"><span class="sr-only">${esc(qText)}</span>
         <div class="${q.type === 'money' ? 'input-money' : ''}"><input id="wz-in" type="text" inputmode="decimal" enterkeyhint="next" autocomplete="off" value="${esc(val)}" placeholder="${esc(q.placeholder || '')}"></div>
-        ${q.unit ? `<small class="muted">${q.unit}</small>` : ''}</label>
+        ${q.unit ? `<small class="muted">${esc(q.unit)}</small>` : ''}</label>
         <p class="muted" id="wz-err" style="color:var(--danger);display:none;font-size:14px"></p>
         <button type="button" class="btn shu block" data-next>${t('下一步 →', 'Next →')}</button>
-        ${q.optional ? `<button type="button" class="btn secondary block" style="margin-top:8px" data-skip>${q.skipLabel || t('唔知／跳過', 'Not sure / skip')}</button>` : ''}`;
+        ${q.optional ? `<button type="button" class="btn secondary block" style="margin-top:8px" data-skip>${esc(q.skipLabel || t('唔知／跳過', 'Not sure / skip'))}</button>` : ''}`;
     } else if (q.type === 'multi') {
       const cur = ans[q.key] || [];
-      body = `<div class="options">${q.opts.map(([v, l]) => `<button type="button" class="option" data-m="${esc(v)}" aria-pressed="${cur.includes(v)}">${l}</button>`).join('')}</div>
+      body = `<div class="options">${q.opts.map(([v, l]) => `<button type="button" class="option" data-m="${esc(v)}" aria-pressed="${cur.includes(v)}">${esc(l)}</button>`).join('')}</div>
         <button type="button" class="btn shu block" style="margin-top:12px" data-next>${t('下一步 →', 'Next →')}</button>`;
     } else if (q.type === 'counts') {
-      body = `${q.fields.map(([k, l, max]) => `<div class="field"><span>${l}</span>
-        <div class="stepper"><button type="button" class="btn secondary" data-step="${k}" data-d="-1" aria-label="${t('減一', 'Minus one')}">−</button>
-        <input type="number" min="0" max="${max ?? 9}" value="${ans[k] ?? 0}" data-count="${k}" inputmode="numeric" enterkeyhint="next" aria-label="${esc(l)}">
-        <button type="button" class="btn secondary" data-step="${k}" data-d="1" aria-label="${t('加一', 'Plus one')}">+</button></div></div>`).join('')}
+      body = `${q.fields.map(([k, l, max]) => `<div class="field"><span>${esc(l)}</span>
+        <div class="stepper"><button type="button" class="btn secondary" data-step="${esc(k)}" data-d="-1" aria-label="${t('減一', 'Minus one')}">−</button>
+        <input type="number" min="0" max="${max ?? 9}" value="${ans[k] ?? 0}" data-count="${esc(k)}" inputmode="numeric" enterkeyhint="next" aria-label="${esc(l)}">
+        <button type="button" class="btn secondary" data-step="${esc(k)}" data-d="1" aria-label="${t('加一', 'Plus one')}">+</button></div></div>`).join('')}
         <button type="button" class="btn shu block" data-next>${t('下一步 →', 'Next →')}</button>`;
     }
+    const stepPct = N ? ((n - 1) / N) * 100 : 0;
     box.innerHTML = `
-      <div class="q-step">${t(`第 ${n} / ${N} 題`, `Question ${n} of ${N}`)}</div>
-      <div class="progress" aria-hidden="true"><i style="width:${((n - 1) / N) * 100}%"></i></div>
-      <h3 style="margin-top:14px">${qText}</h3>
-      ${qHelp ? `<p class="muted" style="font-size:14px;margin-top:-4px">${qHelp}</p>` : ''}
+      <div class="q-step">${esc(t(`第 ${n} / ${N} 題`, `Question ${n} of ${N}`))}</div>
+      <div class="progress" aria-hidden="true"><i style="width:${stepPct}%"></i></div>
+      <h3 style="margin-top:14px">${esc(qText)}</h3>
+      ${qHelp ? `<p class="muted" style="font-size:14px;margin-top:-4px">${esc(qHelp)}</p>` : ''}
       ${body}
       ${hist.length ? `<div class="q-nav"><button type="button" class="btn secondary" data-back>${t('← 返回上一題', '← Back')}</button></div>` : ''}`;
 

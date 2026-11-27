@@ -1,5 +1,5 @@
 // 優惠福利（信用卡優惠分頁）：讀 data/deals.json，按類別篩選，過期自動收埋。英文頁用 *_en 欄位。
-import { mountLayout, loadJSON, esc, todayHK } from './layout.js';
+import { mountLayout, loadJSON, esc, safeUrl, todayHK } from './layout.js';
 import { EN, t } from './i18n.js';
 
 mountLayout();
@@ -29,7 +29,7 @@ document.getElementById('status').innerHTML = `
 let cat = 'all';
 const cats = document.getElementById('cats');
 cats.innerHTML = [['all', t('全部', 'All')], ...Object.entries(CATS)].map(([k, v]) =>
-  `<button class="chip" data-c="${k}" aria-pressed="${k === cat}">${esc(v)}</button>`).join('');
+  `<button class="chip" data-c="${esc(k)}" aria-pressed="${k === cat}">${esc(v)}</button>`).join('');
 cats.addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; cat = b.dataset.c; render(); });
 
 const daysLeft = exp => Math.round((Date.parse(exp) - Date.parse(today)) / 86400000);
@@ -55,7 +55,7 @@ function render() {
         <span class="badge">${esc(L(i, 'type'))}</span>
         <span class="badge ${left !== null && left <= 14 ? 'stale' : 'draft'}">${expiry}</span>
       </div>
-      <div class="source">${t('核實日期：', 'Checked: ')}${esc(i.verifiedOn)}${t('｜', ' | ')}<a href="${esc(i.url)}" target="_blank" rel="noopener">${t('睇官方條款', 'Official terms')}</a></div>
+      <div class="source">${t('核實日期：', 'Checked: ')}${esc(i.verifiedOn)}${t('｜', ' | ')}${safeUrl(i.url) ? `<a href="${esc(safeUrl(i.url))}" target="_blank" rel="noopener">${t('睇官方條款', 'Official terms')}</a>` : esc(t('睇官方條款', 'Official terms'))}</div>
     </article>`;
   }).join('') : `<p class="muted center">${t('呢個類別暫時冇合適優惠，下次更新會再搵。', "No suitable offers in this category right now. We'll look again next update.")}</p>`;
 }

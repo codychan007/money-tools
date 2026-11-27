@@ -2,7 +2,13 @@
 #   - 每日香港時間 10:00（包括週末）
 #   - 香港時間 17:15（港股收市後）
 #   - 香港時間 06:00（美股收市後）
-# 啟用前：喺 GitHub repo 嘅 Settings → Actions → General，將 Workflow permissions 設為 "Read and write permissions"。
+# 啟用前：喺 GitHub repo 嘅 Settings → Actions → General：
+#   - Workflow permissions 設為 "Read and write permissions"
+#   - 剔選 "Allow GitHub Actions to create and approve pull requests"
+# main 有分支保護之後，直接 push 會失敗。呢個 workflow 會改為開 PR 再 squash merge。
+# 保護 main 時：禁止 force-push、禁止刪除、要求經 pull request，審批人數設 0。
+# 唔好要求 status check，亦唔好把 GitHub Actions 加做 always bypass
+# （個人 repo 加唔到內建 Actions app）。審批人數如果大於 0，機械人唔可以自己批准，更新會停低喺 PR。
 name: Update market data
 
 on:
@@ -14,6 +20,7 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 concurrency:
   group: data-update
@@ -29,10 +36,23 @@ jobs:
           python-version: "3.12"
       - run: python scripts/update_market.py
       - name: Commit if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "market-bot"
           git config user.email "market-bot@users.noreply.github.com"
           git add data/market.json
-          git diff --cached --quiet || git commit -m "chore: update market data"
+          git diff --cached --quiet && exit 0
+          git commit -m "chore: update market data"
           git pull --rebase
-          git push
+          # 未有分支保護：同以前一樣直接 push main。
+          if git push origin HEAD:main; then
+            exit 0
+          fi
+          # main 拒絕直接 push：把同一個 commit 放到 market-data 分支，開 PR 再合併。
+          git push --force origin HEAD:refs/heads/market-data
+          gh pr create --base main --head market-data \
+            --title "chore: update market data" \
+            --body "自動更新 data/market.json。由 Update market data workflow 建立，只會改呢一個檔。" \
+            || true
+          gh pr merge market-data --squash --delete-branch

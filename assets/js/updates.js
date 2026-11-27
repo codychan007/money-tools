@@ -13,9 +13,17 @@ if (legacyId && /^[\w-]+$/.test(legacyId)) location.replace(`${P}/updates/${lega
 const pdfBox = document.getElementById('pdf-pages');
 if (pdfBox?.dataset.pdf) renderPdf(pdfBox.dataset.pdf, pdfBox);
 
-if (params.get('preview') === '1' && document.getElementById('posts')) {
+// 正式站唔列出草稿。只限本機同 Cloudflare Pages 預覽網址（唔包括 codychan813.pages.dev）。
+function draftPreviewAllowed() {
+  const h = location.hostname;
+  if (h === 'localhost' || h === '127.0.0.1' || h === '[::1]') return true;
+  if (h === 'codychan813.pages.dev' || h === 'main.codychan813.pages.dev') return false;
+  return h.endsWith('.codychan813.pages.dev');
+}
+
+if (params.get('preview') === '1' && draftPreviewAllowed() && document.getElementById('posts')) {
   const idx = await loadJSON('/data/updates.json');
-  const drafts = idx.posts.filter(p => p.status !== 'published');
+  const drafts = idx.posts.filter(p => p.status !== 'published' && /^[\w-]+$/.test(p.id));
   document.getElementById('posts').insertAdjacentHTML('afterbegin',
     `<div class="sample-banner">${t('預覽模式：包括未發布嘅草稿。', 'Preview mode: includes unpublished drafts.')}</div>` + drafts.map(p => `
     <a class="card tool-card" href="${P}/updates/${encodeURIComponent(p.id)}/">
@@ -28,14 +36,27 @@ if (params.get('preview') === '1' && document.getElementById('posts')) {
  * 用 PDF.js 將每頁畫成圖片（手機瀏覽器多數唔可以直接喺網頁內睇 PDF）。
  * 捲到先畫，慳流量同記憶體。
  */
-function loadScript(src) {
-  return new Promise((res, rej) => { const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
+function loadScript(src, integrity) {
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = src;
+    s.integrity = integrity;
+    s.crossOrigin = 'anonymous';
+    s.onload = res;
+    s.onerror = () => rej(new Error('pdf.js'));
+    document.head.appendChild(s);
+  });
 }
 async function renderPdf(url, box) {
+  // cdnjs pdf.js 3.11.174。hash 同 https://api.cdnjs.com/libraries/pdf.js/3.11.174 一致。
   const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174';
+  const PDFJS_SRI = 'sha512-q+4liFwdPC/bNdhUpZx6aXDx/h77yEQtn4I1slHydcbZK34nLaR3cAeYSJshoxIOq3mjEf7xJE8YWIUHMn+oCQ==';
+  const PDFJS_WORKER_SRI = 'sha512-BbrZ76UNZq5BhH7LL7pn9A4TKQpQeNCHOo65/akfelcIBbcVvYWOFQKPXIrykE3qZxYjmDX573oa4Ywsc7rpTw==';
   try {
-    if (!window.pdfjsLib) await loadScript(`${PDFJS}/pdf.min.js`);
-    pdfjsLib.GlobalWorkerOptions.workerSrc = `${PDFJS}/pdf.worker.min.js`;
+    if (!window.pdfjsLib) await loadScript(`${PDFJS}/pdf.min.js`, PDFJS_SRI);
+    const workerRes = await fetch(`${PDFJS}/pdf.worker.min.js`, { integrity: PDFJS_WORKER_SRI, mode: 'cors' });
+    if (!workerRes.ok) throw new Error('pdf.worker');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = URL.createObjectURL(await workerRes.blob());
     const pdf = await pdfjsLib.getDocument({ url, cMapUrl: `${PDFJS}/cmaps/`, cMapPacked: true, standardFontDataUrl: `${PDFJS}/standard_fonts/` }).promise;
     box.innerHTML = '';
     const first = await pdf.getPage(1);

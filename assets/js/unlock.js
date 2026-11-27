@@ -5,6 +5,7 @@
 // 未播得切就轉咗頁（例如撳咗「下一步」）：留低 pending，下一頁再播。
 // ============================================================
 import { t } from './i18n.js';
+import { esc } from './esc.js';
 
 const SEEN = 'hkmc-unlock-seen', PENDING = 'hkmc-unlock-pending';
 const ORDER = ['health', 'salary', 'goal'];
@@ -58,8 +59,8 @@ function play() {
         <rect x="8" y="30" width="48" height="38" rx="7" fill="currentColor"/>
         <circle cx="32" cy="46" r="5" fill="var(--card)"/><rect x="29.5" y="48" width="5" height="10" rx="2" fill="var(--card)"/>
       </svg>
-      <div class="unlock-title">${title}</div>
-      <div class="unlock-sub">${sub}</div>
+      <div class="unlock-title">${esc(title)}</div>
+      <div class="unlock-sub">${esc(sub)}</div>
     </div>`;
   document.body.appendChild(el);
   requestAnimationFrame(() => el.classList.add('show'));

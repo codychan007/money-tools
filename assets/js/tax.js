@@ -3,7 +3,7 @@
 // 稅率、免稅額、扣除上限：data/tax/20xx-yy.json（已對稅務局／GovHK）
 // ============================================================
 import { t } from './i18n.js';
-import { money, loadJSON, esc } from './layout.js';
+import { money, loadJSON, esc, safeUrl } from './layout.js';
 import { wizard } from './wizard.js';
 import { hideBottomCta } from './journey.js';
 import { salariesTax, maxOutThree, justEnough, mpfEmployeeAnnual } from './calc/tax.js';
@@ -18,7 +18,7 @@ const cap = v => '$' + nf.format(v);
 // 課稅年度已經完結（3 月 31 日後）：唔可以再補供款，只可以翻查／申請更正
 const yearEnded = y => new Date() > new Date(Number(y.slice(0, 4)) + 1, 2, 31, 23, 59, 59);
 const pastYearNote = y => `<div class="callout">
-  <h3 class="mt0">${t(`${y} 年度已經完結`, `${y} has already ended`)}</h3>
+  <h3 class="mt0">${esc(t(`${y} 年度已經完結`, `${y} has already ended`))}</h3>
   <p class="mt0">${t('過咗年度就唔可以再補交自願醫保或者 TVC／QDAP 嚟扣稅。呢個計算適合用嚟對返稅務局嘅評稅通知書。',
     'You can’t add VHIS or TVC / QDAP for a year that has ended. Use this to check the figures on your notice of assessment.')}</p>
   <ul class="tips">
@@ -27,7 +27,7 @@ const pastYearNote = y => `<div class="callout">
       '<b>Missed a deduction or allowance on your return:</b> you can ask in writing for a correction within 6 years after the end of the year (or 6 months after the notice was served, whichever is later), under section 70A of the Inland Revenue Ordinance.')}</li>
   </ul>
   <p class="muted" style="font-size:13px;margin:0">${t('詳情請睇稅務局或 GovHK「反對及上訴」頁，或者直接問稅務局。', 'See the IRD or GovHK objections and appeals page, or ask the IRD.')}
-    <a href="${t('https://www.gov.hk/tc/residents/taxes/taxfiling/object/objections.htm', 'https://www.gov.hk/en/residents/taxes/taxfiling/object/objections.htm')}" target="_blank" rel="noopener">${t('GovHK：反對及上訴', 'GovHK: objections and appeals')}</a></p>
+    <a href="${esc(safeUrl(t('https://www.gov.hk/tc/residents/taxes/taxfiling/object/objections.htm', 'https://www.gov.hk/en/residents/taxes/taxfiling/object/objections.htm')))}" target="_blank" rel="noopener">${t('GovHK：反對及上訴', 'GovHK: objections and appeals')}</a></p>
 </div>`;
 const yearLabel = y => { const s = Number(y.slice(0, 4)); return t(`${y}（${s} 年 4 月至 ${s + 1} 年 3 月）`, `${y} (Apr ${s} – Mar ${s + 1})`); };
 // 理財資訊通嘅 statutory.json 欄位名唔同，喺度轉一轉
@@ -79,8 +79,8 @@ function toParams(a) {
 /** 「慳稅規劃」：最少要多扣幾多先令稅款歸零，同埋點樣分配自願醫保同 TVC／QDAP */
 function planHtml(Y, p, r) {
   const j = justEnough(Y, p);
-  if (r.tax <= 0) return `<p class="callout green">${t('你估計唔使交稅，暫時唔使為慳稅加扣除。', 'You likely pay no tax, so extra deductions won’t help now.')}</p>`;
-  if (j.need <= 0) return `<p class="callout green">${t('你已經用盡自願醫保同 TVC／QDAP 嘅上限。', 'You have already used the full VHIS and TVC / QDAP limits.')}</p>`;
+  if (r.tax <= 0) return `<p class="callout green">${esc(t('你估計唔使交稅，暫時唔使為慳稅加扣除。', 'You likely pay no tax, so extra deductions won’t help now.'))}</p>`;
+  if (j.need <= 0) return `<p class="callout green">${esc(t('你已經用盡自願醫保同 TVC／QDAP 嘅上限。', 'You have already used the full VHIS and TVC / QDAP limits.'))}</p>`;
   const zero = j.floor <= 0.5;
   const capV = Y.deductions.vhisPerInsured, capT = Y.deductions.tvcQdap;
   const who = p.vhisPersons > 0 ? t(`${j.persons} 位受保人`, `${j.persons} insured`) : t('當你自己 1 位受保人', 'counting just you');
@@ -88,7 +88,7 @@ function planHtml(Y, p, r) {
   const a = Math.min(j.need, j.roomV), b = j.need - a;
   const per = (Math.round((j.saving / j.need) * 1000) / 10).toString();
   const hadParts = [j.curV > 0 ? t(`自願醫保 ${money(j.curV)}`, `VHIS ${money(j.curV)}`) : '', j.curT > 0 ? t(`TVC／QDAP ${money(j.curT)}`, `TVC / QDAP ${money(j.curT)}`) : ''].filter(Boolean);
-  const had = hadParts.length ? `<p class="muted" style="font-size:14px">${t(`你已經有：${hadParts.join('、')}（已經扣咗，上面「估計應繳薪俸稅」已計入）。以上只係計仲要再加幾多。`, `You already have: ${hadParts.join(', ')} (already deducted in the estimated tax above). The figures above are only the extra amount needed.`)}</p>` : '';
+  const had = hadParts.length ? `<p class="muted" style="font-size:14px">${esc(t(`你已經有：${hadParts.join('、')}（已經扣咗，上面「估計應繳薪俸稅」已計入）。以上只係計仲要再加幾多。`, `You already have: ${hadParts.join(', ')} (already deducted in the estimated tax above). The figures above are only the extra amount needed.`))}</p>` : '';
   // 點樣扣先夠：一行講晒
   const how = vOnly && tOnly
     ? t(`自願醫保或者 TVC／QDAP 合共 ${money(j.need)}，任揀`, `${money(j.need)} in VHIS or TVC / QDAP, either works`)
@@ -96,17 +96,17 @@ function planHtml(Y, p, r) {
     : tOnly ? t(`只用 TVC／QDAP ${money(j.need)} 就夠`, `TVC / QDAP alone: ${money(j.need)}`)
     : t(`自願醫保 ${money(a)} ＋ TVC／QDAP ${money(b)}`, `VHIS ${money(a)} + TVC / QDAP ${money(b)}`);
   const howNote = !tOnly
-    ? `<span class="muted" style="display:block;font-weight:400;font-size:13px">${t(`自願醫保按${who}計，每位上限 ${cap(capV)}`, `VHIS: ${who}, cap ${cap(capV)} each`)}</span>` : '';
-  const row = (k, v) => `<div class="delay-row"><span>${k}</span><b>${v}</b></div>`;
+    ? `<span class="muted" style="display:block;font-weight:400;font-size:13px">${esc(t(`自願醫保按${who}計，每位上限 ${cap(capV)}`, `VHIS: ${who}, cap ${cap(capV)} each`))}</span>` : '';
+  const row = (k, v) => `<div class="delay-row"><span>${esc(k)}</span><b>${v}</b></div>`;
   return `<div>
           <div class="q-step">${t('扣稅三寶', 'The three tax deductions')}</div>
           <p class="muted mt0" style="font-size:14px">${t('「扣稅三寶」即係自願醫保保費、TVC（強積金可扣稅自願性供款）同 QDAP（合資格延期年金），交咗就可以扣稅。照你嘅數，用盡可以慳幾多：', 'The three tax deductions are VHIS premiums, TVC (MPF tax-deductible voluntary contributions) and QDAP (qualifying deferred annuities). Based on your figures, here is what using them could save:')}</p>
           <h3>${t('最多可以慳幾多稅？', 'The most tax you could save')}</h3>
-          <div class="big-result">${money(j.saving)}</div>
-          ${row(t('而家估計要交', 'Estimated tax now'), money(r.tax))}
-          ${row(t('用盡扣稅三寶之後', 'After using the full limits'), zero ? t('$0（唔使交稅）', '$0 (no tax)') : money(j.floor))}
-          ${row(t('要多扣幾多', 'Extra deductions needed'), `${money(j.need)} <span class="muted" style="font-weight:400;font-size:14px">${t(`（每多扣 $100 慳大約 $${per}）`, `(about $${per} saved per $100)`)}</span>`)}
-          ${row(t('點樣扣先夠', 'How to get there'), how + howNote)}
+          <div class="big-result">${esc(money(j.saving))}</div>
+          ${row(t('而家估計要交', 'Estimated tax now'), esc(money(r.tax)))}
+          ${row(t('用盡扣稅三寶之後', 'After using the full limits'), zero ? esc(t('$0（唔使交稅）', '$0 (no tax)')) : esc(money(j.floor)))}
+          ${row(t('要多扣幾多', 'Extra deductions needed'), `${esc(money(j.need))} <span class="muted" style="font-weight:400;font-size:14px">${esc(t(`（每多扣 $100 慳大約 $${per}）`, `(about $${per} saved per $100)`))}</span>`)}
+          ${row(t('點樣扣先夠', 'How to get there'), esc(how) + howNote)}
           ${Number(per) < 10 ? `<p class="callout">${t('<b>慳稅效益唔大：</b>單為慳稅去買並唔抵，要睇你本身有冇保障或者退休儲蓄嘅需要。', '<b>Not much tax to save:</b> not worth buying just for tax; it depends on whether you need the cover or the retirement savings anyway.')}</p>` : ''}
           ${had}
           <p class="muted" style="font-size:13px">${t('計法：將額外扣除加入，再計一次稅。要真係交咗保費或者供咗款先扣得；自願醫保要每位受保人有自己嘅保單。', 'How this is worked out: the extra deductions are added and the tax recalculated. You can only deduct what you actually pay; VHIS needs a policy for each insured person.')}</p>
@@ -119,7 +119,7 @@ function result(a, api) {
   const draw = year => {
     const Y = YEARS[year];
     const m = maxOutThree(Y, p), r = m.before;
-    const row = (l, v, strong) => `<div class="report-row"><span>${l}</span><b ${strong ? '' : 'style="font-size:1.05rem"'}>${v}</b></div>`;
+    const row = (l, v, strong) => `<div class="report-row"><span>${esc(l)}</span><b ${strong ? '' : 'style="font-size:1.05rem"'}>${esc(v)}</b></div>`;
     const D = r.ded.items;
     const dedRows = [
       [t('強積金強制性供款', 'Mandatory MPF'), D.mpf], [t('自願醫保保費', 'VHIS premiums'), D.vhis], [t('TVC＋QDAP', 'TVC + QDAP'), D.tvcQdap],
@@ -128,10 +128,10 @@ function result(a, api) {
     ].filter(x => x[1] > 0);
     box.innerHTML = `
       <div class="stack">
-        <div class="year-switch"><span class="muted">${t('課稅年度：', 'Year:')}</span>${Object.keys(YEARS).map(k => `<button type="button" class="chip" data-year="${k}" aria-pressed="${k === year}">${k}</button>`).join('')}</div>
+        <div class="year-switch"><span class="muted">${t('課稅年度：', 'Year:')}</span>${Object.keys(YEARS).map(k => `<button type="button" class="chip" data-year="${esc(k)}" aria-pressed="${k === year}">${esc(k)}</button>`).join('')}</div>
         <div>
           <div class="q-step">${t(`${year} 估計應繳薪俸稅`, `Estimated ${year} salaries tax`)}</div>
-          <div class="big-result">${money(r.tax)}</div>
+          <div class="big-result">${esc(money(r.tax))}</div>
           ${r.reduction > 0 ? `<p class="muted" style="font-size:14px">${t(`已扣一次性寬減 ${money(r.reduction)}`, `After one-off reduction of ${money(r.reduction)}`)}</p>` : ''}
         </div>
         <div>
@@ -147,7 +147,7 @@ function result(a, api) {
         ${yearEnded(year) ? pastYearNote(year) : planHtml(Y, p, r)}
         ${p.marital === 'marriedBoth' ? `<p class="callout">${t('雙方都有收入：呢度只計你一個（分開評稅），子女同父母免稅額當你申索。夫婦可以比較「合併評稅」，有時會更少稅。', 'Both earn income: this shows your separate assessment only, with child and parent allowances claimed by you. Couples can compare joint assessment, which sometimes lowers tax.')}</p>` : ''}
         <p class="muted" style="font-size:13px">${t(`只計薪俸稅；個人入息課稅、合併評稅只作提示。數字來源：稅務局／GovHK（核對日期 ${esc(Y.verifiedOn)}）。實際稅款以稅務局評稅為準。`, `Salaries tax only; personal assessment and joint assessment are mentioned for reference. Figures from IRD / GovHK (checked ${esc(Y.verifiedOn)}). Your actual tax is set by the IRD assessment.`)}
-          <a href="${esc(Y.budgetUrl)}" target="_blank" rel="noopener">${t('稅務局預算案措施', 'IRD budget measures')}</a></p>
+          ${safeUrl(Y.budgetUrl) ? `<a href="${esc(safeUrl(Y.budgetUrl))}" target="_blank" rel="noopener">${t('稅務局預算案措施', 'IRD budget measures')}</a>` : ''}</p>
         <div class="q-nav"><button type="button" class="btn secondary" data-edit>${t('← 改答案', '← Change answers')}</button>
           <button type="button" class="btn secondary" data-restart>${t('重新答過', 'Start over')}</button></div>
       </div>`;

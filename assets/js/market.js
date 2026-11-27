@@ -1,6 +1,6 @@
 // 市場指數：先顯示 data/market.json（每日自動更新），
 // 再喺訪客瀏覽器直接向金管局／Frankfurter 讀取最新利率及匯率（讀到就覆蓋）。
-import { mountLayout, loadJSON, esc, todayHK } from './layout.js';
+import { mountLayout, loadJSON, esc, safeUrl, todayHK } from './layout.js';
 import { EN, t } from './i18n.js';
 
 mountLayout();
@@ -42,7 +42,8 @@ function render() {
     <section class="card"><h2>${esc(g)}</h2>
       ${d.items.filter(i => i.group === g).map(i => {
         const stale = i.value != null && ageDays(i.updatedAt) > (i.maxAgeDays || 5);
-        const src = i.sourceUrl ? `<a href="${esc(i.sourceUrl)}" target="_blank" rel="noopener">${esc(i.source)}</a>` : esc(i.source);
+        const href = safeUrl(i.sourceUrl);
+        const src = href ? `<a href="${esc(href)}" target="_blank" rel="noopener">${esc(i.source)}</a>` : esc(i.source);
         return `
         <div class="mkt" style="padding:10px 0;border-bottom:1px solid var(--line)">
           <div><b>${esc(i.name)}</b>

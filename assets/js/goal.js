@@ -1,4 +1,4 @@
-import { mountLayout, money, ym, readNum, moneyInput } from './layout.js';
+import { mountLayout, money, ym, readNum, moneyInput, esc } from './layout.js';
 import { futureValue, monthsToGoal, monthlyNeeded, delayComparison, delayGapAt } from './finance.js';
 import { t, locale, P as PREFIX } from './i18n.js';
 import { saveStep, readJourney, nextCard } from './journey.js';
@@ -43,7 +43,7 @@ let touched = false;
   if (j.salary?.save > 0) { els.monthly.value = fmt(j.salary.save); used.push(t('每月可以投入（第 2 步）', 'monthly amount (step 2)')); }
   if (j.health?.cash > 0) { els.savings.value = fmt(j.health.cash); used.push(t('而家已有儲蓄（第 1 步）', 'current savings (step 1)')); }
   if (used.length) {
-    $('prefill-note').innerHTML = t(`已經用你喺理財體檢填過嘅數字預先填好：${used.join('、')}。目標金額你可以自己改。`,
+    $('prefill-note').textContent = t(`已經用你喺理財體檢填過嘅數字預先填好：${used.join('、')}。目標金額你可以自己改。`,
       `Pre-filled from your check-up: ${used.join(' and ')}. Change the target to your own goal.`);
     $('prefill-note').classList.remove('hidden');
   }
@@ -78,16 +78,16 @@ const pctLabel = r => `${+(r * 100).toFixed(2)}%`;
 
 /** 「遲 5 年先開始」：3 行對比，重點數字放大；假設條件放最底細字 */
 function delayRows(rows, note) {
-  return rows.map(([k, v]) => `<div class="delay-row"><span>${k}</span><b>${v}</b></div>`).join('')
-    + `<p class="muted" style="font-size:13px;margin:8px 0 0">${note}</p>`;
+  return rows.map(([k, v]) => `<div class="delay-row"><span>${esc(k)}</span><b>${v}</b></div>`).join('')
+    + `<p class="muted" style="font-size:13px;margin:8px 0 0">${esc(note)}</p>`;
 }
 
 // 手機：本金同回報收喺第二欄下面一行細字（第三、四欄收埋），成張表一眼睇晒
-const mSub = (principal, gain) => `<span class="m-sub">${t(`本金 ${money(principal)}・回報 ${money(gain)}`, `Put in ${money(principal)} · returns ${money(gain)}`)}</span>`;
+const mSub = (principal, gain) => `<span class="m-sub">${esc(t(`本金 ${money(principal)}・回報 ${money(gain)}`, `Put in ${money(principal)} · returns ${money(gain)}`))}</span>`;
 
 function renderChips(rs) {
   $('focus-chips').innerHTML = rs.map((r, i) =>
-    `<button class="chip" data-i="${i}" aria-pressed="${i === focusIdx}">${pctLabel(r)}</button>`).join('');
+    `<button class="chip" data-i="${i}" aria-pressed="${i === focusIdx}">${esc(pctLabel(r))}</button>`).join('');
 }
 $('focus-chips').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return;
@@ -115,24 +115,24 @@ function update() {
     $('res-table').innerHTML = `<tr><th>${t('假設年回報', 'Assumed return')}</th><th>${t('需時', 'Time')}</th><th>${t('你投入嘅本金', 'You put in')}</th><th>${t('回報部分', 'From returns')}</th></tr>` +
       rs.map((r, i) => {
         const n = ns[i];
-        if (!isFinite(n) || n > MAX_MONTHS) return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${pctLabel(r)}</td><td colspan="3">${t('50 年內都未達到，試下加多啲每月投入', 'Not reached within 50 years. Try putting in more each month')}</td></tr>`;
+        if (!isFinite(n) || n > MAX_MONTHS) return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${esc(pctLabel(r))}</td><td colspan="3">${esc(t('50 年內都未達到，試下加多啲每月投入', 'Not reached within 50 years. Try putting in more each month'))}</td></tr>`;
         const principal = S + P * n, fv = futureValue(S, P, r, n);
-        return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${pctLabel(r)}</td><td>${ym(n)}${mSub(principal, fv - principal)}</td><td>${money(principal)}</td><td>${money(fv - principal)}</td></tr>`;
+        return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${esc(pctLabel(r))}</td><td>${esc(ym(n))}${mSub(principal, fv - principal)}</td><td>${esc(money(principal))}</td><td>${esc(money(fv - principal))}</td></tr>`;
       }).join('');
 
     // 遲 5 年
     const n = ns[focusIdx];
     let txt;
-    if (!isFinite(n) || n > MAX_MONTHS) txt = t('以而家嘅設定，呢個回報率下 50 年內都未達標，所以冇得比較。', "With these numbers you don't reach the target within 50 years at this return, so there is nothing to compare.");
-    else if (n === 0) txt = t('你已經達標喇！', "You're already there!");
+    if (!isFinite(n) || n > MAX_MONTHS) txt = esc(t('以而家嘅設定，呢個回報率下 50 年內都未達標，所以冇得比較。', "With these numbers you don't reach the target within 50 years at this return, so there is nothing to compare."));
+    else if (n === 0) txt = esc(t('你已經達標喇！', "You're already there!"));
     else {
       const gap = delayGapAt(S, P, fr, n, 60);
       const dc = delayComparison(T, S, fr, n, 60);
       txt = delayRows([
-        [t('今日開始', 'Start today'), t(`${ym(n)}達標`, `Reach it in ${ym(n)}`)],
-        [t('遲 5 年先開始', 'Start 5 years later'), t(`少咗 <span class="hl">${money(gap.gap)}</span>，要等多 5 年`, `<span class="hl">${money(gap.gap)}</span> less, 5 more years`)],
+        [t('今日開始', 'Start today'), t(`${esc(ym(n))}達標`, `Reach it in ${esc(ym(n))}`)],
+        [t('遲 5 年先開始', 'Start 5 years later'), t(`少咗 <span class="hl">${esc(money(gap.gap))}</span>，要等多 5 年`, `<span class="hl">${esc(money(gap.gap))}</span> less, 5 more years`)],
         dc.monthsLeft > 0
-          ? [t('想同樣時間達標', 'To arrive on time'), t(`每月要多放 <span class="hl">${money(dc.extra)}</span>（即係 ${money(dc.late)}）`, `<span class="hl">${money(dc.extra)}</span> more a month (${money(dc.late)} in total)`)]
+          ? [t('想同樣時間達標', 'To arrive on time'), t(`每月要多放 <span class="hl">${esc(money(dc.extra))}</span>（即係 ${esc(money(dc.late))}）`, `<span class="hl">${esc(money(dc.extra))}</span> more a month (${esc(money(dc.late))} in total)`)]
           : [t('想同樣時間達標', 'To arrive on time'), t('目標 5 年內就達到，遲 5 年即係成個目標推遲', 'Your goal is within 5 years, so a delay pushes the whole goal back')],
       ], t(`假設每月投入 ${money(P)}、年回報 ${pctLabel(fr)}；遲咗嗰 5 年，現有儲蓄冇拎去投資。`,
         `Assumes ${money(P)} a month and a ${pctLabel(fr)} yearly return; current savings are not invested during the 5-year delay.`));
@@ -150,17 +150,17 @@ function update() {
     $('res-table').innerHTML = `<tr><th>${t('假設年回報', 'Assumed return')}</th><th>${t('每月要投入', 'Monthly needed')}</th><th>${t('你投入嘅本金', 'You put in')}</th><th>${t('回報部分', 'From returns')}</th></tr>` +
       rs.map((r, i) => {
         const principal = S + ps[i] * months;
-        return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${pctLabel(r)}</td><td>${money(ps[i])}${mSub(principal, Math.max(0, T - principal))}</td><td>${money(principal)}</td><td>${money(Math.max(0, T - principal))}</td></tr>`;
+        return `<tr class="${i === focusIdx ? 'focus' : ''}"><td>${esc(pctLabel(r))}</td><td>${esc(money(ps[i]))}${mSub(principal, Math.max(0, T - principal))}</td><td>${esc(money(principal))}</td><td>${esc(money(Math.max(0, T - principal)))}</td></tr>`;
       }).join('');
 
     const dc = delayComparison(T, S, fr, months, 60);
     $('delay-text').innerHTML = dc.monthsLeft > 0
       ? delayRows([
-          [t('今日開始', 'Start today'), t(`每月投入 ${money(dc.now)}`, `${money(dc.now)} a month`)],
-          [t('遲 5 年先開始', 'Start 5 years later'), t(`只剩 ${ym(dc.monthsLeft)}，每月要 ${money(dc.late)}`, `Only ${ym(dc.monthsLeft)} left, ${money(dc.late)} a month`)],
-          [t('每月要多放', 'Extra each month'), `<span class="hl">${money(dc.extra)}</span>`],
+          [t('今日開始', 'Start today'), t(`每月投入 ${esc(money(dc.now))}`, `${esc(money(dc.now))} a month`)],
+          [t('遲 5 年先開始', 'Start 5 years later'), t(`只剩 ${esc(ym(dc.monthsLeft))}，每月要 ${esc(money(dc.late))}`, `Only ${esc(ym(dc.monthsLeft))} left, ${esc(money(dc.late))} a month`)],
+          [t('每月要多放', 'Extra each month'), `<span class="hl">${esc(money(dc.extra))}</span>`],
         ], t(`假設年回報 ${pctLabel(fr)}；遲咗嗰 5 年，現有儲蓄冇拎去投資。`, `Assumes a ${pctLabel(fr)} yearly return; current savings are not invested during the 5-year delay.`))
-      : t(`你嘅目標年期係 ${Y} 年，遲 5 年先開始就連時間都唔夠。試下將年期設長過 5 年再比較。`, `Your timeframe is ${Y} years, so a 5-year delay leaves no time at all. Try a timeframe longer than 5 years.`);
+      : esc(t(`你嘅目標年期係 ${Y} 年，遲 5 年先開始就連時間都唔夠。試下將年期設長過 5 年再比較。`, `Your timeframe is ${Y} years, so a 5-year delay leaves no time at all. Try a timeframe longer than 5 years.`));
 
     drawChart(rs, Y, T,
       (r, m) => futureValue(S, monthlyNeeded(T, S, r, months), r, m),

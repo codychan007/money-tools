@@ -1,0 +1,8 @@
+# 網站冇 npm／pip 依賴。呢度只幫 GitHub Actions 開更新（包括安全更新）。
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 3
