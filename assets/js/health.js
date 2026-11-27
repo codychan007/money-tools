@@ -55,13 +55,12 @@ function renderQ() {
   $('next').textContent = idx === QUESTIONS.length - 1 ? t('睇結果', 'See my score') : t('下一題', 'Next');
 
   if (q.type === 'money') {
-    // 「每月實際儲到幾多」：第一次去到，用「收入 − 開支 − 還款」預先填好，免得留空當 0
-    if (q.key === 'saving' && answers.saving === undefined && answers.income > 0) {
+    // 「每月實際儲到幾多」：唔再預先填「收入 − 開支 − 還款」（剩低唔等於真係儲到），只喺提示度講個參考數
+    if (q.key === 'saving' && answers.income > 0) {
       const left = Math.max(0, answers.income - (answers.expenses || 0) - (answers.debt || 0));
-      answers.saving = left;
       $('q-hint').textContent = t(
-        `照你頭先答，收入減開支同還款大約剩 ${money(left)}，已經幫你填咗。實際儲唔到咁多就改低佢（包括轉去儲蓄戶口、定期投資嘅錢）。`,
-        `Based on your answers, about ${money(left)} is left after spending and repayments, so we've filled that in. If you actually save less, change it (include transfers to savings and regular investing).`);
+        `照你頭先答，收入減開支同還款大約剩 ${money(left)}。但剩低唔等於真係儲到，請填你每月實際轉去儲蓄或者定期投資嘅錢；冇就填 0。`,
+        `Based on your answers, about ${money(left)} is left after spending and repayments. What is left isn't always saved, so enter what you actually move to savings or regular investing each month; 0 if none.`);
     }
     const v = answers[q.key] ?? '';
     // 連續金額題用返同一個輸入框（唔拆走再整），手機／iPad 鍵盤由頭到尾都唔會收埋
