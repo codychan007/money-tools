@@ -72,7 +72,8 @@ function visibleFrame() {
 /** 輸入框下面嘅下一步掣。可見區夠位先一併留出，否則只保住輸入框。 */
 function followHeight(el, frame) {
   const root = el.closest('.card, .wizard');
-  const nav = root?.querySelector('.q-nav, [data-next]');
+  // 有「下一步」掣就連掣一齊留位；冇嘅話，連輸入框下面嘅提示字（例如月薪頁「包括底薪…」）一齊留位
+  const nav = root?.querySelector('.q-nav, [data-next]') || el.closest('.field');
   if (!nav) return 0;
   const gap = nav.getBoundingClientRect().bottom - el.getBoundingClientRect().bottom;
   if (gap < 8) return 0;

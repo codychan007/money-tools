@@ -685,3 +685,6 @@ a[target="_blank"]:not(.btn):not(.cta-btn):not(.teaser):not(.tool-card)::after {
 /* 排版：避免最尾得一兩隻字自成一行（唔支援嘅舊瀏覽器會維持原狀） */
 p, li, dd, dt, td, th, summary, figcaption, .teaser b, .teaser span, .btn, .cta-lead, .cta-sub, .lead { text-wrap: pretty; }
 h1, h2, h3 { text-wrap: balance; }
+/* 自動捲動（跳去某段、聚焦輸入框）時，預留固定頂欄嘅高度，標題唔會藏喺頂欄下面 */
+html { scroll-padding-top: 76px; }
+
