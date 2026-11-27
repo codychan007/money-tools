@@ -1,5 +1,5 @@
 // ============================================================
-// 理財體檢「過關」動畫：每一關第一次完成，畫面中間彈出開鎖卡，3 秒後自己消失
+// 理財體檢「過關」動畫：每一關第一次完成，畫面中間彈出開鎖卡，2.5 秒後自己消失
 // 3 關全部完成：加彩紙。只係裝飾，唔會擋住任何嘢；撳一下即刻收埋。
 // 同一個瀏覽器每關只播一次（hkmc-unlock-seen）。
 // 未播得切就轉咗頁（例如撳咗「下一步」）：留低 pending，下一頁再播。
@@ -9,7 +9,7 @@ import { t } from './i18n.js';
 const SEEN = 'hkmc-unlock-seen', PENDING = 'hkmc-unlock-pending';
 const ORDER = ['health', 'salary', 'goal'];
 const NAMES = { salary: ['月薪分配', 'Salary split'], goal: ['目標計算', 'Goal planner'] };
-const IDLE_MS = 1000, SHOW_MS = 3000;
+const IDLE_MS = 1000, SHOW_MS = 2500;
 
 const get = k => { try { return JSON.parse(localStorage.getItem(k)) || []; } catch { return []; } };
 const set = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* 唔俾儲存就算 */ } };
@@ -89,8 +89,8 @@ function confetti(host) {
   }));
   const t0 = performance.now();
   (function frame(now) {
-    const k = (now - t0) / 1000; if (k > 3 || !c.isConnected) return;
-    g.clearRect(0, 0, W, H); g.globalAlpha = Math.min(1, (3 - k) * 2);
+    const k = (now - t0) / 1000; if (k > 2.5 || !c.isConnected) return;
+    g.clearRect(0, 0, W, H); g.globalAlpha = Math.min(1, (2.5 - k) * 2);
     for (const b of bits) {
       b.vy += .38; b.vx *= .99; b.x += b.vx; b.y += b.vy; b.r += b.vr;
       g.save(); g.translate(b.x, b.y); g.rotate(b.r); g.fillStyle = b.col; g.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); g.restore();
