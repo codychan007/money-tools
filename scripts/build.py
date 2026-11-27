@@ -425,6 +425,28 @@ document.body.appendChild(d);setTimeout(function(){d.remove();},3000);});
 }catch(e){}})();</script>"""
 
 
+# 「去做理財體檢」細卡（市場快訊文章尾、信用卡優惠清單尾）。做晒 3 步嘅訪客會自動收埋。
+CHECKUP_TEASER = {
+    "market": {
+        "zh": ("睇完市況，想知自己荷包撐唔撐得住？", "3 分鐘理財體檢，你就會知"),
+        "en": ("Seen the markets? Can your own wallet hold up?", "Find out with a 3-minute money check-up"),
+    },
+    "cards": {
+        "zh": ("申請信用卡之前，不如先睇吓你每月使幾多、儲幾多", "3 分鐘理財體檢"),
+        "en": ("Before applying for a card, see how much you spend and save each month", "3-minute money check-up"),
+    },
+}
+TEASER_HIDE = ("<script>(function(){try{var j=JSON.parse(localStorage.getItem('hkmc-checkup-v1')||'{}');"
+               "if(j.health&&j.salary&&j.goal)document.querySelectorAll('[data-checkup-teaser]').forEach(function(e){e.hidden=true;});}catch(e){}})();</script>")
+
+
+def checkup_teaser(lang, kind):
+    head, sub = CHECKUP_TEASER[kind][lang]
+    return (f'<a class="teaser checkup-teaser" data-checkup-teaser href="{url_for("/health/", lang)}">'
+            f'<span class="seal" aria-hidden="true">檢</span><div><b>{e(head)}</b><span>{e(sub)}</span></div>'
+            f'<span class="arrow">→</span></a>{TEASER_HIDE}')
+
+
 def finish_page(src, path, extra_ld=None, noindex=False):
     """將來源 HTML 變成完整靜態頁"""
     lang = lang_of(path)
@@ -441,6 +463,7 @@ def finish_page(src, path, extra_ld=None, noindex=False):
         ld.append(faq_ld)
 
     src = src.replace('<div data-disclaimer="tool"></div>', TOOL_DISCLAIMER[lang])
+    src = src.replace('<div data-checkup-teaser="cards"></div>', checkup_teaser(lang, "cards"))
     src = apply_cta(src, lang)
     if "<div data-avatar></div>" in src:
         src = src.replace("<div data-avatar></div>", avatar(lang))
@@ -670,6 +693,7 @@ def update_page(p, lang, older=None, newer=None):
       </div>
       <div id="pdf-pages" class="stack" data-pdf="{e(pdf)}"><div class="card center muted">{U['loading']}</div></div>
     </article>
+    {checkup_teaser(lang, "market")}
     {nav}
     {U['disclaimer']}
   </div>

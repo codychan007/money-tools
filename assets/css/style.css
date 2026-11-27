@@ -636,4 +636,7 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
   transform: rotate(45deg) translateY(-2px); transition: transform .2s; }
 .benefit-more[open] > summary::after { transform: rotate(-135deg) translateY(-2px); }
 .benefit-more[open] > summary { margin-bottom: 8px; }
+/* 「去做理財體檢」細卡：做晒 3 步就收埋（.teaser 本身係 flex，要明寫） */
+.teaser[hidden] { display: none; }
+.checkup-teaser { margin-top: 8px; }
 
