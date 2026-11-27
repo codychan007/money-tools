@@ -637,7 +637,9 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 .benefit-more[open] > summary { margin-bottom: 8px; }
 /* 「去做理財體檢」細卡：做晒 3 步就收埋（.teaser 本身係 flex，要明寫） */
 .teaser[hidden] { display: none; }
-.checkup-teaser { margin-top: 8px; }
+.checkup-teaser-box { margin-top: 40px; }
+.checkup-teaser-box[hidden] { display: none; }
+.checkup-teaser-box .section-title { margin-bottom: 12px; }
 /* 文字連結統一：深朱紅 + 底線；開去外面網站嘅文字連結自動加「↗」（按鈕、卡片、頁尾唔加） */
 main a:not([class]), .source a, .avatar-seal .cap a { text-decoration: underline; text-underline-offset: 3px; }
 a[target="_blank"]:not(.btn):not(.cta-btn):not(.teaser):not(.tool-card)::after { content: "\00a0\2197"; text-decoration: none; display: inline-block; }

@@ -440,11 +440,17 @@ TEASER_HIDE = ("<script>(function(){try{var j=JSON.parse(localStorage.getItem('h
                "if(j.health&&j.salary&&j.goal)document.querySelectorAll('[data-checkup-teaser]').forEach(function(e){e.hidden=true;});}catch(e){}})();</script>")
 
 
+TEASER_TITLE = {"zh": "睇完，不如計吓自己", "en": "Done reading? Run your own numbers"}
+
+
 def checkup_teaser(lang, kind):
+    """一段獨立部分：大標題（同總結頁「下一步可以睇」一樣嘅毛筆底線）＋體檢細卡；同上面內容隔開"""
     head, sub = CHECKUP_TEASER[kind][lang]
-    return (f'<a class="teaser checkup-teaser" data-checkup-teaser href="{url_for("/health/", lang)}">'
+    return (f'<section class="checkup-teaser-box" data-checkup-teaser>'
+            f'<h2 class="section-title"><span class="brush">{e(TEASER_TITLE[lang])}</span></h2>'
+            f'<a class="teaser checkup-teaser" href="{url_for("/health/", lang)}">'
             f'<span class="seal" aria-hidden="true">檢</span><div><b>{e(head)}</b><span>{e(sub)}</span></div>'
-            f'<span class="arrow">→</span></a>{TEASER_HIDE}')
+            f'<span class="arrow">→</span></a></section>{TEASER_HIDE}')
 
 
 def finish_page(src, path, extra_ld=None, noindex=False):
@@ -753,6 +759,7 @@ def main():
                   person_ld(lang)]
         elif base == "/updates/":
             src = src.replace("<!--POSTS-->", posts_list(published, lang))
+            src = src.replace('<div data-checkup-teaser="market"></div>', checkup_teaser(lang, "market"))
         elif base == "/about/":
             ld = [person_ld(lang)]
         f.write_text(finish_page(src, path, ld), encoding="utf-8")
