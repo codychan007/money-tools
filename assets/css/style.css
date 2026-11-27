@@ -563,6 +563,27 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 .post-nav a small { display: block; font-family: inherit; font-weight: 400; font-size: 13px; color: var(--shu-dark); margin-bottom: 2px; }
 /* 總結頁「追蹤 IG」：佔成行 */
 .quick-links .teaser.wide { grid-column: 1 / -1; }
+/* 手機中文總結「下一步可以睇」：窄過約 390px 時，「優惠福利」15 字同 IG 副題 17 字
+   會跌一字去下一行，按鈕就高過第一張。容器夠寬維持原字級，窄先縮到剛好一行。
+   IG 副題收進行高，兩行都坐得入印章高度，三張卡一樣高。桌面兩欄同英文唔經呢度。 */
+@media (max-width: 759px) {
+  html[lang="zh-HK"] .next-look .teaser {
+    container-type: inline-size;
+    min-width: 0;
+  }
+  html[lang="zh-HK"] .next-look .teaser div { min-width: 0; }
+  html[lang="zh-HK"] .next-look .teaser b {
+    white-space: nowrap;
+    /* 100cqw 係卡嘅內容寬；減印章、兩邊空隙同箭咀。夠位就維持 1rem。 */
+    font-size: min(1rem, calc((100cqw - 46px - 14px - 14px - 14px) / var(--chars, 12)));
+  }
+  html[lang="zh-HK"] .next-look .teaser.wide div > span {
+    display: block;
+    white-space: nowrap;
+    line-height: 1.15;
+    font-size: min(14px, calc((100cqw - 46px - 14px - 14px - 14px) / 17));
+  }
+}
 /* 理財體檢「過關」彈出動畫（unlock.js） */
 .unlock-pop { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 16px;
   background: rgba(35, 31, 28, .38); opacity: 0; transition: opacity .25s; cursor: pointer; }

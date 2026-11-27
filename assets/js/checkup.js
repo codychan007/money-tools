@@ -105,12 +105,14 @@ function render() {
 
   if (!missing.length) {
     // 做晒先推介其他工具（首頁同樣做晒先出）
-    const link = (href, ch, label) => `<a class="teaser" href="${P}${href}"><span class="seal" aria-hidden="true">${ch}</span><div><b>${label}</b></div><span class="arrow">→</span></a>`;
-    out.push(`<section><h2 class="section-title"><span class="brush">${t('下一步可以睇', 'What to look at next')}</span></h2>
+    // --chars：中文全形字數（IG 標題係中英夾雜，13.05 對應實測寬度）。英文唔加，窄屏樣式只食中文。
+    const fit = chars => EN ? '' : ` style="--chars:${chars}"`;
+    const link = (href, ch, label, chars) => `<a class="teaser"${fit(chars)} href="${P}${href}"><span class="seal" aria-hidden="true">${ch}</span><div><b>${label}</b></div><span class="arrow">→</span></a>`;
+    out.push(`<section${EN ? '' : ' class="next-look"'}><h2 class="section-title"><span class="brush">${t('下一步可以睇', 'What to look at next')}</span></h2>
       <div class="teasers quick-links">
-        ${link('/tax/', '稅', t('慳稅規劃：今年少交幾多稅', 'Tax saver: how much less tax this year'))}
-        ${link('/deals/', '惠', t('優惠福利：信用卡回贈、政府福利', 'Deals and benefits: card rebates, government help'))}
-        <a class="teaser wide" href="${igUrl}" target="_blank" rel="noopener"><span class="seal" aria-hidden="true">追</span><div><b>${t('追蹤我 IG：@codychan813', 'Follow me on IG: @codychan813')}</b><span>${t('淺白理財小貼士，有需要隨時搵得返我', 'Plain-language money tips, and an easy way to reach me whenever you need')}</span></div><span class="arrow">→</span></a>
+        ${link('/tax/', '稅', t('慳稅規劃：今年少交幾多稅', 'Tax saver: how much less tax this year'), 12)}
+        ${link('/deals/', '惠', t('優惠福利：信用卡回贈、政府福利', 'Deals and benefits: card rebates, government help'), 15)}
+        <a class="teaser wide"${fit(13.05)} href="${igUrl}" target="_blank" rel="noopener"><span class="seal" aria-hidden="true">追</span><div><b>${t('追蹤我 IG：@codychan813', 'Follow me on IG: @codychan813')}</b><span>${t('淺白理財小貼士，有需要隨時搵得返我', 'Plain-language money tips, and an easy way to reach me whenever you need')}</span></div><span class="arrow">→</span></a>
       </div></section>`);
   }
 
