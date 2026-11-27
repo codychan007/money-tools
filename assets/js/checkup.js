@@ -1,6 +1,6 @@
 // 理財體檢總結：將 3 步嘅結果（只喺訪客瀏覽器）放埋一頁
 import { mountLayout, money, ym, esc } from './layout.js';
-import { t, P } from './i18n.js';
+import { t, P, EN } from './i18n.js';
 import { buildCard, shareCanvas } from './sharecard.js';
 import { igUrl } from './config.js';
 import { readJourney, clearJourney, STEPS, stepName, stepUrl, doneCount, chatCard, hideBottomCta } from './journey.js';
@@ -67,8 +67,15 @@ function render() {
     out.push(`<section class="card"><h2>${t('3. 目標計算', '3. Goal planner')}</h2>${lines}</section>`);
   }
 
-  const tipInner = j.health?.weakestTip ? `<h2>${t('最值得先處理嘅 1 件事', 'The one thing worth tackling first')}</h2>
-      <p class="mt0"><b>${esc(DIM[j.health.weakest] || '')}${t('：', ': ')}</b>${esc(j.health.weakestTip)}</p>
+  // 建議文字按頁面語言揀；舊資料只得一種語言，語言唔夾就唔顯示
+  const tipText = (() => {
+    const h = j.health; if (!h?.weakestTip) return '';
+    if (h.weakestTipEn) return t(h.weakestTip, h.weakestTipEn);
+    const isZh = /[一-鿿]/.test(h.weakestTip);
+    return isZh === !EN ? h.weakestTip : '';
+  })();
+  const tipInner = tipText ? `<h2>${t('最值得先處理嘅 1 件事', 'The one thing worth tackling first')}</h2>
+      <p class="mt0"><b>${esc(DIM[j.health.weakest] || '')}${t('：', ': ')}</b>${esc(tipText)}</p>
       <p class="muted" style="font-size:13px;margin:0">${t('以上建議只係根據你答嘅 10 條題，你嘅實際情況可能仲有其他要考慮；內容唔涉及任何產品。', 'These suggestions are based only on your answers to the 10 questions, and your situation may involve more to think about. They do not involve any product.')}</p>` : '';
   if (tipInner && missing.length) out.push(`<section class="card tint">${tipInner}</section>`);
 

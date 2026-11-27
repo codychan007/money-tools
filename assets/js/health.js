@@ -112,46 +112,51 @@ const DIM_LABELS = {
 const GRADE_EN = { good: 'In good shape', ok: 'Not bad, room to improve', warn: 'Room for improvement', bad: 'Worth a closer look' };
 let lastResult;
 
+// 建議文字要中英兩個版本都儲：總結頁按頁面語言揀（唔好喺英文頁做完，中文總結頁出英文）
+let FORCE_LANG = null;
+const tt = (zh, en) => FORCE_LANG ? (FORCE_LANG === 'en' ? en : zh) : t(zh, en);
+function tipsIn(lang, r, a) { FORCE_LANG = lang; try { return tipsFor(r, a); } finally { FORCE_LANG = null; } }
+
 function tipsFor(r, a) {
   const outflow = (a.expenses || 0) + (a.debt || 0);
   const sr = (r.saveRate * 100).toFixed(0);
   const T = {
     cashflow: r.saveRate < 0.1
-      ? t(`你而家儲蓄率大約 ${sr}%。試下出糧當日先自動轉走收入嘅 10%（約 ${money(a.income * 0.1)}）去另一個戶口，剩低先使——「先儲後使」比「使剩先儲」易得多。`,
+      ? tt(`你而家儲蓄率大約 ${sr}%。試下出糧當日先自動轉走收入嘅 10%（約 ${money(a.income * 0.1)}）去另一個戶口，剩低先使——「先儲後使」比「使剩先儲」易得多。`,
         `You save about ${sr}% of your income. Try moving 10% (about ${money(a.income * 0.1)}) to a separate account on payday, then spend what's left. Saving first is much easier than saving what's left over.`)
       : r.saveRate < 0.2
-        ? t(`儲蓄率約 ${sr}%，唔錯！下一步可以試下每次加人工，將加幅一半自動撥去儲蓄，慢慢推到 20%。`,
+        ? tt(`儲蓄率約 ${sr}%，唔錯！下一步可以試下每次加人工，將加幅一半自動撥去儲蓄，慢慢推到 20%。`,
           `You save about ${sr}%. Nice! Next, each time you get a raise, send half of it straight to savings and work up to 20%.`)
-        : t(`儲蓄率約 ${sr}%，已經達到一般建議嘅 20%，做得好！繼續保持，並定期檢視儲落嚟嘅錢係咪用喺你嘅目標上。`,
+        : tt(`儲蓄率約 ${sr}%，已經達到一般建議嘅 20%，做得好！繼續保持，並定期檢視儲落嚟嘅錢係咪用喺你嘅目標上。`,
           `You save about ${sr}%, at or above the common 20% guideline. Well done! Keep it up, and check now and then that the money is going towards your goals.`),
     emergency: r.efMonths >= 6
-      ? t(`你嘅備用金大約夠 ${r.efMonths.toFixed(1)} 個月開支，已經達到一般建議嘅 6 個月，做得好！記得收入或開支有變時再檢視一次。`,
+      ? tt(`你嘅備用金大約夠 ${r.efMonths.toFixed(1)} 個月開支，已經達到一般建議嘅 6 個月，做得好！記得收入或開支有變時再檢視一次。`,
         `Your emergency fund covers about ${r.efMonths.toFixed(1)} months of spending, meeting the common 6-month guideline. Review it whenever your income or spending changes.`)
-      : t(`你嘅備用金大約夠 ${r.efMonths.toFixed(1)} 個月開支。一般建議儲到 3–6 個月（約 ${money(outflow * 3)}–${money(outflow * 6)}），放喺隨時攞得到嘅地方，先再諗投資。`,
+      : tt(`你嘅備用金大約夠 ${r.efMonths.toFixed(1)} 個月開支。一般建議儲到 3–6 個月（約 ${money(outflow * 3)}–${money(outflow * 6)}），放喺隨時攞得到嘅地方，先再諗投資。`,
         `Your emergency fund covers about ${r.efMonths.toFixed(1)} months of spending. A common guideline is 3–6 months (about ${money(outflow * 3)}–${money(outflow * 6)}) kept somewhere easy to reach, before you think about investing.`),
     debt: a.revolving === 'yes' || a.revolving === 'sometimes'
-      ? t('卡數利息通常好高，只還最低還款額會越滾越大。先集中還清循環卡數，係最穩陣嘅「回報」。',
+      ? tt('卡數利息通常好高，只還最低還款額會越滾越大。先集中還清循環卡數，係最穩陣嘅「回報」。',
         'Credit card interest is usually very high, and paying only the minimum lets it snowball. Clearing that balance first is the safest "return" you can get.')
       : (a.debt || 0) > 0
-        ? t(`每月還款佔收入約 ${(r.dti * 100).toFixed(0)}%。可以列出所有債務，優先還利息最高嗰筆，同時避免再開新分期。`,
+        ? tt(`每月還款佔收入約 ${(r.dti * 100).toFixed(0)}%。可以列出所有債務，優先還利息最高嗰筆，同時避免再開新分期。`,
           `Repayments take about ${(r.dti * 100).toFixed(0)}% of your income. List all your debts, pay off the highest-interest one first, and avoid new instalment plans.`)
-        : t('冇債務、卡數又每月清還，做得好！繼續保持，借錢前先諗清楚還款能力。',
+        : tt('冇債務、卡數又每月清還，做得好！繼續保持，借錢前先諗清楚還款能力。',
           'No debts and your card is paid off every month. Well done! Before borrowing, make sure you can comfortably repay.'),
     protection: r.dims.protection >= 100
-      ? t('你已經有醫療同危疾／人壽保障。建議每一兩年，或者人生有大轉變（例如結婚、生仔、轉工）時，檢視一次保障範圍同金額。',
+      ? tt('你已經有醫療同危疾／人壽保障。建議每一兩年，或者人生有大轉變（例如結婚、生仔、轉工）時，檢視一次保障範圍同金額。',
         'You already have medical and critical illness or life cover. Review it every year or two, or after big life changes like marriage, a new baby or a new job.')
       : a.medical === 1
-        ? t('只靠公司醫療嘅話，轉工、失業或者退休後就可能出現保障空檔。可以先了解下自己而家嘅保障範圍同上限，睇下有冇缺口。',
+        ? tt('只靠公司醫療嘅話，轉工、失業或者退休後就可能出現保障空檔。可以先了解下自己而家嘅保障範圍同上限，睇下有冇缺口。',
           'If you rely only on employer medical cover, there can be a gap when you change jobs, lose your job or retire. Start by checking what your current cover includes and its limits.')
-        : t('萬一生病或者意外，醫療開支同收入損失可以好快食晒積蓄。值得花少少時間了解下自己需要邊類基本保障、預算大約幾多。',
+        : tt('萬一生病或者意外，醫療開支同收入損失可以好快食晒積蓄。值得花少少時間了解下自己需要邊類基本保障、預算大約幾多。',
           'An illness or accident can eat through savings quickly through medical bills and lost income. It is worth taking a little time to understand what basic cover you need and roughly what it costs.'),
     habits: a.budget < 2
-      ? t('試下用一個月時間記低每筆開支（用手機 app 或者 Excel 都得），好多人記完先發現錢原來係咁走甩。',
+      ? tt('試下用一個月時間記低每筆開支（用手機 app 或者 Excel 都得），好多人記完先發現錢原來係咁走甩。',
         'Try writing down every expense for one month (an app or a spreadsheet is fine). Many people only then see where the money goes.')
       : a.invest < 2
-        ? t('除咗強積金，可以了解下點樣為長遠目標定期儲蓄或投資，例如用「目標計算機」計下要每月放幾多。',
+        ? tt('除咗強積金，可以了解下點樣為長遠目標定期儲蓄或投資，例如用「目標計算機」計下要每月放幾多。',
           'Beyond MPF, look into saving or investing regularly for long-term goals. The goal planner shows how much you would need each month.')
-        : t('你有記帳又有定期為長遠目標儲錢，習慣好好！可以用「目標計算機」睇下而家嘅步速，幾時可以達到目標。',
+        : tt('你有記帳又有定期為長遠目標儲錢，習慣好好！可以用「目標計算機」睇下而家嘅步速，幾時可以達到目標。',
           'You track spending and save regularly for long-term goals. Great habits! Use the goal planner to see when your current pace gets you there.'),
   };
   return Object.entries(r.dims).sort((x, y) => x[1] - y[1]).slice(0, 3).map(([k]) => ({ k, text: T[k] }));
@@ -192,7 +197,7 @@ function showResult({ restore = false } = {}) {
   const saved = {
     total: r.total, tone: g.tone, dims: r.dims, saveRate: r.saveRate, efMonths: r.efMonths,
     income: answers.income || 0, expenses: answers.expenses || 0, cash: answers.cash || 0, saving: answers.saving || 0,
-    weakest: tips[0]?.k, weakestTip: tips[0]?.text,
+    weakest: tips[0]?.k, weakestTip: tipsIn('zh', r, answers)[0]?.text, weakestTipEn: tipsIn('en', r, answers)[0]?.text,
     gross: answers.gross || 0,
     answers: { ...answers },   // 入返嚟可以直接顯示返結果；撳「重新做一次」會用返呢啲答案預先填好
   };
