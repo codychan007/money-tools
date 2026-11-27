@@ -232,7 +232,7 @@ async function init() {
           <div><dt>${t('點樣申請', 'How to apply')}</dt><dd>${esc(L(it.apply))}</dd></div>
           ${it.notes ? `<div><dt>${t('注意', 'Note')}</dt><dd>${esc(L(it.notes))}</dd></div>` : ''}
         </dl>
-        <div class="source"><a href="${esc(L(it.url))}" target="_blank" rel="noopener">${t('官方網頁 →', 'Official page →')}</a>
+        <div class="source"><a href="${esc(L(it.url))}" target="_blank" rel="noopener">${t('官方網頁', 'Official page')}</a>
           ${t('｜資料來源：', ' | Source: ')}${esc(L(it.source))}${t('｜核對日期：', ' | Checked: ')}${esc(it.asOf)}</div>
       </details>
     </article>`;

@@ -55,7 +55,7 @@ function render() {
         <span class="badge">${esc(L(i, 'type'))}</span>
         <span class="badge ${left !== null && left <= 14 ? 'stale' : 'draft'}">${expiry}</span>
       </div>
-      <div class="source">${t('核實日期：', 'Checked: ')}${esc(i.verifiedOn)}${t('｜', ' | ')}<a href="${esc(i.url)}" target="_blank" rel="noopener">${t('睇官方條款 →', 'Official terms →')}</a></div>
+      <div class="source">${t('核實日期：', 'Checked: ')}${esc(i.verifiedOn)}${t('｜', ' | ')}<a href="${esc(i.url)}" target="_blank" rel="noopener">${t('睇官方條款', 'Official terms')}</a></div>
     </article>`;
   }).join('') : `<p class="muted center">${t('呢個類別暫時冇合適優惠，下次更新會再搵。', "No suitable offers in this category right now. We'll look again next update.")}</p>`;
 }

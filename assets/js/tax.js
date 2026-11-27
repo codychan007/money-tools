@@ -27,7 +27,7 @@ const pastYearNote = y => `<div class="callout">
       '<b>Missed a deduction or allowance on your return:</b> you can ask in writing for a correction within 6 years after the end of the year (or 6 months after the notice was served, whichever is later), under section 70A of the Inland Revenue Ordinance.')}</li>
   </ul>
   <p class="muted" style="font-size:13px;margin:0">${t('詳情請睇稅務局或 GovHK「反對及上訴」頁，或者直接問稅務局。', 'See the IRD or GovHK objections and appeals page, or ask the IRD.')}
-    <a href="${t('https://www.gov.hk/tc/residents/taxes/taxfiling/object/objections.htm', 'https://www.gov.hk/en/residents/taxes/taxfiling/object/objections.htm')}" target="_blank" rel="noopener">${t('GovHK：反對及上訴 →', 'GovHK: objections and appeals →')}</a></p>
+    <a href="${t('https://www.gov.hk/tc/residents/taxes/taxfiling/object/objections.htm', 'https://www.gov.hk/en/residents/taxes/taxfiling/object/objections.htm')}" target="_blank" rel="noopener">${t('GovHK：反對及上訴', 'GovHK: objections and appeals')}</a></p>
 </div>`;
 const yearLabel = y => { const s = Number(y.slice(0, 4)); return t(`${y}（${s} 年 4 月至 ${s + 1} 年 3 月）`, `${y} (Apr ${s} – Mar ${s + 1})`); };
 // 理財資訊通嘅 statutory.json 欄位名唔同，喺度轉一轉
