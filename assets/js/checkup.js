@@ -85,6 +85,15 @@ function render() {
       <div class="grid">${missing.map(s => `<a class="btn secondary block" href="${stepUrl(s)}">${t(`去做：${stepName(s)} →`, `Do it now: ${stepName(s)} →`)}</a>`).join('')}</div></section>`);
   }
 
+  // 「3 步完成」分享圖放喺建議／預約卡上面：白色卡排埋一齊，綠色卡喺下面，顏色較統一
+  if (!missing.length) {
+    out.push(`<section class="card"><h2>${t('分享到 IG Story', 'Share to your IG Story')}</h2>
+      <p class="muted mt0">${t('分享圖會顯示分數、儲蓄比例同達標時間，唔會顯示你嘅收入或者存款。', "The image shows your score, savings share and time to goal. It doesn't show your income or savings.")}</p>
+      <label class="toggle"><input type="checkbox" id="show-amounts"> ${t('喺圖入面顯示目標金額', 'Show my goal amount in the image')}</label>
+      <button class="btn block" id="share-btn">${t('生成「3 步完成」分享圖', 'Create my "3 steps done" image')}</button>
+      <div class="share-preview" id="share-preview"></div></section>`);
+  }
+
   // 「WhatsApp 我」放最尾，做晒 3 步先出；有咗佢就收埋頁底預約掣，免得叫兩次
   let chat = missing.length ? '' : chatCard(j.health, { detail: true });
   if (chat && tipInner) {   // 做晒 3 步：建議同 WhatsApp 合埋一張卡，唔使講兩次最弱嗰項
@@ -94,13 +103,7 @@ function render() {
   out.push(chat);
   hideBottomCta(!!chat);
 
-  // 做晒 3 步先有「3 步完成」分享圖
   if (!missing.length) {
-    out.push(`<section class="card"><h2>${t('分享到 IG Story', 'Share to your IG Story')}</h2>
-      <p class="muted mt0">${t('分享圖會顯示分數、儲蓄比例同達標時間，唔會顯示你嘅收入或者存款。', "The image shows your score, savings share and time to goal. It doesn't show your income or savings.")}</p>
-      <label class="toggle"><input type="checkbox" id="show-amounts"> ${t('喺圖入面顯示目標金額', 'Show my goal amount in the image')}</label>
-      <button class="btn block" id="share-btn">${t('生成「3 步完成」分享圖', 'Create my "3 steps done" image')}</button>
-      <div class="share-preview" id="share-preview"></div></section>`);
     // 做晒先推介其他工具（首頁同樣做晒先出）
     const link = (href, ch, label) => `<a class="teaser" href="${P}${href}"><span class="seal" aria-hidden="true">${ch}</span><div><b>${label}</b></div><span class="arrow">→</span></a>`;
     out.push(`<section><h2 class="section-title"><span class="brush">${t('下一步可以睇', 'What to look at next')}</span></h2>
