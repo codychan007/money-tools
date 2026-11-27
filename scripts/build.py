@@ -408,6 +408,8 @@ def faq_html_and_ld(key, lang):
 # Cody 自己唔計入統計：開過 /?me=1 嘅機（記喺 localStorage），攔住 Cloudflare Web Analytics 嘅數據傳送。
 # 統計程式係 Cloudflare Pages 部署時自動加入，所以唔改 Cloudflare 設定，只喺瀏覽器攔截送去 cloudflareinsights 嘅請求。
 # 冇開過連結嘅訪客：呢段一開頭就 return，乜都唔做。?me=0 可以取消。
+# 排版：每段字最尾幾隻字黐埋，避免最尾一行得一兩隻字（assets/js/nowidow.js）
+NO_WIDOW = '<script src="/assets/js/nowidow.js" defer></script>\n  '
 NO_STATS = """<script>(function(){try{var k='hkmc-no-stats',q=location.search;
 if(/[?&]me=1(&|$)/.test(q))localStorage.setItem(k,'1');
 if(/[?&]me=0(&|$)/.test(q))localStorage.removeItem(k);
@@ -485,7 +487,7 @@ def finish_page(src, path, extra_ld=None, noindex=False):
         src, count=1)
     og_key = PAGE_OG.get(base, "updates" if base.startswith("/updates/") else "home")
     src = src.replace('<link rel="stylesheet" href="/assets/css/style.css">',
-                      NO_STATS + '\n  <link rel="stylesheet" href="/assets/css/style.css">\n  ' +
+                      NO_STATS + '\n  <link rel="stylesheet" href="/assets/css/style.css">\n  ' + NO_WIDOW +
                       head_extra(path, title, desc, og_key, ld, noindex or base in NOINDEX), 1)
     src = src.replace("<body>", "<body>" + header(path), 1)
     src = src.replace("</main>", "</main>" + footer(lang), 1)
