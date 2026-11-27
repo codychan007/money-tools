@@ -36,7 +36,7 @@ const MPF = { rate: STAT.mpf.employeeRate, minIncome: STAT.mpf.minRelevantIncome
 const Q = [
   { key: 'year', q: t('計邊個課稅年度？', 'Which year of assessment?'), type: 'options',
     opts: IDX.years.map(y => [y.year, yearLabel(y.year)]) },
-  { key: 'income', q: t('全年總入息係幾多？', 'What is your total yearly income?'), help: t('薪金＋花紅＋津貼，即僱主報稅表 IR56B 嘅總數', 'Salary + bonus + allowances, i.e. the total on your employer’s IR56B'), type: 'money', min: 0, max: 1e9, def: () => 360000 },
+  { key: 'income', q: t('全年總入息係幾多？', 'What is your total yearly income?'), help: t('薪金＋花紅＋津貼，即僱主報稅表 IR56B 嘅總數', 'Salary + bonus + allowances, i.e. the total on your employer’s IR56B'), type: 'money', min: 0, max: 1e9 },
   { key: 'marital', q: t('你嘅婚姻狀況？', 'Your marital status?'), type: 'options',
     opts: [['single', t('單身', 'Single')], ['singleParent', t('單親（獨力撫養子女）', 'Single parent (raising children alone)')], ['marriedNoIncome', t('已婚，配偶冇應課稅入息', 'Married, spouse has no taxable income')], ['marriedBoth', t('已婚，雙方都有收入', 'Married, both earn income')]] },
   { key: 'kids', q: t('你有幾多個子女可以申索子女免稅額？', 'How many children can you claim child allowance for?'), type: 'counts',
