@@ -627,3 +627,13 @@ details.faq .faq-body .table-scroll { margin: 4px 0 8px; }
 .cal-guide-back { justify-self: center; font-size: 14px; }
 /* 預約頁：兩個掣下面嘅細字，同掣之間、彼此之間間距一樣 */
 #channels > p.muted { margin: 12px 0 0; }
+/* 福利檢查：金額同申請方法預設收埋，撳先打開 */
+.benefit-more { margin-top: 10px; border-top: 1px dashed var(--line); padding-top: 10px; }
+.benefit-more > summary { cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: 6px; min-height: 40px;
+  font-weight: 700; font-size: 14.5px; color: var(--shu-dark); -webkit-tap-highlight-color: transparent; }
+.benefit-more > summary::-webkit-details-marker { display: none; }
+.benefit-more > summary::after { content: ""; width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translateY(-2px); transition: transform .2s; }
+.benefit-more[open] > summary::after { transform: rotate(-135deg) translateY(-2px); }
+.benefit-more[open] > summary { margin-bottom: 8px; }
+

@@ -225,13 +225,16 @@ async function init() {
       <h3>${esc(L(it.name))}</h3>
       <p class="mt0">${esc(L(it.summary))}</p>
       <ul class="reasons">${r.reasons.map(x => `<li class="r-${x.ok}"><span aria-hidden="true">${ICON[x.ok]}</span>${esc(x.text)}</li>`).join('')}</ul>
-      <dl class="benefit-facts">
-        <div><dt>${t('大約金額', 'Roughly how much')}</dt><dd>${r.extra ? `<b>${esc(r.extra)}</b><br>` : ''}${esc(L(it.amount))}</dd></div>
-        <div><dt>${t('點樣申請', 'How to apply')}</dt><dd>${esc(L(it.apply))}</dd></div>
-        ${it.notes ? `<div><dt>${t('注意', 'Note')}</dt><dd>${esc(L(it.notes))}</dd></div>` : ''}
-      </dl>
-      <div class="source"><a href="${esc(L(it.url))}" target="_blank" rel="noopener">${t('官方網頁 →', 'Official page →')}</a>
-        ${t('｜資料來源：', ' | Source: ')}${esc(L(it.source))}${t('｜核對日期：', ' | Checked: ')}${esc(it.asOf)}</div>
+      <details class="benefit-more">
+        <summary>${t('睇大約金額同點樣申請', 'See rough amount and how to apply')}</summary>
+        <dl class="benefit-facts">
+          <div><dt>${t('大約金額', 'Roughly how much')}</dt><dd>${r.extra ? `<b>${esc(r.extra)}</b><br>` : ''}${esc(L(it.amount))}</dd></div>
+          <div><dt>${t('點樣申請', 'How to apply')}</dt><dd>${esc(L(it.apply))}</dd></div>
+          ${it.notes ? `<div><dt>${t('注意', 'Note')}</dt><dd>${esc(L(it.notes))}</dd></div>` : ''}
+        </dl>
+        <div class="source"><a href="${esc(L(it.url))}" target="_blank" rel="noopener">${t('官方網頁 →', 'Official page →')}</a>
+          ${t('｜資料來源：', ' | Source: ')}${esc(L(it.source))}${t('｜核對日期：', ' | Checked: ')}${esc(it.asOf)}</div>
+      </details>
     </article>`;
   }
 
