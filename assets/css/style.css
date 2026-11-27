@@ -645,3 +645,10 @@ main a:not([class]), .source a, .avatar-seal .cap a { text-decoration: underline
 a[target="_blank"]:not(.btn):not(.cta-btn):not(.teaser):not(.tool-card)::after { content: "\00a0\2197"; text-decoration: none; display: inline-block; }
 .site-footer a[target="_blank"]::after, .nav a[target="_blank"]::after { content: none; }
 
+/* 頭像相框：柔和發光（每 3.6 秒光暗一次）。只係陰影變化，唔影響打直／揮手彩蛋 */
+.avatar-seal .frame { animation: frame-glow 3.6s ease-in-out infinite; }
+@keyframes frame-glow {
+  0%, 100% { box-shadow: inset 0 0 0 4px var(--shu), inset 0 0 0 5.5px rgba(251, 243, 228, .9), 4px 4px 0 rgba(35, 31, 28, .15), 0 0 0 0 rgba(181, 54, 31, 0); }
+  50% { box-shadow: inset 0 0 0 4px var(--shu), inset 0 0 0 5.5px rgba(251, 243, 228, .9), 4px 4px 0 rgba(35, 31, 28, .15), 0 0 22px 6px rgba(181, 54, 31, .38); }
+}
+@media (prefers-reduced-motion: reduce) { .avatar-seal .frame { animation: none; } }
