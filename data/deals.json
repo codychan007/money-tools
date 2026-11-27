@@ -231,6 +231,168 @@
       "expiry": "2026-12-30",
       "url": "https://www.redhotoffers.hsbc.com.hk/media/101115438/tnc_HeroDining2026_Foodpanda_TC.pdf",
       "verifiedOn": "2026-11-15"
+    },
+    {
+      "title": "滙豐 Red 信用卡",
+      "title_en": "HSBC Red Credit Card",
+      "type": "信用卡",
+      "type_en": "Credit card",
+      "categories": [
+        "online"
+      ],
+      "rate": "4%",
+      "highlight": "網上購物簽賬 4%「獎賞錢」，永久免年費",
+      "highlight_en": "4% RewardCash on online shopping, no annual fee for life",
+      "conditions": [
+        "每曆月首 HK$10,000 網購簽賬先有 4%，其後 0.4%",
+        "電子錢包交易不計",
+        "指定商戶首 HK$1,250 另有 8%"
+      ],
+      "conditions_en": [
+        "4% on the first HK$10,000 of online spending each calendar month, 0.4% after",
+        "E-wallet transactions excluded",
+        "8% on the first HK$1,250 at designated merchants"
+      ],
+      "start": null,
+      "expiry": null,
+      "url": "https://www.hsbc.com.hk/zh-hk/credit-cards/products/red/",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "title": "恒生 MMPOWER World Mastercard",
+      "title_en": "Hang Seng MMPOWER World Mastercard",
+      "type": "信用卡",
+      "type_en": "Credit card",
+      "categories": [
+        "online"
+      ],
+      "rate": "最高 5%",
+      "rate_en": "Up to 5%",
+      "highlight": "網購高達 5% +FUN Dollars；網上娛樂、網上服飾同指定商戶高達 8%",
+      "highlight_en": "Up to 5% +FUN Dollars on online shopping; up to 8% on online entertainment, online apparel and designated merchants",
+      "conditions": [
+        "要先登記，每月累積合資格簽賬滿 HK$3,000",
+        "每月最多 $500 +FUN Dollars",
+        "永久免年費"
+      ],
+      "conditions_en": [
+        "Registration required, with HK$3,000 eligible spending each month",
+        "Up to $500 +FUN Dollars a month",
+        "No annual fee for life"
+      ],
+      "start": null,
+      "expiry": "2026-12-31",
+      "url": "https://www.hangseng.com/zh-hk/personal/cards/products/mmpower-card/",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "title": "信銀國際 Motion 信用卡",
+      "title_en": "CNCBI Motion Credit Card",
+      "type": "信用卡",
+      "type_en": "Credit card",
+      "categories": [
+        "dining",
+        "online"
+      ],
+      "rate": "6%",
+      "highlight": "食肆及網上簽賬 6% 現金回贈",
+      "highlight_en": "6% cash rebate on dining and online spending",
+      "conditions": [
+        "每曆月累積合資格簽賬滿 HK$3,800",
+        "額外回贈每月上限 HK$200",
+        "酒店餐飲、宴會、美食廣場同電子錢包等不計"
+      ],
+      "conditions_en": [
+        "HK$3,800 eligible spending each calendar month",
+        "Extra rebate capped at HK$200 a month",
+        "Hotel dining, banquets, food courts and e-wallets excluded"
+      ],
+      "start": "2026-07-01",
+      "expiry": "2026-12-31",
+      "url": "https://www.cncbinternational.com/_document/personal/motion_credit_card/tc/motion_cardcvp_tnc_tc.pdf",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "title": "富邦 iN ShopBack Visa 白金卡",
+      "title_en": "Fubon iN ShopBack Visa Platinum Card",
+      "type": "信用卡",
+      "type_en": "Credit card",
+      "categories": [
+        "online"
+      ],
+      "rate": "8%",
+      "highlight": "網上簽賬 20X 積分，相等於 8% 現金回贈",
+      "highlight_en": "20X points on online spending, equal to an 8% cash rebate",
+      "conditions": [
+        "每曆月累積合資格簽賬滿 HK$1,000",
+        "額外積分每月最多 62,500 分（約 HK$250）",
+        "八達通、支付寶、微信支付、Apple Pay、PayPal 等不計"
+      ],
+      "conditions_en": [
+        "HK$1,000 eligible spending each calendar month",
+        "Extra points capped at 62,500 a month (about HK$250)",
+        "Octopus, Alipay, WeChat Pay, Apple Pay, PayPal and similar excluded"
+      ],
+      "start": "2026-06-29",
+      "expiry": "2026-12-31",
+      "url": "https://www.fubonbank.com.hk/tc/cards/credit-card-products/inshopbackcard.html",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "title": "Citi Cash Back 信用卡",
+      "title_en": "Citi Cash Back Card",
+      "type": "信用卡",
+      "type_en": "Credit card",
+      "categories": [
+        "dining",
+        "travel"
+      ],
+      "rate": "2%",
+      "highlight": "本地餐飲、本地酒店同外幣簽賬 2%，其他簽賬 1%，冇上限",
+      "highlight_en": "2% on local dining, local hotels and foreign currency spending, 1% on everything else, no cap",
+      "conditions": [
+        "餐飲同酒店要喺香港以港幣簽賬",
+        "宴會同私人活動不計",
+        "自動回贈，冇上限"
+      ],
+      "conditions_en": [
+        "Dining and hotel spending must be in Hong Kong, in HKD",
+        "Banquets and private functions excluded",
+        "Automatic rebate, no cap"
+      ],
+      "start": null,
+      "expiry": null,
+      "url": "https://www.citibank.com.hk/chinese/credit-cards/cash-back-card",
+      "verifiedOn": "2026-11-27"
+    },
+    {
+      "title": "渣打 Simply Cash Visa 卡",
+      "title_en": "Standard Chartered Simply Cash Visa Card",
+      "type": "信用卡",
+      "type_en": "Credit card",
+      "categories": [
+        "dining",
+        "online",
+        "supermarket",
+        "travel"
+      ],
+      "rate": "1.5%",
+      "highlight": "本地簽賬 1.5%、外幣簽賬 2% 現金回贈，唔分商戶、冇上限",
+      "highlight_en": "1.5% cash back on local spending and 2% on foreign currency, any merchant, no cap",
+      "conditions": [
+        "年薪 HK$96,000 或以上",
+        "回贈存入 360° 獎賞平台，最少 HK$50 先可以換現金",
+        "簡單：唔使記類別"
+      ],
+      "conditions_en": [
+        "Annual income of HK$96,000 or above",
+        "Cash back goes to the 360° Rewards platform; minimum HK$50 to redeem",
+        "Simple: no categories to track"
+      ],
+      "start": null,
+      "expiry": null,
+      "url": "https://www.sc.com/hk/zh/credit-cards/simplycash/",
+      "verifiedOn": "2026-11-27"
     }
   ]
 }
