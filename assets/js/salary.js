@@ -47,10 +47,12 @@ function update(changed) {
   const min = MPF.minRelevantIncome.toLocaleString(), max = MPF.maxRelevantIncome.toLocaleString();
 
   const a = allocate(th, needs, wants, save);
+  // 手機：收埋「一年」欄，改喺「每月」下面細字顯示，成張表一眼睇晒
+  const ySub = m => `<span class="cell-sub m-only">${esc(t(`一年 ${money(m * 12)}`, `${money(m * 12)} a year`))}</span>`;
   $('alloc').innerHTML = `<tr><th>${esc(t('類別', 'Category'))}</th><th>${esc(t('比例', 'Share'))}</th><th>${esc(t('每月', 'Monthly'))}</th><th>${esc(t('一年', 'Yearly'))}</th></tr>
-    <tr><td>${esc(LBL.needs)}</td><td>${needs}%</td><td>${esc(money(a.needs))}</td><td>${esc(money(a.needs * 12))}</td></tr>
-    <tr><td>${esc(LBL.wants)}</td><td>${wants}%</td><td>${esc(money(a.wants))}</td><td>${esc(money(a.wants * 12))}</td></tr>
-    <tr class="focus"><td>${esc(LBL.save)}</td><td>${save}%</td><td>${esc(money(a.save))}</td><td>${esc(money(a.save * 12))}</td></tr>`;
+    <tr><td>${esc(LBL.needs)}</td><td>${needs}%</td><td>${esc(money(a.needs))}${ySub(a.needs)}</td><td>${esc(money(a.needs * 12))}</td></tr>
+    <tr><td>${esc(LBL.wants)}</td><td>${wants}%</td><td>${esc(money(a.wants))}${ySub(a.wants)}</td><td>${esc(money(a.wants * 12))}</td></tr>
+    <tr class="focus"><td>${esc(LBL.save)}</td><td>${save}%</td><td>${esc(money(a.save))}${ySub(a.save)}</td><td>${esc(money(a.save * 12))}</td></tr>`;
   $('alloc-tip').innerHTML = th > 0
     ? t(`照呢個比例，你一年可以儲到大約 <b>${esc(money(a.save * 12))}</b>。如果交租已經食咗大半人工，可以試 60/20/20 或者 70/20/10，最緊要係<b>有儲</b>，比例可以慢慢調。`,
       `At this split you would save about <b>${esc(money(a.save * 12))}</b> a year. If rent already takes most of your pay, try 60/20/20 or 70/20/10. What matters most is that you <b>save something</b>; you can adjust the split over time.`)

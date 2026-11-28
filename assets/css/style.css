@@ -694,3 +694,14 @@ html { scroll-padding-top: 76px; }
 a.nw-has-arrow::after { content: none !important; }
 .nw-tail { white-space: nowrap; }
 .nw-arrow { display: inline-block; text-decoration: none; }
+/* 常見問題示範表：手機唔使左右拉（第一欄可以轉行、格距收窄；年度數字放第二行細字） */
+table.data.fit th, table.data.fit td:first-child { white-space: normal; }
+table.data .cell-sub { display: block; font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
+@media (max-width: 759px) { table.data.fit th, table.data.fit td { padding-left: 6px; padding-right: 6px; } }
+/* 月薪分配表：手機收埋「一年」欄（數字放喺「每月」下面） */
+table.data .m-only { display: none; }
+@media (max-width: 759px) {
+  #alloc th:nth-child(4), #alloc td:nth-child(4) { display: none; }
+  table.data .cell-sub.m-only { display: block; }
+  table.data.fit { font-size: clamp(13px, 3.9vw, 14px); }
+}
