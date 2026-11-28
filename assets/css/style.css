@@ -679,7 +679,9 @@ a[target="_blank"]:not(.btn):not(.cta-btn):not(.teaser):not(.tool-card)::after {
 #res-table .m-sub { display: none; }
 @media (max-width: 759px) {
   #res-table th:nth-child(n+3), #res-table td:nth-child(n+3) { display: none; }
-  #res-table .m-sub { display: block; font-size: 12.5px; font-weight: 400; color: var(--ink-2); margin-top: 2px; }
+  #res-table .m-sub { display: block; font-size: clamp(11px, 3.2vw, 12.5px); font-weight: 400; color: var(--ink-2); margin-top: 2px; }
+  #res-table th:first-child { white-space: normal; }
+  #res-table th, #res-table td { padding-left: 6px; padding-right: 6px; }
 }
 
 /* 排版：避免最尾得一兩隻字自成一行（唔支援嘅舊瀏覽器會維持原狀） */
