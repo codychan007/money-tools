@@ -85,6 +85,9 @@ function render() {
       <div class="grid">${missing.map(s => `<a class="btn secondary block" href="${esc(stepUrl(s))}">${esc(t(`去做：${stepName(s)} →`, `Do it now: ${stepName(s)} →`))}</a>`).join('')}</div></section>`);
   }
 
+  // 做晒 3 步：頂部一句多謝說話
+  if (!missing.length) out.unshift(`<p class="cody-note">${t('多謝你肯花呢幾分鐘認真睇自己嘅錢，好多人一路都未做到。', 'Thanks for taking these few minutes to look at your money properly. Plenty of people never get round to it.')}</p>`);
+
   // 「3 步完成」分享圖放喺建議／預約卡上面：白色卡排埋一齊，綠色卡喺下面，顏色較統一
   if (!missing.length) {
     out.push(`<section class="card"><h2>${t('分享到 IG Story', 'Share to your IG Story')}</h2>

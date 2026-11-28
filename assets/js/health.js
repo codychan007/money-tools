@@ -118,6 +118,12 @@ const DIM_LABELS = {
   cashflow: t('現金流', 'Cash flow'), emergency: t('緊急備用金', 'Emergency fund'), debt: t('負債', 'Debt'),
   protection: t('基本保障', 'Protection'), habits: t('增值習慣', 'Money habits'),
 };
+const CHEER = {
+  good: ['做得好！你已經行緊喺好多人前面，繼續保持呢個節奏就得。', "Nicely done! You're already ahead of a lot of people. Just keep this rhythm going."],
+  ok: ['底子唔錯㗎！執好下面一兩樣，分數好快會再升。', 'Solid foundations! Fix one or two things below and your score will climb fast.'],
+  warn: ['唔使灰心，大部分人都係由呢度開始。下面 3 個改善位，揀一樣先做就得。', "Don't be discouraged, most people start right here. Pick just one of the 3 fixes below to begin."],
+  bad: ['分數低唔係判決書，而係一張地圖，起碼你而家知道由邊度開始。', "A low score isn't a verdict, it's a map. At least now you know where to start."],
+};
 const GRADE_EN = { good: 'In good shape', ok: 'Not bad, room to improve', warn: 'Room for improvement', bad: 'Worth a closer look' };
 let lastResult;
 
@@ -194,6 +200,9 @@ function showResult({ restore = false } = {}) {
   const g = healthGrade(r.total);
   const label = t(g.label, GRADE_EN[g.tone]);
   lastResult = { r, g, label };
+  // 出分數時，按等級講一句打氣說話（似朋友咁講）
+  const note = $('grade-note');
+  if (note) { note.textContent = t(...(CHEER[g.tone] || CHEER.ok)); note.hidden = false; }
   $('prog').style.width = '100%';
   $('quiz').classList.add('hidden');
   $('result').classList.remove('hidden');
