@@ -6,6 +6,7 @@
 // 唔靠 CSS text-wrap，所以舊版 Chrome／Samsung Internet 都有效。
 // 動態生成嘅字（計算結果、總結）會自動再處理；轉螢幕方向會重新計。
 // 太窄嘅格（例如表格細格）唔處理，免得撐爆版面。
+// 另外按文法斷句：標題喺標點後面先轉行；內文逗號後頭 3 隻字、「」入面短詞唔拆開。
 // 唔想某段處理：加 data-no-glue。
 // ============================================================
 (function () {
@@ -47,9 +48,16 @@
   function tailWidth(pos, s, e) {
     var w = 0, r = document.createRange();
     for (var p = s; p <= e; p++) {
-      var arr = cps(pos[p].node), off = 0;
-      for (var q = 0; q < pos[p].i; q++) off += arr[q].length;
-      r.setStart(pos[p].node, off); r.setEnd(pos[p].node, off + arr[pos[p].i].length);
+      // 用頁面上真正嘅字（未寫入嘅修改唔計），以免位置錯
+      var node = pos[p].node;
+      if (node.__offsData !== node.data) {
+        var real = Array.from(node.data), acc = 0;
+        node.__offs = real.map(function (c) { var o = acc; acc += c.length; return [o, c.length]; });
+        node.__offsData = node.data;
+      }
+      var o = node.__offs[pos[p].i];
+      if (!o) continue;
+      r.setStart(node, o[0]); r.setEnd(node, o[0] + o[1]);
       w += r.getBoundingClientRect().width;
     }
     return w;
@@ -88,6 +96,8 @@
       var c = pos[k].ch;
       if (SPACE.test(c)) { if (done()) break; k--; continue; }
       if (HAN.test(c)) { weight += 1; han++; k--; if (done()) break; continue; }
+      // 去到「，、。」等標點：最後一句已經有 3 隻字或以上就停（喺標點後面轉行最自然）
+      if (BOUNDARY.test(c) && weight >= 3) break;
       if (CJK_PUNCT.test(c)) { k--; continue; }
       // 英文字／數字：成個字一齊計（不換行空格當係同一組）
       var j = k, letters = false, len = 0;
@@ -106,10 +116,19 @@
     if (tailWidth(pos, start, end) > contentWidth(b) * MAX_SHARE) return;
 
     var changed = new Set();
+    glueSpan(pos, start, end, changed, true);
+    commit(changed);
+  }
+
+  // 將 pos[start..end] 黐埋（中間唔准斷行）。
+  // 「，、。」等標點後面保留轉行位（cross 為 true 先黐埋），免得幾句連成一大舊
+  function glueSpan(pos, start, end, changed, cross) {
     for (var p = start; p < end; p++) {
       var a = pos[p], nb = pos[p + 1];
+      if (!cross && BOUNDARY.test(a.ch)) continue;
       var arrA = cps(a.node);
       if (SPACE.test(a.ch)) {
+        if (arrA[a.i] === NBSP || arrA[a.i] === '') continue;
         arrA[a.i] = (p > start && SPACE.test(pos[p - 1].ch)) ? '' : NBSP;
         changed.add(a.node);
         continue;
@@ -121,6 +140,115 @@
       if (arrA[a.i + 1] === WJ || arrA[a.i].slice(-1) === WJ) continue;
       arrA[a.i] = arrA[a.i] + WJ;
       changed.add(a.node);
+    }
+  }
+
+  // ------------------------------------------------------------
+  // 按文法斷句：
+  //  - 標題、按鈕、常見問題：每個短句（以「，、：？！。」分開）成組，只喺標點後面轉行
+  //    例：「扣埋強積金，你每月可以儲幾多？」→「扣埋強積金，⏎你每月可以儲幾多？」
+  //    句子長過一行先喺句中間斷。
+  //  - 內文：逗號後面頭 3 隻字黐埋（行尾唔會吊住「，你」），「」（）入面嘅短詞唔拆開
+  // ------------------------------------------------------------
+  var BOUNDARY = /[，、：；？！。]/;
+  var ASCII_BOUNDARY = /[,;:?!]/;
+  var CLOSERS = /[」』）〉》】"'”’)]/;
+  var TITLE_TAG = /^(H[1-6]|SUMMARY|BUTTON|LEGEND|DT)$/;
+  var JOIN_NEXT = /^[同及與和或但而]$/;
+  var JOIN_PREV = /^[嘅咗緊住過晒吓啦㗎喎嘛咩呢]$/;
+  var SEG = null;
+  try { if (window.Intl && Intl.Segmenter) SEG = new Intl.Segmenter('zh-Hant', { granularity: 'word' }); } catch (e) { SEG = null; }
+  var TITLE_SEL = '.btn, .cta-btn, .kicker, .section-title, .eyebrow, .teaser b';
+
+  function isTitle(b) {
+    return TITLE_TAG.test(b.tagName) || (b.matches && b.matches(TITLE_SEL));
+  }
+
+  function phraseBlock(b, nodes) {
+    var pos = [];
+    for (var n = 0; n < nodes.length && pos.length < 5000; n++) {
+      var arr = cps(nodes[n]);
+      for (var i = 0; i < arr.length; i++) {
+        if (arr[i] === WJ || arr[i] === '​') continue;
+        pos.push({ node: nodes[n], i: i, ch: arr[i] });
+      }
+    }
+    var hanCount = 0;
+    for (var q = 0; q < pos.length; q++) if (HAN.test(pos[q].ch)) hanCount++;
+    if (hanCount < 4) return;   // 英文為主：唔處理
+    var cw = contentWidth(b) * MAX_SHARE;
+    var title = isTitle(b);
+    var changed = new Set();
+
+    // 詞語唔拆開（用瀏覽器內置中文分詞，2–4 隻字嘅詞；舊瀏覽器冇呢個功能就略過）
+    if (SEG) {
+      var str = '', idxOf = {};
+      for (var t = 0; t < pos.length; t++) { idxOf[str.length] = t; str += pos[t].ch; }
+      var segs = SEG.segment(str), list = [];
+      if (segs && segs[Symbol.iterator]) { var it = segs[Symbol.iterator](), sv; while (!(sv = it.next()).done) list.push(sv.value); }
+      list.forEach(function (sg) {
+        if (!sg.isWordLike || !HAN.test(sg.segment)) return;
+        var len = Array.from(sg.segment).length;
+        // 單字：連接字（同、及、或…）黐住後面；助詞（嘅、咗、緊…）黐住前面
+        if (len === 1) {
+          var at = idxOf[sg.index];
+          if (at === undefined) return;
+          if (JOIN_NEXT.test(sg.segment) && pos[at + 1] && HAN.test(pos[at + 1].ch)) glueSpan(pos, at, at + 1, changed);
+          else if (JOIN_PREV.test(sg.segment) && at > 0 && HAN.test(pos[at - 1].ch)) glueSpan(pos, at - 1, at, changed);
+          return;
+        }
+        if (len < 2 || len > 4) return;
+        var a0 = idxOf[sg.index], z1 = idxOf[sg.index + sg.segment.length];
+        if (a0 === undefined) return;
+        glueSpan(pos, a0, (z1 === undefined ? pos.length : z1) - 1, changed);
+      });
+    }
+
+    // 切開短句
+    var clauses = [], s = 0;
+    for (var p = 0; p < pos.length; p++) {
+      var c = pos[p].ch;
+      var isB = BOUNDARY.test(c) || (ASCII_BOUNDARY.test(c) && pos[p + 1] && SPACE.test(pos[p + 1].ch));
+      if (!isB) continue;
+      var e = p;
+      while (e + 1 < pos.length && CLOSERS.test(pos[e + 1].ch)) e++;
+      clauses.push([s, e]);
+      s = e + 1; p = e;
+    }
+    if (s < pos.length) clauses.push([s, pos.length - 1]);
+
+    clauses.forEach(function (cl) {
+      var a = cl[0], z = cl[1];
+      while (a <= z && SPACE.test(pos[a].ch)) a++;
+      while (z >= a && SPACE.test(pos[z].ch)) z--;
+      if (z - a < 1) return;
+      if (title && tailWidth(pos, a, z) <= cw) { glueSpan(pos, a, z, changed); return; }
+      // 內文（或者太長嘅標題句）：句頭 3 隻字黐埋；短句（4 隻字或以下）成句黐埋
+      var h = 0, k = a, hanIn = 0;
+      for (var x = a; x <= z; x++) if (HAN.test(pos[x].ch)) hanIn++;
+      if (hanIn <= 4) k = z;
+      else {
+        // 數 3 個單位：每隻中文字一個；一個英文字／數字（例如 7、WhatsApp）都當一個
+        for (; k <= z; k++) {
+          var ch = pos[k].ch;
+          if (HAN.test(ch)) { if (++h >= 3) break; continue; }
+          if (SPACE.test(ch) || CJK_PUNCT.test(ch)) continue;
+          while (k + 1 <= z && !SPACE.test(pos[k + 1].ch) && !HAN.test(pos[k + 1].ch) && !CJK_PUNCT.test(pos[k + 1].ch)) k++;
+          if (++h >= 3) break;
+        }
+        if (k > z) k = z;
+        while (k + 1 <= z && CLOSERS.test(pos[k + 1].ch)) k++;
+      }
+      if (k > a && tailWidth(pos, a, k) <= cw) glueSpan(pos, a, k, changed);
+    });
+
+    // 「」（）入面嘅短詞（8 隻字或以下）唔拆開
+    for (var o = 0; o < pos.length; o++) {
+      var open = pos[o].ch, close = open === '「' ? '」' : open === '（' ? '）' : open === '『' ? '』' : null;
+      if (!close) continue;
+      for (var m = o + 1; m < pos.length && m - o <= 10; m++) {
+        if (pos[m].ch === close) { if (tailWidth(pos, o, m) <= cw) glueSpan(pos, o, m, changed); break; }
+      }
     }
     commit(changed);
   }
@@ -181,6 +309,7 @@
       if (ws === 'pre' || ws === 'nowrap' || !b.clientWidth) return;
       segs.forEach(function (nodes) {
         if (!nodes.length) return;
+        try { phraseBlock(b, nodes); } catch (e) { /* 出錯就保持原狀 */ }
         try { glueBlock(b, nodes); } catch (e) { /* 出錯就保持原狀 */ }
       });
     });
