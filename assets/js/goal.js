@@ -83,7 +83,8 @@ function delayRows(rows, note) {
 }
 
 // 手機：本金同回報收喺第二欄下面一行細字（第三、四欄收埋），成張表一眼睇晒
-const mSub = (principal, gain) => `<span class="m-sub">${esc(t(`本金 ${money(principal)}・回報 ${money(gain)}`, `Put in ${money(principal)} · returns ${money(gain)}`))}</span>`;
+// 手機：一行細字顯示本金同回報（英文用短字，配合左欄標題拆兩行，唔使左右拉）
+const mSub = (principal, gain) => `<span class="m-sub"><span class="nw">${esc(t(`本金 ${money(principal)}`, `In ${money(principal)}`))}</span>${esc(t('・', ' · '))}<span class="nw">${esc(t(`回報 ${money(gain)}`, `gain ${money(gain)}`))}</span></span>`;
 
 function renderChips(rs) {
   $('focus-chips').innerHTML = rs.map((r, i) =>
