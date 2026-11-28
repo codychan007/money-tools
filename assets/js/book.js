@@ -10,7 +10,14 @@ const $ = id => document.getElementById(id);
 
 const baseMsg = scoreMessage(readJourney().health, true) || (EN ? SITE.whatsappTextEn : SITE.whatsappText);
 
-// ---- 預約前兩條必揀題：揀晒先撳得預約；答案只會帶入訊息，網站唔會儲存 ----
+// ---- 預約前三條必揀題：揀晒先撳得預約；答案只會帶入訊息，網站唔會儲存 ----
+// 傾談方式：網上用 Google 日曆（30 分鐘）；面談用 WhatsApp 約時間同地點（60 分鐘）
+const MODES = [
+  ['網上（WhatsApp 視像／電話，約 30 分鐘）', 'Online (WhatsApp video / call, about 30 min)'],
+  ['面談（約 60 分鐘）', 'In person (about 60 min)'],
+];
+const MODE_SHORT = [['網上', 'Online'], ['面談', 'In person']];
+const FACE = 1;
 const TOPICS = [
   ['儲錢同理財規劃', 'Saving and money planning'],
   ['醫療同危疾保障', 'Medical and critical illness cover'],
@@ -27,9 +34,16 @@ const TIMES = [
   ['時間彈性，邊個時間都得', 'Flexible, any time'],
 ];
 const chip = (label, i) => `<button type="button" class="chip" data-i="${i}" aria-pressed="false">${esc(label)}</button>`;
+$('q-mode').innerHTML = MODES.map((x, i) => chip(t(...x), i)).join('');
 $('q-topic').innerHTML = TOPICS.map((x, i) => chip(t(...x), i)).join('');
 $('q-time').innerHTML = TIMES.map((x, i) => chip(t(...x), i)).join('');
-let topic = null; const times = new Set();
+let mode = null, topic = null; const times = new Set();
+$('q-mode').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b) return;
+  mode = +b.dataset.i;
+  $('q-mode').querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed', String(c === b)));
+  refresh();
+});
 $('q-topic').addEventListener('click', e => {
   const b = e.target.closest('.chip'); if (!b) return;
   topic = +b.dataset.i;
@@ -44,8 +58,9 @@ $('q-time').addEventListener('click', e => {
   refresh();
 });
 
-const ready = () => topic !== null && times.size > 0;
+const ready = () => mode !== null && topic !== null && times.size > 0;
 const answers = () => ({
+  mode: t(...MODE_SHORT[mode]),
   topic: t(...TOPICS[topic]),
   time: [...times].sort((a, b) => a - b).map(i => t(...TIMES[i])).join(t('、', ', ')),
 });
@@ -56,12 +71,21 @@ function refresh() {
     $(id).setAttribute('aria-disabled', String(!ok));
   });
   $('cal').href = SITE.calendarUrl;
+  // 揀咗面談：收埋 Google 日曆掣（日曆只有 30 分鐘時段），WhatsApp 掣變主要掣
+  const face = mode === FACE;
+  $('cal').hidden = face;
+  $('wa').classList.toggle('shu', face);
+  $('wa').classList.toggle('lg', face);
+  $('wa').textContent = face ? t('WhatsApp 我約面談', 'WhatsApp me to arrange') : t('WhatsApp 我', 'WhatsApp me');
+  $('face-note').hidden = !face;
   if (ok) {
     const a = answers();
-    const extra = t(`\n想傾：${a.topic}\n方便時間：${a.time}`, `\nMain topic: ${a.topic}\nTimes that suit me: ${a.time}`);
+    const extra = face
+      ? t(`\n想約：面談（約 60 分鐘）\n想傾：${a.topic}\n方便時間：${a.time}\n地點：可以再傾`, `\nI'd like: an in-person chat (about 60 min)\nMain topic: ${a.topic}\nTimes that suit me: ${a.time}\nPlace: happy to discuss`)
+      : t(`\n傾談方式：${a.mode}\n想傾：${a.topic}\n方便時間：${a.time}`, `\nFormat: ${a.mode}\nMain topic: ${a.topic}\nTimes that suit me: ${a.time}`);
     $('wa').href = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(baseMsg + extra)}`;
     $('prebook-hint').classList.remove('nudge');
-    $('cal-note').hidden = false;
+    $('cal-note').hidden = face;
     $('cal-note').textContent = t('用 Google 日曆預約：撳掣之後會教你將答案貼入預約表。',
       'Booking with Google Calendar: after you tap, we\'ll show you how to paste your answers into the form.');
   } else {

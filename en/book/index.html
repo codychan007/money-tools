@@ -35,7 +35,7 @@
       <h2>What the chat looks like</h2>
       <ul class="mt0">
         <li><b>Cost:</b> Free</li>
-        <li><b>Length:</b> About 30 minutes</li>
+        <li><b>Length:</b> About 30 minutes online; about 60 minutes in person</li>
         <li><b>Format:</b> Online (WhatsApp video / phone) or in person</li>
         <li><b>Topics:</b>
           <ul class="mt0" id="topics">
@@ -49,18 +49,23 @@
 
     <section class="card stack" id="channels">
       <div class="prebook" id="prebook">
-        <p class="prebook-hint" id="prebook-hint">Before booking, please choose what you'd mainly like to talk about and when suits you.</p>
+        <p class="prebook-hint" id="prebook-hint">Before booking, please choose how you'd like to meet, what you'd mainly like to talk about and when suits you.</p>
         <div class="prebook-q">
-          <p class="prebook-label">1. What would you mainly like to talk about? (pick one)</p>
+          <p class="prebook-label">1. How would you like to meet? (pick one)</p>
+          <div class="chips" id="q-mode" role="radiogroup" aria-label="How would you like to meet"></div>
+        </div>
+        <div class="prebook-q">
+          <p class="prebook-label">2. What would you mainly like to talk about? (pick one)</p>
           <div class="chips" id="q-topic" role="radiogroup" aria-label="Main topic"></div>
         </div>
         <div class="prebook-q">
-          <p class="prebook-label">2. Roughly when suits you? (pick any)</p>
+          <p class="prebook-label">3. Roughly when suits you? (pick any)</p>
           <div class="chips" id="q-time" role="group" aria-label="When suits you"></div>
         </div>
       </div>
       <a class="btn shu lg block" id="cal" target="_blank" rel="noopener">Pick a time (Google Calendar)</a>
       <a class="btn block" id="wa" target="_blank" rel="noopener">WhatsApp me</a>
+      <p class="muted center mt0" id="face-note" hidden style="font-size:13px">We'll arrange the time and place for an in-person chat on WhatsApp. It takes about 60 minutes.</p>
       <p class="muted center mt0" id="cal-note" hidden style="font-size:13px"></p>
       <p class="book-ask">A small request: everyone's time is precious. If something comes up and you can't make it, please WhatsApp me a little in advance to reschedule. Thank you.</p>
       <p class="muted center mt0" style="font-size:13px">By choosing any way to get in touch, you confirm you have read and agree to the <a href="#pics">personal information collection statement</a> below.</p>

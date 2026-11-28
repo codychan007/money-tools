@@ -715,3 +715,5 @@ table.data .m-only { display: none; }
 .cody-note { margin: 12px 0 0; padding: 10px 12px; border-left: 3px solid var(--ochre); background: var(--ochre-50); border-radius: 6px; font-size: 15px; color: var(--ink); text-align: left; }
 .cody-note[hidden] { display: none; }
 .unlock-cheer { margin-top: 8px; font-size: 16px; font-weight: 700; color: var(--ink); }
+/* 預約頁：揀咗面談就收埋 Google 日曆掣（.btn 自己有 display，要明寫） */
+.btn[hidden] { display: none; }
