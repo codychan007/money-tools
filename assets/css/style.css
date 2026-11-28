@@ -709,4 +709,5 @@ table.data .m-only { display: none; }
 .nope-list { list-style: none; padding-left: 0; margin: 8px 0; }
 .nope-list li { position: relative; padding-left: 28px; margin: 6px 0; }
 .nope-list li::before { content: "\2715"; position: absolute; left: 4px; top: 0; color: var(--shu); font-weight: 700; }
-.book-ask { margin: 0; padding: 10px 12px; border-left: 3px solid var(--ochre, #b8892b); background: var(--ochre-50, #f6ecd6); border-radius: 6px; font-size: 14px; color: var(--ink-2); }
+#channels .book-ask { margin-top: 24px; }
+.book-ask { margin: 24px 0 0; padding: 10px 12px; border-left: 3px solid var(--ochre, #b8892b); background: var(--ochre-50, #f6ecd6); border-radius: 6px; font-size: 14px; color: var(--ink-2); }
