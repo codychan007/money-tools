@@ -10,7 +10,7 @@ import { esc } from './esc.js';
 const SEEN = 'hkmc-unlock-seen', PENDING = 'hkmc-unlock-pending';
 const ORDER = ['health', 'salary', 'goal'];
 const NAMES = { salary: ['月薪分配', 'Salary split'], goal: ['目標計算', 'Goal planner'] };
-const IDLE_MS = 1000, SHOW_MS = 2500;
+const IDLE_MS = 1000, SHOW_MS = 3500;   // 多咗一句打氣說話，留多 1 秒睇
 
 const get = k => { try { return JSON.parse(localStorage.getItem(k)) || []; } catch { return []; } };
 const set = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* 唔俾儲存就算 */ } };
@@ -47,6 +47,13 @@ function play() {
     ? t('已解鎖：你嘅理財體檢總結', 'Unlocked: your check-up summary')
     : t(`已解鎖：第 ${n + 1} 關・${NAMES[ORDER[n]][0]}`, `Unlocked: Level ${n + 1} · ${NAMES[ORDER[n]][1]}`);
 
+  // 每關一句打氣說話
+  const CHEERS = [
+    ['肯面對數字，已經係最難嗰步。', 'Facing the numbers is the hardest step, and you just did it.'],
+    ['錢點分你有計劃，唔再係月尾先知。', 'Now your pay has a plan, not a month-end surprise.'],
+    ['目標有咗時間表，就唔再只係諗吓。', "With a timeline, your goal is no longer just a wish."],
+  ];
+  const cheer = t(...CHEERS[n - 1]);
   document.querySelector('.unlock-pop')?.remove();
   const el = document.createElement('div');
   el.className = 'unlock-pop' + (last ? ' final' : '');
@@ -59,6 +66,7 @@ function play() {
         <circle cx="32" cy="46" r="5" fill="var(--card)"/><rect x="29.5" y="48" width="5" height="10" rx="2" fill="var(--card)"/>
       </svg>
       <div class="unlock-title">${esc(title)}</div>
+      <div class="unlock-cheer">${esc(cheer)}</div>
       <div class="unlock-sub">${esc(sub)}</div>
     </div>`;
   set(PENDING, []);
