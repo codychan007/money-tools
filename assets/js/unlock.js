@@ -39,8 +39,6 @@ function schedule(delay = IDLE_MS) {
 
 function play() {
   const p = get(PENDING); if (!p.length) return;
-  set(PENDING, []);
-  set(SEEN, [...new Set([...get(SEEN), ...p])]);
   // 一次過完成幾關都只播最後嗰關
   const step = ORDER.filter(s => p.includes(s)).pop();
   const n = ORDER.indexOf(step) + 1, last = n === 3;
@@ -53,6 +51,7 @@ function play() {
   const el = document.createElement('div');
   el.className = 'unlock-pop' + (last ? ' final' : '');
   el.setAttribute('role', 'status');
+  // 彈出內容組好先記「睇過」。組 HTML 途中出錯就留低 pending，下一頁可以再播。
   el.innerHTML = `<div class="unlock-card">
       <svg class="unlock-lock" viewBox="0 0 64 72" aria-hidden="true">
         <path class="shackle" d="M18 32 V22 a14 14 0 0 1 28 0 V32" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
@@ -62,15 +61,18 @@ function play() {
       <div class="unlock-title">${esc(title)}</div>
       <div class="unlock-sub">${esc(sub)}</div>
     </div>`;
+  set(PENDING, []);
+  set(SEEN, [...new Set([...get(SEEN), ...p])]);
   document.body.appendChild(el);
   requestAnimationFrame(() => el.classList.add('show'));
   if (last) confetti(el);
   chime(last);
 
-  const close = () => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); document.removeEventListener('keydown', esc); };
-  const esc = e => { if (e.key === 'Escape') close(); };
+  const close = () => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); document.removeEventListener('keydown', onEsc); };
+  // 唔好命名做 esc：會覆蓋頂部 import 嘅 HTML 跳脫函數，彈出卡一組就 ReferenceError。
+  const onEsc = e => { if (e.key === 'Escape') close(); };
   el.addEventListener('click', close);
-  document.addEventListener('keydown', esc);
+  document.addEventListener('keydown', onEsc);
   setTimeout(close, SHOW_MS);
 }
 
