@@ -278,12 +278,41 @@
     link.classList.add('nw-has-arrow');
   }
 
+  // 文字中間嘅超連結唔斬開兩行：成條連結一齊搬落下一行（太長、放唔落一行就照常斷）
+  function glueLinks(root, cache) {
+    var links = [].slice.call(root.querySelectorAll('a'));
+    if (root.tagName === 'A') links.push(root);
+    links.forEach(function (a) {
+      if (getComputedStyle(a).display !== 'inline') return;
+      var b = a.parentElement;
+      while (b && b !== document.body && !isBlock(b, cache)) b = b.parentElement;
+      if (!b || !b.clientWidth) return;
+      var pos = [], w = document.createTreeWalker(a, NodeFilter.SHOW_TEXT), t;
+      while ((t = w.nextNode())) {
+        var arr = cps(t);
+        for (var i = 0; i < arr.length; i++) {
+          if (arr[i] === WJ || arr[i] === '​') continue;
+          pos.push({ node: t, i: i, ch: arr[i] });
+        }
+      }
+      var s = 0, e = pos.length - 1;
+      while (s <= e && SPACE.test(pos[s].ch)) s++;
+      while (e >= s && SPACE.test(pos[e].ch)) e--;
+      if (e - s < 1) return;
+      if (tailWidth(pos, s, e) > contentWidth(b) * MAX_SHARE) return;
+      var changed = new Set();
+      glueSpan(pos, s, e, changed, true);
+      commit(changed);
+    });
+  }
+
   function run(root) {
     var cache = new Map();
     var groups = new Map();
     // 其他程式改咗連結文字：箭咀冇咗，攞返 CSS 個箭咀先
     root.querySelectorAll('a.nw-has-arrow').forEach(function (a) { if (!a.querySelector('.nw-arrow')) a.classList.remove('nw-has-arrow'); });
     root.querySelectorAll('a[target="_blank"]').forEach(function (a) { try { glueArrow(a); } catch (e) { /* 保持原狀 */ } });
+    try { glueLinks(root, cache); } catch (e) { /* 保持原狀 */ }
     var walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
       acceptNode: function (n) {
         if (n.nodeType === 1) {
